@@ -1,0 +1,19 @@
+{
+  "P": 4,
+  "steps": [
+    { "k": 0,  "start": 0,   "loopStart": 3,   "end": 11 },
+    { "k": 1,  "start": 11,  "loopStart": 16,  "end": 24 },
+    { "k": 2,  "start": 24,  "loopStart": 29,  "end": 37 },
+    { "k": 3,  "start": 37,  "loopStart": 42,  "end": 50 },
+    { "k": 4,  "start": 50,  "loopStart": 55,  "end": 63 },
+    { "k": 5,  "start": 63,  "loopStart": 68,  "end": 76 },
+    { "k": 6,  "start": 76,  "loopStart": 81,  "end": 89 },
+    { "k": 7,  "start": 89,  "loopStart": 94,  "end": 102 },
+    { "k": 8,  "start": 102, "loopStart": 107, "end": 115 },
+    { "k": 9,  "start": 115, "loopStart": 120, "end": 128 },
+    { "k": 10, "start": 128, "loopStart": 133, "end": 141 },
+    { "k": 11, "start": 141, "loopStart": 146, "end": 154 },
+    { "k": 12, "start": 154, "loopStart": 159, "end": 167 },
+    { "k": 13, "start": 167, "loopStart": 174, "end": 182 }
+  ]
+}

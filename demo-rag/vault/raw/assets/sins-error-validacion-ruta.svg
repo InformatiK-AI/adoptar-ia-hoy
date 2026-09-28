@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" font-family="Segoe UI, Arial, sans-serif">
+<rect width="960" height="540" fill="#f4f6f8"/>
+<rect x="0" y="0" width="960" height="44" fill="#8e44ad"/>
+<circle cx="20" cy="22" r="6" fill="#ff5f57"/><circle cx="40" cy="22" r="6" fill="#febc2e"/><circle cx="60" cy="22" r="6" fill="#28c840"/>
+<text x="84" y="28" fill="#fff" font-size="16" font-weight="700">SINS — Ingreso de Nuevos Servicios</text>
+<text x="944" y="28" fill="#fff" font-size="12" text-anchor="end" opacity="0.85">usuario: soporte.ti</text>
+<rect x="0" y="44" width="960" height="34" fill="#fff" stroke="#dde2e7"/>
+<text x="16" y="66" fill="#44505c" font-size="13">Solicitudes  ›  Filtro Estado = ENVIADO_CON_ERROR  ›  SOL-2025-03311</text>
+<rect x="16" y="92" width="928" height="96" rx="8" fill="#fff" stroke="#dde2e7"/><text x="36" y="120" font-size="14" font-weight="700" fill="#2c3e50">Solicitud SOL-2025-03311   ·   Soc. Comercial Los Maitenes Ltda. · ext. Av. Los Maitenes, Villarrica</text><text x="36" y="148" font-size="13" fill="#44505c">Estado: <tspan fill="#c0392b" font-weight="700">ENVIADO_CON_ERROR</tspan>     Conexión: CONECTADA 2025-07-10     Medidor: MD-25B07731</text><text x="36" y="174" font-size="13" fill="#44505c">Pestañas:  Ficha Cliente  |  Ficha Dirección  |  Ficha Conexión  |  <tspan font-weight="700" fill="#8e44ad">Log interfaz</tspan></text><rect x="16" y="204" width="928" height="28" fill="#e9edf1"/>
+<text x="24" y="223" font-size="12" font-weight="700" fill="#33404d">Fecha</text>
+<text x="184" y="223" font-size="12" font-weight="700" fill="#33404d">Proceso</text>
+<text x="354" y="223" font-size="12" font-weight="700" fill="#33404d">Código</text>
+<text x="474" y="223" font-size="12" font-weight="700" fill="#33404d">Mensaje</text>
+<rect x="16" y="232" width="928" height="28" fill="#fde8e8" stroke="#e3e7eb"/>
+<text x="24" y="251" font-size="12" fill="#2c3e50" font-weight="400">2025-07-17 02:00:14</text>
+<text x="184" y="251" font-size="12" fill="#2c3e50" font-weight="400">JOB_SINS_ALTA_CRM</text>
+<text x="354" y="251" font-size="12" fill="#2c3e50" font-weight="400">ERR-ALTA-004</text>
+<text x="474" y="251" font-size="12" fill="#2c3e50" font-weight="400">RUT inválido (dígito verificador no corresponde): 76.543.210-K</text>
+<rect x="16" y="260" width="928" height="28" fill="#fde8e8" stroke="#e3e7eb"/>
+<text x="24" y="279" font-size="12" fill="#2c3e50" font-weight="400">2025-07-17 12:41:09</text>
+<text x="184" y="279" font-size="12" fill="#2c3e50" font-weight="400">Reenvío manual (RUT corregido)</text>
+<text x="354" y="279" font-size="12" fill="#2c3e50" font-weight="400">ERR-ALTA-017</text>
+<text x="474" y="279" font-size="12" fill="#2c3e50" font-weight="400">Ruta de lectura obligatoria (dirección sin ruta/sector)</text><rect x="310" y="228" width="120" height="58" rx="4" fill="none" stroke="#c0392b" stroke-width="2.5" stroke-dasharray="6 4"/><rect x="16" y="310" width="760" height="104" rx="8" fill="#fff8db" stroke="#e0b100" stroke-width="1.5"/><circle cx="36" cy="332" r="12" fill="#e0b100"/><text x="36" y="337" font-size="13" text-anchor="middle" fill="#fff" font-weight="700">1</text><text x="56" y="336" font-size="12.5" fill="#5c4a00"><tspan x="56" dy="0">La interfaz informa UN error a la vez: corregir, reenviar y volver a leer el log.</tspan><tspan x="56" dy="16">ERR-ALTA-017 → pedir Ruta/Sector a Catastro (Sergio Lagos) y cargar en Ficha Dirección.</tspan><tspan x="56" dy="16">ERR-ALTA-004 → corregir RUT en Ficha Cliente.</tspan><tspan x="56" dy="16">ERR-ALTA-022 → validar N° de medidor con Bodega (Ficha Conexión).</tspan></text>
+<text x="16" y="528" fill="#8a96a3" font-size="11">Mockup ficticio — Sanitaria Los Coihues S.A. (demo charla UFRO)</text>
+</svg>

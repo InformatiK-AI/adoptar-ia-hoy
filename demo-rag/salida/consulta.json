@@ -1,0 +1,2291 @@
+{
+  "consulta": "Los pagos del fin de semana no aparecen en el CRM y a clientes que ya pagaron les llegó la orden de corte. ¿Cómo se resolvió antes?",
+  "top_k": 10,
+  "fragmentos": [
+    {
+      "id": "TK-2026-0108#0",
+      "ticket": "TK-2026-0108",
+      "titulo": "Pagos del fin de semana no llegan al CRM (cola de pagos con errores 401)",
+      "seccion": "Descripción (como la reportó el usuario)",
+      "archivo": "raw/tickets/2026/TK-2026-0108.md",
+      "similitud": 0.8,
+      "texto": "TK-2026-0108: Pagos del fin de semana no llegan al CRM (cola de pagos con errores 401)\n## Descripción (como la reportó el usuario)\n> Paula, en la cuadratura no aparecen los pagos del sábado ni del domingo en el CRM. Me tinca que es lo mismo de julio. Las órdenes de corte se generan hoy a las 11 (se cambió el horario), ¿alcanzamos?"
+    },
+    {
+      "id": "TK-2024-0105#0",
+      "ticket": "TK-2024-0105",
+      "titulo": "Cliente pagó y quedó en la orden de corte del día; pagos del fin de semana no aparecen en CRM",
+      "seccion": "Descripción (como la reportó el usuario)",
+      "archivo": "raw/tickets/2024/TK-2024-0105.md",
+      "similitud": 0.782,
+      "texto": "TK-2024-0105: Cliente pagó y quedó en la orden de corte del día; pagos del fin de semana no aparecen en CRM\n## Descripción (como la reportó el usuario)\n> Hola, tengo en el meson a un cliente de Pedro de Valdivia que recibió el aviso de corte la semana pasada, pagó el sábado en la caja vecina y trae el comprobante, pero en el CRM le sigue saliendo la deuda y hoy igual quedó en la orden de corte del día. Revisé otros dos que pagaron el fin de semana y tampoco aparece el pago. ¿Se cayó algo? Porfa urgente que tengo fila."
+    },
+    {
+      "id": "TK-2024-0105#6",
+      "ticket": "TK-2024-0105",
+      "titulo": "Cliente pagó y quedó en la orden de corte del día; pagos del fin de semana no aparecen en CRM",
+      "seccion": "Nota de cierre original",
+      "archivo": "raw/tickets/2024/TK-2024-0105.md",
+      "similitud": 0.761,
+      "texto": "TK-2024-0105: Cliente pagó y quedó en la orden de corte del día; pagos del fin de semana no aparecen en CRM\n## Nota de cierre original\n> Se renovó token de SGC_WS_PAGOS (estaba vencido desde el sábado) y se reprocesaron mensajes con error de la cola de pagos. Se contactó a 9 clientes que quedaron en la orden de corte. Gonzalo indicó por teléfono dónde estaba la credencial. Falta documentar bien el procedimiento."
+    },
+    {
+      "id": "TK-2024-0105#1",
+      "ticket": "TK-2024-0105",
+      "titulo": "Cliente pagó y quedó en la orden de corte del día; pagos del fin de semana no aparecen en CRM",
+      "seccion": "Diagnóstico",
+      "archivo": "raw/tickets/2024/TK-2024-0105.md",
+      "similitud": 0.745,
+      "texto": "TK-2024-0105: Cliente pagó y quedó en la orden de corte del día; pagos del fin de semana no aparecen en CRM\n## Diagnóstico\n- 08:55 — Paula Contreras registra el ticket y lo deriva a Matías (Gonzalo está de vacaciones).\n- 09:10 — `CRM > Clientes > Cuenta Corriente` del cliente (RUT 14.587.236-7, ficticio): el último pago registrado es de enero. En `SGC > Recaudación > Pagos del cliente` (acceso de consulta) el pago del 10-02 figura \"Recaudado\".\n- 09:40 — Matías revisa el log del CRM y los procesos batch del CRM buscando un problema propio del CRM; no encuentra nada. Se pierde cerca de 1,5 h por este lado.\n- 11:15 — En `Consola de Integración > Monitor de Mensajes > Cola Q.PAGOS.SGC.CRM` aparecen unos 180 mensajes en estado ERROR desde el sábado 10-02 a las 00:02, todos con `401 Unauthorized - token expirado`.  \n- 11:30 — Matías no sabe dónde se administra la credencial ni a quién pedirla (no había procedimiento escrito). Deja mensajes en Teams sin respuesta."
+    },
+    {
+      "id": "TK-2024-0105#5",
+      "ticket": "TK-2024-0105",
+      "titulo": "Cliente pagó y quedó en la orden de corte del día; pagos del fin de semana no aparecen en CRM",
+      "seccion": "Validación",
+      "archivo": "raw/tickets/2024/TK-2024-0105.md",
+      "similitud": 0.735,
+      "texto": "TK-2024-0105: Cliente pagó y quedó en la orden de corte del día; pagos del fin de semana no aparecen en CRM\n## Validación\n- La cola quedó con 0 mensajes en ERROR a las 15:40.\n- La cuenta corriente del cliente del mesón muestra el pago del 10-02 y deuda $0.\n- Muestreo de 5 clientes más: pagos reflejados."
+    },
+    {
+      "id": "TK-2026-0108#6",
+      "ticket": "TK-2026-0108",
+      "titulo": "Pagos del fin de semana no llegan al CRM (cola de pagos con errores 401)",
+      "seccion": "Validación",
+      "archivo": "raw/tickets/2026/TK-2026-0108.md",
+      "similitud": 0.73,
+      "texto": "TK-2026-0108: Pagos del fin de semana no llegan al CRM (cola de pagos con errores 401)\n## Validación\n- Cola con 0 ERROR y 0 PENDIENTE a las 09:12.\n- Rodrigo Álvarez reejecutó la cuadratura: CRM = SGC para el 17, el 18 y el 19 de enero.\n- Cliente de muestra con el pago del 17-01 reflejado y deuda $0."
+    },
+    {
+      "id": "TK-2025-0112#0",
+      "ticket": "TK-2025-0112",
+      "titulo": "Pagos del día no se reflejan en CRM; clientes con orden de corte indebida",
+      "seccion": "Descripción (como la reportó el usuario)",
+      "archivo": "raw/tickets/2025/TK-2025-0112.md",
+      "similitud": 0.721,
+      "texto": "TK-2025-0112: Pagos del día no se reflejan en CRM; clientes con orden de corte indebida\n## Descripción (como la reportó el usuario)\n> URGENTE. En la cuadratura de esta mañana el CRM no tiene NINGÚN pago desde el sábado, en SGC hay más de 300 pagos recaudados. El proceso de órdenes de corte de las 07:00 ya corrió y hay gente que pagó el sábado y quedó con orden de corte. Ya me llamaron dos clientes de Temuco enojados y uno de Villarrica. Necesito que alguien lo vea YA, Matías está de vacaciones y Gonzalo no contesta."
+    },
+    {
+      "id": "TK-2025-0112#8",
+      "ticket": "TK-2025-0112",
+      "titulo": "Pagos del día no se reflejan en CRM; clientes con orden de corte indebida",
+      "seccion": "Validación",
+      "archivo": "raw/tickets/2025/TK-2025-0112.md",
+      "similitud": 0.721,
+      "texto": "TK-2025-0112: Pagos del día no se reflejan en CRM; clientes con orden de corte indebida\n## Validación\n- Cola `Q.PAGOS.SGC.CRM`: 0 ERROR y 0 PENDIENTE a las 15:05; los pagos nuevos del día entran en línea (se verificó un pago de prueba de caja a las 15:20).\n- Cuadratura de Recaudación (Rodrigo Álvarez): CRM = SGC para el 19, el 20 y el 21 de julio.\n- `CRM > Corte y Reposición > Consultas > \"Órdenes de corte con pago registrado\"`: 0 registros.\n- Pedro Sandoval confirmó por teléfono las 4 reposiciones ejecutadas a las 17:25."
+    },
+    {
+      "id": "TK-2024-0118#0",
+      "ticket": "TK-2024-0118",
+      "titulo": "no entran pagos al CRM desde ayer",
+      "seccion": "Descripción (como la reportó el usuario)",
+      "archivo": "raw/tickets/2024/TK-2024-0118.md",
+      "similitud": 0.713,
+      "texto": "TK-2024-0118: no entran pagos al CRM desde ayer\n## Descripción (como la reportó el usuario)\n> Gonzalo, la cuadratura de hoy no me cuadra, en el CRM no hay ningún pago desde el lunes en la tarde. En SGC sí están. Revisa porfa."
+    },
+    {
+      "id": "TK-2024-0105#7",
+      "ticket": "TK-2024-0105",
+      "titulo": "Cliente pagó y quedó en la orden de corte del día; pagos del fin de semana no aparecen en CRM",
+      "seccion": "Prevención / lección",
+      "archivo": "raw/tickets/2024/TK-2024-0105.md",
+      "similitud": 0.69,
+      "texto": "TK-2024-0105: Cliente pagó y quedó en la orden de corte del día; pagos del fin de semana no aparecen en CRM\n## Prevención / lección\n- Documentar el procedimiento completo (quedó a medias en este ticket).\n- Registrar la fecha de vencimiento del nuevo token (vence el 10-08-2024) en un calendario compartido del equipo, no solo en la cabeza de Gonzalo.\n- Evaluar una alerta automática cuando la cola tenga mensajes en ERROR."
+    }
+  ],
+  "tickets": [
+    {
+      "ticket": "TK-2026-0108",
+      "titulo": "Pagos del fin de semana no llegan al CRM (cola de pagos con errores 401)",
+      "archivo": "raw/tickets/2026/TK-2026-0108.md",
+      "similitud": 0.8
+    },
+    {
+      "ticket": "TK-2024-0105",
+      "titulo": "Cliente pagó y quedó en la orden de corte del día; pagos del fin de semana no aparecen en CRM",
+      "archivo": "raw/tickets/2024/TK-2024-0105.md",
+      "similitud": 0.782
+    },
+    {
+      "ticket": "TK-2025-0112",
+      "titulo": "Pagos del día no se reflejan en CRM; clientes con orden de corte indebida",
+      "archivo": "raw/tickets/2025/TK-2025-0112.md",
+      "similitud": 0.721
+    },
+    {
+      "ticket": "TK-2024-0118",
+      "titulo": "no entran pagos al CRM desde ayer",
+      "archivo": "raw/tickets/2024/TK-2024-0118.md",
+      "similitud": 0.713
+    }
+  ],
+  "respuesta": "Causa probable: token de SGC_WS_PAGOS vencido genera errores 401 en la cola Q.PAGOS.SGC.CRM, dejando pagos sin reflejar y clientes ya pagados con orden de corte indebida. Se renovó el token, se reprocesó la cola y se contactó a los clientes afectados [TK-2024-0105][TK-2025-0112][TK-2026-0108].",
+  "flujo": [
+    {
+      "paso": "Revisar cola de pagos",
+      "detalle": "Buscar mensajes en ERROR en Q.PAGOS.SGC.CRM",
+      "fuente": "TK-2024-0105"
+    },
+    {
+      "paso": "Confirmar error 401",
+      "detalle": "Verificar token SGC_WS_PAGOS expirado",
+      "fuente": "TK-2024-0105"
+    },
+    {
+      "paso": "Renovar y reprocesar",
+      "detalle": "Renovar token y reprocesar mensajes en error",
+      "fuente": "TK-2024-0105"
+    },
+    {
+      "paso": "Validar cuadratura",
+      "detalle": "Confirmar CRM=SGC y cola en 0 errores",
+      "fuente": "TK-2026-0108"
+    },
+    {
+      "paso": "Contactar clientes afectados",
+      "detalle": "Avisar y anular cortes indebidos",
+      "fuente": "TK-2025-0112"
+    }
+  ],
+  "citados": [
+    "TK-2024-0105",
+    "TK-2025-0112",
+    "TK-2026-0108"
+  ],
+  "mapa": {
+    "puntos": [
+      {
+        "id": "TK-2024-0101#0",
+        "ticket": "TK-2024-0101",
+        "sistema": "CRM",
+        "x": 0.7339,
+        "y": 0.0
+      },
+      {
+        "id": "TK-2024-0101#1",
+        "ticket": "TK-2024-0101",
+        "sistema": "CRM",
+        "x": 0.7138,
+        "y": 0.0152
+      },
+      {
+        "id": "TK-2024-0101#2",
+        "ticket": "TK-2024-0101",
+        "sistema": "CRM",
+        "x": 0.7303,
+        "y": 0.0312
+      },
+      {
+        "id": "TK-2024-0101#3",
+        "ticket": "TK-2024-0101",
+        "sistema": "CRM",
+        "x": 0.7484,
+        "y": 0.0194
+      },
+      {
+        "id": "TK-2024-0101#4",
+        "ticket": "TK-2024-0101",
+        "sistema": "CRM",
+        "x": 0.7127,
+        "y": 0.0167
+      },
+      {
+        "id": "TK-2024-0101#5",
+        "ticket": "TK-2024-0101",
+        "sistema": "CRM",
+        "x": 0.7472,
+        "y": 0.0242
+      },
+      {
+        "id": "TK-2024-0101#6",
+        "ticket": "TK-2024-0101",
+        "sistema": "CRM",
+        "x": 0.6953,
+        "y": 0.0279
+      },
+      {
+        "id": "TK-2024-0102#0",
+        "ticket": "TK-2024-0102",
+        "sistema": "CRM",
+        "x": 0.2371,
+        "y": 0.5734
+      },
+      {
+        "id": "TK-2024-0102#1",
+        "ticket": "TK-2024-0102",
+        "sistema": "CRM",
+        "x": 0.2577,
+        "y": 0.587
+      },
+      {
+        "id": "TK-2024-0102#2",
+        "ticket": "TK-2024-0102",
+        "sistema": "CRM",
+        "x": 0.2535,
+        "y": 0.5558
+      },
+      {
+        "id": "TK-2024-0102#3",
+        "ticket": "TK-2024-0102",
+        "sistema": "CRM",
+        "x": 0.2743,
+        "y": 0.5595
+      },
+      {
+        "id": "TK-2024-0102#4",
+        "ticket": "TK-2024-0102",
+        "sistema": "CRM",
+        "x": 0.228,
+        "y": 0.573
+      },
+      {
+        "id": "TK-2024-0102#5",
+        "ticket": "TK-2024-0102",
+        "sistema": "CRM",
+        "x": 0.264,
+        "y": 0.5627
+      },
+      {
+        "id": "TK-2024-0102#6",
+        "ticket": "TK-2024-0102",
+        "sistema": "CRM",
+        "x": 0.2526,
+        "y": 0.5855
+      },
+      {
+        "id": "TK-2024-0103#0",
+        "ticket": "TK-2024-0103",
+        "sistema": "CRM",
+        "x": 0.5029,
+        "y": 0.644
+      },
+      {
+        "id": "TK-2024-0103#1",
+        "ticket": "TK-2024-0103",
+        "sistema": "CRM",
+        "x": 0.4553,
+        "y": 0.5991
+      },
+      {
+        "id": "TK-2024-0103#2",
+        "ticket": "TK-2024-0103",
+        "sistema": "CRM",
+        "x": 0.5096,
+        "y": 0.6205
+      },
+      {
+        "id": "TK-2024-0103#3",
+        "ticket": "TK-2024-0103",
+        "sistema": "CRM",
+        "x": 0.4471,
+        "y": 0.6022
+      },
+      {
+        "id": "TK-2024-0103#4",
+        "ticket": "TK-2024-0103",
+        "sistema": "CRM",
+        "x": 0.4795,
+        "y": 0.6276
+      },
+      {
+        "id": "TK-2024-0103#5",
+        "ticket": "TK-2024-0103",
+        "sistema": "CRM",
+        "x": 0.5056,
+        "y": 0.638
+      },
+      {
+        "id": "TK-2024-0103#6",
+        "ticket": "TK-2024-0103",
+        "sistema": "CRM",
+        "x": 0.5085,
+        "y": 0.6204
+      },
+      {
+        "id": "TK-2024-0105#0",
+        "ticket": "TK-2024-0105",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.6966,
+        "y": 0.6027
+      },
+      {
+        "id": "TK-2024-0105#1",
+        "ticket": "TK-2024-0105",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.6835,
+        "y": 0.6099
+      },
+      {
+        "id": "TK-2024-0105#2",
+        "ticket": "TK-2024-0105",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.7926,
+        "y": 0.592
+      },
+      {
+        "id": "TK-2024-0105#3",
+        "ticket": "TK-2024-0105",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.781,
+        "y": 0.5912
+      },
+      {
+        "id": "TK-2024-0105#4",
+        "ticket": "TK-2024-0105",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.7658,
+        "y": 0.5927
+      },
+      {
+        "id": "TK-2024-0105#5",
+        "ticket": "TK-2024-0105",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.7105,
+        "y": 0.6086
+      },
+      {
+        "id": "TK-2024-0105#6",
+        "ticket": "TK-2024-0105",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.7508,
+        "y": 0.5932
+      },
+      {
+        "id": "TK-2024-0105#7",
+        "ticket": "TK-2024-0105",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.6844,
+        "y": 0.5805
+      },
+      {
+        "id": "TK-2024-0106#0",
+        "ticket": "TK-2024-0106",
+        "sistema": "CRM",
+        "x": 0.3707,
+        "y": 0.2123
+      },
+      {
+        "id": "TK-2024-0106#1",
+        "ticket": "TK-2024-0106",
+        "sistema": "CRM",
+        "x": 0.3484,
+        "y": 0.1849
+      },
+      {
+        "id": "TK-2024-0106#2",
+        "ticket": "TK-2024-0106",
+        "sistema": "CRM",
+        "x": 0.3332,
+        "y": 0.1639
+      },
+      {
+        "id": "TK-2024-0106#3",
+        "ticket": "TK-2024-0106",
+        "sistema": "CRM",
+        "x": 0.3488,
+        "y": 0.1837
+      },
+      {
+        "id": "TK-2024-0106#4",
+        "ticket": "TK-2024-0106",
+        "sistema": "CRM",
+        "x": 0.3486,
+        "y": 0.1611
+      },
+      {
+        "id": "TK-2024-0106#5",
+        "ticket": "TK-2024-0106",
+        "sistema": "CRM",
+        "x": 0.3359,
+        "y": 0.1876
+      },
+      {
+        "id": "TK-2024-0106#6",
+        "ticket": "TK-2024-0106",
+        "sistema": "CRM",
+        "x": 0.3754,
+        "y": 0.2175
+      },
+      {
+        "id": "TK-2024-0107#0",
+        "ticket": "TK-2024-0107",
+        "sistema": "CRM",
+        "x": 0.225,
+        "y": 0.438
+      },
+      {
+        "id": "TK-2024-0107#1",
+        "ticket": "TK-2024-0107",
+        "sistema": "CRM",
+        "x": 0.2566,
+        "y": 0.4501
+      },
+      {
+        "id": "TK-2024-0107#2",
+        "ticket": "TK-2024-0107",
+        "sistema": "CRM",
+        "x": 0.2045,
+        "y": 0.4405
+      },
+      {
+        "id": "TK-2024-0107#3",
+        "ticket": "TK-2024-0107",
+        "sistema": "CRM",
+        "x": 0.2333,
+        "y": 0.4146
+      },
+      {
+        "id": "TK-2024-0107#4",
+        "ticket": "TK-2024-0107",
+        "sistema": "CRM",
+        "x": 0.232,
+        "y": 0.4682
+      },
+      {
+        "id": "TK-2024-0107#5",
+        "ticket": "TK-2024-0107",
+        "sistema": "CRM",
+        "x": 0.224,
+        "y": 0.4545
+      },
+      {
+        "id": "TK-2024-0107#6",
+        "ticket": "TK-2024-0107",
+        "sistema": "CRM",
+        "x": 0.2183,
+        "y": 0.4621
+      },
+      {
+        "id": "TK-2024-0109#0",
+        "ticket": "TK-2024-0109",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.7687,
+        "y": 0.46
+      },
+      {
+        "id": "TK-2024-0109#1",
+        "ticket": "TK-2024-0109",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.7689,
+        "y": 0.4692
+      },
+      {
+        "id": "TK-2024-0109#2",
+        "ticket": "TK-2024-0109",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.7973,
+        "y": 0.4509
+      },
+      {
+        "id": "TK-2024-0109#3",
+        "ticket": "TK-2024-0109",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.7752,
+        "y": 0.4841
+      },
+      {
+        "id": "TK-2024-0109#4",
+        "ticket": "TK-2024-0109",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.7591,
+        "y": 0.4581
+      },
+      {
+        "id": "TK-2024-0109#5",
+        "ticket": "TK-2024-0109",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.7845,
+        "y": 0.451
+      },
+      {
+        "id": "TK-2024-0109#6",
+        "ticket": "TK-2024-0109",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.787,
+        "y": 0.473
+      },
+      {
+        "id": "TK-2024-0110#0",
+        "ticket": "TK-2024-0110",
+        "sistema": "CRM",
+        "x": 0.5897,
+        "y": 0.2361
+      },
+      {
+        "id": "TK-2024-0110#1",
+        "ticket": "TK-2024-0110",
+        "sistema": "CRM",
+        "x": 0.6091,
+        "y": 0.2529
+      },
+      {
+        "id": "TK-2024-0110#2",
+        "ticket": "TK-2024-0110",
+        "sistema": "CRM",
+        "x": 0.6392,
+        "y": 0.2369
+      },
+      {
+        "id": "TK-2024-0110#3",
+        "ticket": "TK-2024-0110",
+        "sistema": "CRM",
+        "x": 0.6096,
+        "y": 0.2592
+      },
+      {
+        "id": "TK-2024-0110#4",
+        "ticket": "TK-2024-0110",
+        "sistema": "CRM",
+        "x": 0.622,
+        "y": 0.2321
+      },
+      {
+        "id": "TK-2024-0110#5",
+        "ticket": "TK-2024-0110",
+        "sistema": "CRM",
+        "x": 0.6004,
+        "y": 0.225
+      },
+      {
+        "id": "TK-2024-0110#6",
+        "ticket": "TK-2024-0110",
+        "sistema": "CRM",
+        "x": 0.6161,
+        "y": 0.209
+      },
+      {
+        "id": "TK-2024-0115#0",
+        "ticket": "TK-2024-0115",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.927,
+        "y": 0.5029
+      },
+      {
+        "id": "TK-2024-0115#1",
+        "ticket": "TK-2024-0115",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.8854,
+        "y": 0.4803
+      },
+      {
+        "id": "TK-2024-0115#2",
+        "ticket": "TK-2024-0115",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.9064,
+        "y": 0.5181
+      },
+      {
+        "id": "TK-2024-0115#3",
+        "ticket": "TK-2024-0115",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.8826,
+        "y": 0.4758
+      },
+      {
+        "id": "TK-2024-0115#4",
+        "ticket": "TK-2024-0115",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.9421,
+        "y": 0.4983
+      },
+      {
+        "id": "TK-2024-0115#5",
+        "ticket": "TK-2024-0115",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.9219,
+        "y": 0.4913
+      },
+      {
+        "id": "TK-2024-0115#6",
+        "ticket": "TK-2024-0115",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.9016,
+        "y": 0.5062
+      },
+      {
+        "id": "TK-2024-0118#0",
+        "ticket": "TK-2024-0118",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.7969,
+        "y": 0.6425
+      },
+      {
+        "id": "TK-2024-0118#1",
+        "ticket": "TK-2024-0118",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.8379,
+        "y": 0.6718
+      },
+      {
+        "id": "TK-2024-0118#2",
+        "ticket": "TK-2024-0118",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.8165,
+        "y": 0.6341
+      },
+      {
+        "id": "TK-2024-0118#3",
+        "ticket": "TK-2024-0118",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.8311,
+        "y": 0.6626
+      },
+      {
+        "id": "TK-2024-0118#4",
+        "ticket": "TK-2024-0118",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.7912,
+        "y": 0.6777
+      },
+      {
+        "id": "TK-2024-0118#5",
+        "ticket": "TK-2024-0118",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.8281,
+        "y": 0.6597
+      },
+      {
+        "id": "TK-2024-0118#6",
+        "ticket": "TK-2024-0118",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.8107,
+        "y": 0.6839
+      },
+      {
+        "id": "TK-2024-0201#0",
+        "ticket": "TK-2024-0201",
+        "sistema": "EAM",
+        "x": 0.1801,
+        "y": 0.8808
+      },
+      {
+        "id": "TK-2024-0201#1",
+        "ticket": "TK-2024-0201",
+        "sistema": "EAM",
+        "x": 0.1821,
+        "y": 0.8628
+      },
+      {
+        "id": "TK-2024-0201#2",
+        "ticket": "TK-2024-0201",
+        "sistema": "EAM",
+        "x": 0.2074,
+        "y": 0.8649
+      },
+      {
+        "id": "TK-2024-0201#3",
+        "ticket": "TK-2024-0201",
+        "sistema": "EAM",
+        "x": 0.2127,
+        "y": 0.8803
+      },
+      {
+        "id": "TK-2024-0201#4",
+        "ticket": "TK-2024-0201",
+        "sistema": "EAM",
+        "x": 0.1917,
+        "y": 0.8676
+      },
+      {
+        "id": "TK-2024-0201#5",
+        "ticket": "TK-2024-0201",
+        "sistema": "EAM",
+        "x": 0.1921,
+        "y": 0.8885
+      },
+      {
+        "id": "TK-2024-0201#6",
+        "ticket": "TK-2024-0201",
+        "sistema": "EAM",
+        "x": 0.2147,
+        "y": 0.8711
+      },
+      {
+        "id": "TK-2024-0201#7",
+        "ticket": "TK-2024-0201",
+        "sistema": "EAM",
+        "x": 0.1958,
+        "y": 0.8489
+      },
+      {
+        "id": "TK-2024-0202#0",
+        "ticket": "TK-2024-0202",
+        "sistema": "EAM",
+        "x": 0.0,
+        "y": 0.7396
+      },
+      {
+        "id": "TK-2024-0202#1",
+        "ticket": "TK-2024-0202",
+        "sistema": "EAM",
+        "x": 0.0211,
+        "y": 0.7444
+      },
+      {
+        "id": "TK-2024-0202#2",
+        "ticket": "TK-2024-0202",
+        "sistema": "EAM",
+        "x": 0.0243,
+        "y": 0.75
+      },
+      {
+        "id": "TK-2024-0202#3",
+        "ticket": "TK-2024-0202",
+        "sistema": "EAM",
+        "x": 0.0185,
+        "y": 0.7226
+      },
+      {
+        "id": "TK-2024-0202#4",
+        "ticket": "TK-2024-0202",
+        "sistema": "EAM",
+        "x": 0.032,
+        "y": 0.7326
+      },
+      {
+        "id": "TK-2024-0202#5",
+        "ticket": "TK-2024-0202",
+        "sistema": "EAM",
+        "x": 0.0046,
+        "y": 0.7294
+      },
+      {
+        "id": "TK-2024-0202#6",
+        "ticket": "TK-2024-0202",
+        "sistema": "EAM",
+        "x": 0.0379,
+        "y": 0.7223
+      },
+      {
+        "id": "TK-2024-0203#0",
+        "ticket": "TK-2024-0203",
+        "sistema": "EAM",
+        "x": 0.214,
+        "y": 0.6988
+      },
+      {
+        "id": "TK-2024-0203#1",
+        "ticket": "TK-2024-0203",
+        "sistema": "EAM",
+        "x": 0.2026,
+        "y": 0.6943
+      },
+      {
+        "id": "TK-2024-0203#2",
+        "ticket": "TK-2024-0203",
+        "sistema": "EAM",
+        "x": 0.2364,
+        "y": 0.6923
+      },
+      {
+        "id": "TK-2024-0203#3",
+        "ticket": "TK-2024-0203",
+        "sistema": "EAM",
+        "x": 0.2226,
+        "y": 0.6765
+      },
+      {
+        "id": "TK-2024-0203#4",
+        "ticket": "TK-2024-0203",
+        "sistema": "EAM",
+        "x": 0.2286,
+        "y": 0.7194
+      },
+      {
+        "id": "TK-2024-0203#5",
+        "ticket": "TK-2024-0203",
+        "sistema": "EAM",
+        "x": 0.2244,
+        "y": 0.6818
+      },
+      {
+        "id": "TK-2024-0203#6",
+        "ticket": "TK-2024-0203",
+        "sistema": "EAM",
+        "x": 0.2233,
+        "y": 0.6702
+      },
+      {
+        "id": "TK-2024-0204#0",
+        "ticket": "TK-2024-0204",
+        "sistema": "EAM",
+        "x": 0.5406,
+        "y": 0.2652
+      },
+      {
+        "id": "TK-2024-0204#1",
+        "ticket": "TK-2024-0204",
+        "sistema": "EAM",
+        "x": 0.5435,
+        "y": 0.2597
+      },
+      {
+        "id": "TK-2024-0204#2",
+        "ticket": "TK-2024-0204",
+        "sistema": "EAM",
+        "x": 0.5614,
+        "y": 0.2597
+      },
+      {
+        "id": "TK-2024-0204#3",
+        "ticket": "TK-2024-0204",
+        "sistema": "EAM",
+        "x": 0.5628,
+        "y": 0.2931
+      },
+      {
+        "id": "TK-2024-0204#4",
+        "ticket": "TK-2024-0204",
+        "sistema": "EAM",
+        "x": 0.5417,
+        "y": 0.2823
+      },
+      {
+        "id": "TK-2024-0204#5",
+        "ticket": "TK-2024-0204",
+        "sistema": "EAM",
+        "x": 0.5694,
+        "y": 0.2706
+      },
+      {
+        "id": "TK-2024-0204#6",
+        "ticket": "TK-2024-0204",
+        "sistema": "EAM",
+        "x": 0.5551,
+        "y": 0.2852
+      },
+      {
+        "id": "TK-2024-0204#7",
+        "ticket": "TK-2024-0204",
+        "sistema": "EAM",
+        "x": 0.5809,
+        "y": 0.2815
+      },
+      {
+        "id": "TK-2024-0301#0",
+        "ticket": "TK-2024-0301",
+        "sistema": "SINS",
+        "x": 0.3552,
+        "y": 0.5211
+      },
+      {
+        "id": "TK-2024-0301#1",
+        "ticket": "TK-2024-0301",
+        "sistema": "SINS",
+        "x": 0.3544,
+        "y": 0.4951
+      },
+      {
+        "id": "TK-2024-0301#2",
+        "ticket": "TK-2024-0301",
+        "sistema": "SINS",
+        "x": 0.3734,
+        "y": 0.5279
+      },
+      {
+        "id": "TK-2024-0301#3",
+        "ticket": "TK-2024-0301",
+        "sistema": "SINS",
+        "x": 0.3753,
+        "y": 0.4921
+      },
+      {
+        "id": "TK-2024-0301#4",
+        "ticket": "TK-2024-0301",
+        "sistema": "SINS",
+        "x": 0.3657,
+        "y": 0.5381
+      },
+      {
+        "id": "TK-2024-0301#5",
+        "ticket": "TK-2024-0301",
+        "sistema": "SINS",
+        "x": 0.3375,
+        "y": 0.5244
+      },
+      {
+        "id": "TK-2024-0301#6",
+        "ticket": "TK-2024-0301",
+        "sistema": "SINS",
+        "x": 0.3702,
+        "y": 0.5108
+      },
+      {
+        "id": "TK-2024-0301#7",
+        "ticket": "TK-2024-0301",
+        "sistema": "SINS",
+        "x": 0.3797,
+        "y": 0.4841
+      },
+      {
+        "id": "TK-2024-0302#0",
+        "ticket": "TK-2024-0302",
+        "sistema": "SINS",
+        "x": 0.5136,
+        "y": 0.3923
+      },
+      {
+        "id": "TK-2024-0302#1",
+        "ticket": "TK-2024-0302",
+        "sistema": "SINS",
+        "x": 0.5227,
+        "y": 0.4176
+      },
+      {
+        "id": "TK-2024-0302#2",
+        "ticket": "TK-2024-0302",
+        "sistema": "SINS",
+        "x": 0.4988,
+        "y": 0.387
+      },
+      {
+        "id": "TK-2024-0302#3",
+        "ticket": "TK-2024-0302",
+        "sistema": "SINS",
+        "x": 0.5192,
+        "y": 0.3909
+      },
+      {
+        "id": "TK-2024-0302#4",
+        "ticket": "TK-2024-0302",
+        "sistema": "SINS",
+        "x": 0.5204,
+        "y": 0.4255
+      },
+      {
+        "id": "TK-2024-0302#5",
+        "ticket": "TK-2024-0302",
+        "sistema": "SINS",
+        "x": 0.4912,
+        "y": 0.3973
+      },
+      {
+        "id": "TK-2024-0302#6",
+        "ticket": "TK-2024-0302",
+        "sistema": "SINS",
+        "x": 0.4787,
+        "y": 0.4136
+      },
+      {
+        "id": "TK-2024-0303#0",
+        "ticket": "TK-2024-0303",
+        "sistema": "SINS",
+        "x": 0.2857,
+        "y": 0.3021
+      },
+      {
+        "id": "TK-2024-0303#1",
+        "ticket": "TK-2024-0303",
+        "sistema": "SINS",
+        "x": 0.2695,
+        "y": 0.2827
+      },
+      {
+        "id": "TK-2024-0303#2",
+        "ticket": "TK-2024-0303",
+        "sistema": "SINS",
+        "x": 0.2734,
+        "y": 0.2456
+      },
+      {
+        "id": "TK-2024-0303#3",
+        "ticket": "TK-2024-0303",
+        "sistema": "SINS",
+        "x": 0.2903,
+        "y": 0.2682
+      },
+      {
+        "id": "TK-2024-0303#4",
+        "ticket": "TK-2024-0303",
+        "sistema": "SINS",
+        "x": 0.2763,
+        "y": 0.2996
+      },
+      {
+        "id": "TK-2024-0303#5",
+        "ticket": "TK-2024-0303",
+        "sistema": "SINS",
+        "x": 0.2847,
+        "y": 0.2765
+      },
+      {
+        "id": "TK-2024-0303#6",
+        "ticket": "TK-2024-0303",
+        "sistema": "SINS",
+        "x": 0.2582,
+        "y": 0.3038
+      },
+      {
+        "id": "TK-2025-0101#0",
+        "ticket": "TK-2025-0101",
+        "sistema": "CRM",
+        "x": 0.546,
+        "y": 0.1077
+      },
+      {
+        "id": "TK-2025-0101#1",
+        "ticket": "TK-2025-0101",
+        "sistema": "CRM",
+        "x": 0.5399,
+        "y": 0.1104
+      },
+      {
+        "id": "TK-2025-0101#2",
+        "ticket": "TK-2025-0101",
+        "sistema": "CRM",
+        "x": 0.5315,
+        "y": 0.087
+      },
+      {
+        "id": "TK-2025-0101#3",
+        "ticket": "TK-2025-0101",
+        "sistema": "CRM",
+        "x": 0.514,
+        "y": 0.1141
+      },
+      {
+        "id": "TK-2025-0101#4",
+        "ticket": "TK-2025-0101",
+        "sistema": "CRM",
+        "x": 0.4998,
+        "y": 0.0956
+      },
+      {
+        "id": "TK-2025-0101#5",
+        "ticket": "TK-2025-0101",
+        "sistema": "CRM",
+        "x": 0.5195,
+        "y": 0.0973
+      },
+      {
+        "id": "TK-2025-0101#6",
+        "ticket": "TK-2025-0101",
+        "sistema": "CRM",
+        "x": 0.5219,
+        "y": 0.111
+      },
+      {
+        "id": "TK-2025-0103#0",
+        "ticket": "TK-2025-0103",
+        "sistema": "CRM",
+        "x": 0.4271,
+        "y": 0.3353
+      },
+      {
+        "id": "TK-2025-0103#1",
+        "ticket": "TK-2025-0103",
+        "sistema": "CRM",
+        "x": 0.4369,
+        "y": 0.3391
+      },
+      {
+        "id": "TK-2025-0103#2",
+        "ticket": "TK-2025-0103",
+        "sistema": "CRM",
+        "x": 0.4311,
+        "y": 0.3097
+      },
+      {
+        "id": "TK-2025-0103#3",
+        "ticket": "TK-2025-0103",
+        "sistema": "CRM",
+        "x": 0.4406,
+        "y": 0.3428
+      },
+      {
+        "id": "TK-2025-0103#4",
+        "ticket": "TK-2025-0103",
+        "sistema": "CRM",
+        "x": 0.4147,
+        "y": 0.322
+      },
+      {
+        "id": "TK-2025-0103#5",
+        "ticket": "TK-2025-0103",
+        "sistema": "CRM",
+        "x": 0.4113,
+        "y": 0.3273
+      },
+      {
+        "id": "TK-2025-0103#6",
+        "ticket": "TK-2025-0103",
+        "sistema": "CRM",
+        "x": 0.4551,
+        "y": 0.3143
+      },
+      {
+        "id": "TK-2025-0104#0",
+        "ticket": "TK-2025-0104",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.8439,
+        "y": 0.5567
+      },
+      {
+        "id": "TK-2025-0104#1",
+        "ticket": "TK-2025-0104",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.8879,
+        "y": 0.5792
+      },
+      {
+        "id": "TK-2025-0104#2",
+        "ticket": "TK-2025-0104",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.8676,
+        "y": 0.5657
+      },
+      {
+        "id": "TK-2025-0104#3",
+        "ticket": "TK-2025-0104",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.8766,
+        "y": 0.581
+      },
+      {
+        "id": "TK-2025-0104#4",
+        "ticket": "TK-2025-0104",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.869,
+        "y": 0.541
+      },
+      {
+        "id": "TK-2025-0104#5",
+        "ticket": "TK-2025-0104",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.8577,
+        "y": 0.5337
+      },
+      {
+        "id": "TK-2025-0104#6",
+        "ticket": "TK-2025-0104",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.8431,
+        "y": 0.5419
+      },
+      {
+        "id": "TK-2025-0104#7",
+        "ticket": "TK-2025-0104",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.8635,
+        "y": 0.5553
+      },
+      {
+        "id": "TK-2025-0104#8",
+        "ticket": "TK-2025-0104",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.8413,
+        "y": 0.5741
+      },
+      {
+        "id": "TK-2025-0106#0",
+        "ticket": "TK-2025-0106",
+        "sistema": "CRM",
+        "x": 0.7817,
+        "y": 0.2501
+      },
+      {
+        "id": "TK-2025-0106#1",
+        "ticket": "TK-2025-0106",
+        "sistema": "CRM",
+        "x": 0.7792,
+        "y": 0.2645
+      },
+      {
+        "id": "TK-2025-0106#2",
+        "ticket": "TK-2025-0106",
+        "sistema": "CRM",
+        "x": 0.7813,
+        "y": 0.2906
+      },
+      {
+        "id": "TK-2025-0106#3",
+        "ticket": "TK-2025-0106",
+        "sistema": "CRM",
+        "x": 0.778,
+        "y": 0.2668
+      },
+      {
+        "id": "TK-2025-0106#4",
+        "ticket": "TK-2025-0106",
+        "sistema": "CRM",
+        "x": 0.8003,
+        "y": 0.2687
+      },
+      {
+        "id": "TK-2025-0106#5",
+        "ticket": "TK-2025-0106",
+        "sistema": "CRM",
+        "x": 0.781,
+        "y": 0.2872
+      },
+      {
+        "id": "TK-2025-0106#6",
+        "ticket": "TK-2025-0106",
+        "sistema": "CRM",
+        "x": 0.7594,
+        "y": 0.2501
+      },
+      {
+        "id": "TK-2025-0109#0",
+        "ticket": "TK-2025-0109",
+        "sistema": "CRM",
+        "x": 0.3312,
+        "y": 0.4042
+      },
+      {
+        "id": "TK-2025-0109#1",
+        "ticket": "TK-2025-0109",
+        "sistema": "CRM",
+        "x": 0.296,
+        "y": 0.4265
+      },
+      {
+        "id": "TK-2025-0109#2",
+        "ticket": "TK-2025-0109",
+        "sistema": "CRM",
+        "x": 0.3204,
+        "y": 0.4016
+      },
+      {
+        "id": "TK-2025-0109#3",
+        "ticket": "TK-2025-0109",
+        "sistema": "CRM",
+        "x": 0.3191,
+        "y": 0.3923
+      },
+      {
+        "id": "TK-2025-0109#4",
+        "ticket": "TK-2025-0109",
+        "sistema": "CRM",
+        "x": 0.3463,
+        "y": 0.3714
+      },
+      {
+        "id": "TK-2025-0109#5",
+        "ticket": "TK-2025-0109",
+        "sistema": "CRM",
+        "x": 0.3222,
+        "y": 0.3879
+      },
+      {
+        "id": "TK-2025-0109#6",
+        "ticket": "TK-2025-0109",
+        "sistema": "CRM",
+        "x": 0.3467,
+        "y": 0.3979
+      },
+      {
+        "id": "TK-2025-0112#0",
+        "ticket": "TK-2025-0112",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.7139,
+        "y": 0.5841
+      },
+      {
+        "id": "TK-2025-0112#1",
+        "ticket": "TK-2025-0112",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.6493,
+        "y": 0.6027
+      },
+      {
+        "id": "TK-2025-0112#2",
+        "ticket": "TK-2025-0112",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.6188,
+        "y": 0.5976
+      },
+      {
+        "id": "TK-2025-0112#3",
+        "ticket": "TK-2025-0112",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.7513,
+        "y": 0.5491
+      },
+      {
+        "id": "TK-2025-0112#4",
+        "ticket": "TK-2025-0112",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.7694,
+        "y": 0.5792
+      },
+      {
+        "id": "TK-2025-0112#5",
+        "ticket": "TK-2025-0112",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.7347,
+        "y": 0.5487
+      },
+      {
+        "id": "TK-2025-0112#6",
+        "ticket": "TK-2025-0112",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.7232,
+        "y": 0.5293
+      },
+      {
+        "id": "TK-2025-0112#7",
+        "ticket": "TK-2025-0112",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.6121,
+        "y": 0.5882
+      },
+      {
+        "id": "TK-2025-0112#8",
+        "ticket": "TK-2025-0112",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.7212,
+        "y": 0.582
+      },
+      {
+        "id": "TK-2025-0112#9",
+        "ticket": "TK-2025-0112",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.7502,
+        "y": 0.5624
+      },
+      {
+        "id": "TK-2025-0112#10",
+        "ticket": "TK-2025-0112",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.7089,
+        "y": 0.55
+      },
+      {
+        "id": "TK-2025-0118#0",
+        "ticket": "TK-2025-0118",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.747,
+        "y": 0.3969
+      },
+      {
+        "id": "TK-2025-0118#1",
+        "ticket": "TK-2025-0118",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.7345,
+        "y": 0.4249
+      },
+      {
+        "id": "TK-2025-0118#2",
+        "ticket": "TK-2025-0118",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.7143,
+        "y": 0.4112
+      },
+      {
+        "id": "TK-2025-0118#3",
+        "ticket": "TK-2025-0118",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.7217,
+        "y": 0.4003
+      },
+      {
+        "id": "TK-2025-0118#4",
+        "ticket": "TK-2025-0118",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.7461,
+        "y": 0.3703
+      },
+      {
+        "id": "TK-2025-0118#5",
+        "ticket": "TK-2025-0118",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.731,
+        "y": 0.3884
+      },
+      {
+        "id": "TK-2025-0118#6",
+        "ticket": "TK-2025-0118",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.7494,
+        "y": 0.3759
+      },
+      {
+        "id": "TK-2025-0205#0",
+        "ticket": "TK-2025-0205",
+        "sistema": "EAM",
+        "x": 0.336,
+        "y": 0.7325
+      },
+      {
+        "id": "TK-2025-0205#1",
+        "ticket": "TK-2025-0205",
+        "sistema": "EAM",
+        "x": 0.3372,
+        "y": 0.696
+      },
+      {
+        "id": "TK-2025-0205#2",
+        "ticket": "TK-2025-0205",
+        "sistema": "EAM",
+        "x": 0.3622,
+        "y": 0.7117
+      },
+      {
+        "id": "TK-2025-0205#3",
+        "ticket": "TK-2025-0205",
+        "sistema": "EAM",
+        "x": 0.3728,
+        "y": 0.7296
+      },
+      {
+        "id": "TK-2025-0205#4",
+        "ticket": "TK-2025-0205",
+        "sistema": "EAM",
+        "x": 0.3496,
+        "y": 0.7451
+      },
+      {
+        "id": "TK-2025-0205#5",
+        "ticket": "TK-2025-0205",
+        "sistema": "EAM",
+        "x": 0.3571,
+        "y": 0.7519
+      },
+      {
+        "id": "TK-2025-0205#6",
+        "ticket": "TK-2025-0205",
+        "sistema": "EAM",
+        "x": 0.3339,
+        "y": 0.7419
+      },
+      {
+        "id": "TK-2025-0205#7",
+        "ticket": "TK-2025-0205",
+        "sistema": "EAM",
+        "x": 0.357,
+        "y": 0.7111
+      },
+      {
+        "id": "TK-2025-0205#8",
+        "ticket": "TK-2025-0205",
+        "sistema": "EAM",
+        "x": 0.3745,
+        "y": 0.7065
+      },
+      {
+        "id": "TK-2025-0206#0",
+        "ticket": "TK-2025-0206",
+        "sistema": "EAM",
+        "x": 0.3981,
+        "y": 0.9756
+      },
+      {
+        "id": "TK-2025-0206#1",
+        "ticket": "TK-2025-0206",
+        "sistema": "EAM",
+        "x": 0.3881,
+        "y": 0.9775
+      },
+      {
+        "id": "TK-2025-0206#2",
+        "ticket": "TK-2025-0206",
+        "sistema": "EAM",
+        "x": 0.3953,
+        "y": 1.0
+      },
+      {
+        "id": "TK-2025-0206#3",
+        "ticket": "TK-2025-0206",
+        "sistema": "EAM",
+        "x": 0.3781,
+        "y": 0.9763
+      },
+      {
+        "id": "TK-2025-0206#4",
+        "ticket": "TK-2025-0206",
+        "sistema": "EAM",
+        "x": 0.3958,
+        "y": 0.9591
+      },
+      {
+        "id": "TK-2025-0206#5",
+        "ticket": "TK-2025-0206",
+        "sistema": "EAM",
+        "x": 0.4132,
+        "y": 0.9798
+      },
+      {
+        "id": "TK-2025-0206#6",
+        "ticket": "TK-2025-0206",
+        "sistema": "EAM",
+        "x": 0.4006,
+        "y": 0.9888
+      },
+      {
+        "id": "TK-2025-0206#7",
+        "ticket": "TK-2025-0206",
+        "sistema": "EAM",
+        "x": 0.3822,
+        "y": 0.9932
+      },
+      {
+        "id": "TK-2025-0208#0",
+        "ticket": "TK-2025-0208",
+        "sistema": "EAM",
+        "x": 0.3248,
+        "y": 0.8451
+      },
+      {
+        "id": "TK-2025-0208#1",
+        "ticket": "TK-2025-0208",
+        "sistema": "EAM",
+        "x": 0.3106,
+        "y": 0.8265
+      },
+      {
+        "id": "TK-2025-0208#2",
+        "ticket": "TK-2025-0208",
+        "sistema": "EAM",
+        "x": 0.3422,
+        "y": 0.8473
+      },
+      {
+        "id": "TK-2025-0208#3",
+        "ticket": "TK-2025-0208",
+        "sistema": "EAM",
+        "x": 0.311,
+        "y": 0.8449
+      },
+      {
+        "id": "TK-2025-0208#4",
+        "ticket": "TK-2025-0208",
+        "sistema": "EAM",
+        "x": 0.3191,
+        "y": 0.824
+      },
+      {
+        "id": "TK-2025-0208#5",
+        "ticket": "TK-2025-0208",
+        "sistema": "EAM",
+        "x": 0.3281,
+        "y": 0.8644
+      },
+      {
+        "id": "TK-2025-0208#6",
+        "ticket": "TK-2025-0208",
+        "sistema": "EAM",
+        "x": 0.3146,
+        "y": 0.8509
+      },
+      {
+        "id": "TK-2025-0208#7",
+        "ticket": "TK-2025-0208",
+        "sistema": "EAM",
+        "x": 0.3,
+        "y": 0.839
+      },
+      {
+        "id": "TK-2025-0209#0",
+        "ticket": "TK-2025-0209",
+        "sistema": "EAM",
+        "x": 0.5217,
+        "y": 0.7755
+      },
+      {
+        "id": "TK-2025-0209#1",
+        "ticket": "TK-2025-0209",
+        "sistema": "EAM",
+        "x": 0.5116,
+        "y": 0.7694
+      },
+      {
+        "id": "TK-2025-0209#2",
+        "ticket": "TK-2025-0209",
+        "sistema": "EAM",
+        "x": 0.492,
+        "y": 0.7748
+      },
+      {
+        "id": "TK-2025-0209#3",
+        "ticket": "TK-2025-0209",
+        "sistema": "EAM",
+        "x": 0.4954,
+        "y": 0.7673
+      },
+      {
+        "id": "TK-2025-0209#4",
+        "ticket": "TK-2025-0209",
+        "sistema": "EAM",
+        "x": 0.5029,
+        "y": 0.7504
+      },
+      {
+        "id": "TK-2025-0209#5",
+        "ticket": "TK-2025-0209",
+        "sistema": "EAM",
+        "x": 0.4986,
+        "y": 0.7601
+      },
+      {
+        "id": "TK-2025-0304#0",
+        "ticket": "TK-2025-0304",
+        "sistema": "SINS",
+        "x": 0.5777,
+        "y": 0.4461
+      },
+      {
+        "id": "TK-2025-0304#1",
+        "ticket": "TK-2025-0304",
+        "sistema": "SINS",
+        "x": 0.5335,
+        "y": 0.453
+      },
+      {
+        "id": "TK-2025-0304#2",
+        "ticket": "TK-2025-0304",
+        "sistema": "SINS",
+        "x": 0.5439,
+        "y": 0.4772
+      },
+      {
+        "id": "TK-2025-0304#3",
+        "ticket": "TK-2025-0304",
+        "sistema": "SINS",
+        "x": 0.5577,
+        "y": 0.4692
+      },
+      {
+        "id": "TK-2025-0304#4",
+        "ticket": "TK-2025-0304",
+        "sistema": "SINS",
+        "x": 0.5391,
+        "y": 0.4925
+      },
+      {
+        "id": "TK-2025-0304#5",
+        "ticket": "TK-2025-0304",
+        "sistema": "SINS",
+        "x": 0.5448,
+        "y": 0.4546
+      },
+      {
+        "id": "TK-2025-0304#6",
+        "ticket": "TK-2025-0304",
+        "sistema": "SINS",
+        "x": 0.5555,
+        "y": 0.4479
+      },
+      {
+        "id": "TK-2025-0304#7",
+        "ticket": "TK-2025-0304",
+        "sistema": "SINS",
+        "x": 0.5536,
+        "y": 0.4693
+      },
+      {
+        "id": "TK-2025-0304#8",
+        "ticket": "TK-2025-0304",
+        "sistema": "SINS",
+        "x": 0.5208,
+        "y": 0.4683
+      },
+      {
+        "id": "TK-2025-0305#0",
+        "ticket": "TK-2025-0305",
+        "sistema": "SINS",
+        "x": 0.6787,
+        "y": 0.7834
+      },
+      {
+        "id": "TK-2025-0305#1",
+        "ticket": "TK-2025-0305",
+        "sistema": "SINS",
+        "x": 0.6904,
+        "y": 0.769
+      },
+      {
+        "id": "TK-2025-0305#2",
+        "ticket": "TK-2025-0305",
+        "sistema": "SINS",
+        "x": 0.7072,
+        "y": 0.7975
+      },
+      {
+        "id": "TK-2025-0305#3",
+        "ticket": "TK-2025-0305",
+        "sistema": "SINS",
+        "x": 0.7131,
+        "y": 0.8018
+      },
+      {
+        "id": "TK-2025-0305#4",
+        "ticket": "TK-2025-0305",
+        "sistema": "SINS",
+        "x": 0.7012,
+        "y": 0.8129
+      },
+      {
+        "id": "TK-2025-0305#5",
+        "ticket": "TK-2025-0305",
+        "sistema": "SINS",
+        "x": 0.6858,
+        "y": 0.8053
+      },
+      {
+        "id": "TK-2025-0305#6",
+        "ticket": "TK-2025-0305",
+        "sistema": "SINS",
+        "x": 0.6904,
+        "y": 0.7797
+      },
+      {
+        "id": "TK-2025-0305#7",
+        "ticket": "TK-2025-0305",
+        "sistema": "SINS",
+        "x": 0.6901,
+        "y": 0.7956
+      },
+      {
+        "id": "TK-2025-0305#8",
+        "ticket": "TK-2025-0305",
+        "sistema": "SINS",
+        "x": 0.7143,
+        "y": 0.7746
+      },
+      {
+        "id": "TK-2025-0307#0",
+        "ticket": "TK-2025-0307",
+        "sistema": "SINS",
+        "x": 0.6592,
+        "y": 0.3245
+      },
+      {
+        "id": "TK-2025-0307#1",
+        "ticket": "TK-2025-0307",
+        "sistema": "SINS",
+        "x": 0.6728,
+        "y": 0.3113
+      },
+      {
+        "id": "TK-2025-0307#2",
+        "ticket": "TK-2025-0307",
+        "sistema": "SINS",
+        "x": 0.6563,
+        "y": 0.31
+      },
+      {
+        "id": "TK-2025-0307#3",
+        "ticket": "TK-2025-0307",
+        "sistema": "SINS",
+        "x": 0.6787,
+        "y": 0.3348
+      },
+      {
+        "id": "TK-2025-0307#4",
+        "ticket": "TK-2025-0307",
+        "sistema": "SINS",
+        "x": 0.6866,
+        "y": 0.3078
+      },
+      {
+        "id": "TK-2025-0307#5",
+        "ticket": "TK-2025-0307",
+        "sistema": "SINS",
+        "x": 0.6718,
+        "y": 0.326
+      },
+      {
+        "id": "TK-2025-0307#6",
+        "ticket": "TK-2025-0307",
+        "sistema": "SINS",
+        "x": 0.6617,
+        "y": 0.2958
+      },
+      {
+        "id": "TK-2026-0102#0",
+        "ticket": "TK-2026-0102",
+        "sistema": "CRM",
+        "x": 0.7464,
+        "y": 0.0452
+      },
+      {
+        "id": "TK-2026-0102#1",
+        "ticket": "TK-2026-0102",
+        "sistema": "CRM",
+        "x": 0.7489,
+        "y": 0.0609
+      },
+      {
+        "id": "TK-2026-0102#2",
+        "ticket": "TK-2026-0102",
+        "sistema": "CRM",
+        "x": 0.7371,
+        "y": 0.0765
+      },
+      {
+        "id": "TK-2026-0102#3",
+        "ticket": "TK-2026-0102",
+        "sistema": "CRM",
+        "x": 0.7672,
+        "y": 0.0497
+      },
+      {
+        "id": "TK-2026-0102#4",
+        "ticket": "TK-2026-0102",
+        "sistema": "CRM",
+        "x": 0.7279,
+        "y": 0.0599
+      },
+      {
+        "id": "TK-2026-0102#5",
+        "ticket": "TK-2026-0102",
+        "sistema": "CRM",
+        "x": 0.7723,
+        "y": 0.0526
+      },
+      {
+        "id": "TK-2026-0102#6",
+        "ticket": "TK-2026-0102",
+        "sistema": "CRM",
+        "x": 0.7123,
+        "y": 0.062
+      },
+      {
+        "id": "TK-2026-0104#0",
+        "ticket": "TK-2026-0104",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.9638,
+        "y": 0.5386
+      },
+      {
+        "id": "TK-2026-0104#1",
+        "ticket": "TK-2026-0104",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.9572,
+        "y": 0.568
+      },
+      {
+        "id": "TK-2026-0104#2",
+        "ticket": "TK-2026-0104",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.9864,
+        "y": 0.5639
+      },
+      {
+        "id": "TK-2026-0104#3",
+        "ticket": "TK-2026-0104",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.9812,
+        "y": 0.5327
+      },
+      {
+        "id": "TK-2026-0104#4",
+        "ticket": "TK-2026-0104",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.9999,
+        "y": 0.5401
+      },
+      {
+        "id": "TK-2026-0104#5",
+        "ticket": "TK-2026-0104",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 1.0,
+        "y": 0.562
+      },
+      {
+        "id": "TK-2026-0104#6",
+        "ticket": "TK-2026-0104",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.9705,
+        "y": 0.5243
+      },
+      {
+        "id": "TK-2026-0104#7",
+        "ticket": "TK-2026-0104",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.9918,
+        "y": 0.5495
+      },
+      {
+        "id": "TK-2026-0104#8",
+        "ticket": "TK-2026-0104",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.9778,
+        "y": 0.5578
+      },
+      {
+        "id": "TK-2026-0105#0",
+        "ticket": "TK-2026-0105",
+        "sistema": "CRM",
+        "x": 0.117,
+        "y": 0.279
+      },
+      {
+        "id": "TK-2026-0105#1",
+        "ticket": "TK-2026-0105",
+        "sistema": "CRM",
+        "x": 0.1151,
+        "y": 0.2888
+      },
+      {
+        "id": "TK-2026-0105#2",
+        "ticket": "TK-2026-0105",
+        "sistema": "CRM",
+        "x": 0.1016,
+        "y": 0.2962
+      },
+      {
+        "id": "TK-2026-0105#3",
+        "ticket": "TK-2026-0105",
+        "sistema": "CRM",
+        "x": 0.1091,
+        "y": 0.3138
+      },
+      {
+        "id": "TK-2026-0105#4",
+        "ticket": "TK-2026-0105",
+        "sistema": "CRM",
+        "x": 0.1185,
+        "y": 0.3024
+      },
+      {
+        "id": "TK-2026-0105#5",
+        "ticket": "TK-2026-0105",
+        "sistema": "CRM",
+        "x": 0.1042,
+        "y": 0.316
+      },
+      {
+        "id": "TK-2026-0105#6",
+        "ticket": "TK-2026-0105",
+        "sistema": "CRM",
+        "x": 0.09,
+        "y": 0.2987
+      },
+      {
+        "id": "TK-2026-0108#0",
+        "ticket": "TK-2026-0108",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.7121,
+        "y": 0.6384
+      },
+      {
+        "id": "TK-2026-0108#1",
+        "ticket": "TK-2026-0108",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.638,
+        "y": 0.6136
+      },
+      {
+        "id": "TK-2026-0108#2",
+        "ticket": "TK-2026-0108",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.7485,
+        "y": 0.6417
+      },
+      {
+        "id": "TK-2026-0108#3",
+        "ticket": "TK-2026-0108",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.7477,
+        "y": 0.6218
+      },
+      {
+        "id": "TK-2026-0108#4",
+        "ticket": "TK-2026-0108",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.766,
+        "y": 0.6253
+      },
+      {
+        "id": "TK-2026-0108#5",
+        "ticket": "TK-2026-0108",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.7301,
+        "y": 0.6643
+      },
+      {
+        "id": "TK-2026-0108#6",
+        "ticket": "TK-2026-0108",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.7581,
+        "y": 0.6598
+      },
+      {
+        "id": "TK-2026-0108#7",
+        "ticket": "TK-2026-0108",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.7415,
+        "y": 0.6307
+      },
+      {
+        "id": "TK-2026-0108#8",
+        "ticket": "TK-2026-0108",
+        "sistema": "Integracion-CRM-SGC",
+        "x": 0.6646,
+        "y": 0.6331
+      },
+      {
+        "id": "TK-2026-0207#0",
+        "ticket": "TK-2026-0207",
+        "sistema": "EAM",
+        "x": 0.2608,
+        "y": 0.677
+      },
+      {
+        "id": "TK-2026-0207#1",
+        "ticket": "TK-2026-0207",
+        "sistema": "EAM",
+        "x": 0.277,
+        "y": 0.6603
+      },
+      {
+        "id": "TK-2026-0207#2",
+        "ticket": "TK-2026-0207",
+        "sistema": "EAM",
+        "x": 0.2665,
+        "y": 0.7005
+      },
+      {
+        "id": "TK-2026-0207#3",
+        "ticket": "TK-2026-0207",
+        "sistema": "EAM",
+        "x": 0.2796,
+        "y": 0.698
+      },
+      {
+        "id": "TK-2026-0207#4",
+        "ticket": "TK-2026-0207",
+        "sistema": "EAM",
+        "x": 0.2932,
+        "y": 0.6927
+      },
+      {
+        "id": "TK-2026-0207#5",
+        "ticket": "TK-2026-0207",
+        "sistema": "EAM",
+        "x": 0.2573,
+        "y": 0.7282
+      },
+      {
+        "id": "TK-2026-0207#6",
+        "ticket": "TK-2026-0207",
+        "sistema": "EAM",
+        "x": 0.2924,
+        "y": 0.6801
+      },
+      {
+        "id": "TK-2026-0207#7",
+        "ticket": "TK-2026-0207",
+        "sistema": "EAM",
+        "x": 0.3037,
+        "y": 0.6685
+      },
+      {
+        "id": "TK-2026-0210#0",
+        "ticket": "TK-2026-0210",
+        "sistema": "EAM",
+        "x": 0.0964,
+        "y": 0.9158
+      },
+      {
+        "id": "TK-2026-0210#1",
+        "ticket": "TK-2026-0210",
+        "sistema": "EAM",
+        "x": 0.0922,
+        "y": 0.8923
+      },
+      {
+        "id": "TK-2026-0210#2",
+        "ticket": "TK-2026-0210",
+        "sistema": "EAM",
+        "x": 0.1098,
+        "y": 0.9376
+      },
+      {
+        "id": "TK-2026-0210#3",
+        "ticket": "TK-2026-0210",
+        "sistema": "EAM",
+        "x": 0.1121,
+        "y": 0.9229
+      },
+      {
+        "id": "TK-2026-0210#4",
+        "ticket": "TK-2026-0210",
+        "sistema": "EAM",
+        "x": 0.0955,
+        "y": 0.8873
+      },
+      {
+        "id": "TK-2026-0210#5",
+        "ticket": "TK-2026-0210",
+        "sistema": "EAM",
+        "x": 0.1202,
+        "y": 0.8937
+      },
+      {
+        "id": "TK-2026-0210#6",
+        "ticket": "TK-2026-0210",
+        "sistema": "EAM",
+        "x": 0.0886,
+        "y": 0.9327
+      },
+      {
+        "id": "TK-2026-0210#7",
+        "ticket": "TK-2026-0210",
+        "sistema": "EAM",
+        "x": 0.0999,
+        "y": 0.9223
+      },
+      {
+        "id": "TK-2026-0210#8",
+        "ticket": "TK-2026-0210",
+        "sistema": "EAM",
+        "x": 0.1176,
+        "y": 0.9117
+      },
+      {
+        "id": "TK-2026-0211#0",
+        "ticket": "TK-2026-0211",
+        "sistema": "EAM",
+        "x": 0.1183,
+        "y": 0.6369
+      },
+      {
+        "id": "TK-2026-0211#1",
+        "ticket": "TK-2026-0211",
+        "sistema": "EAM",
+        "x": 0.0948,
+        "y": 0.6046
+      },
+      {
+        "id": "TK-2026-0211#2",
+        "ticket": "TK-2026-0211",
+        "sistema": "EAM",
+        "x": 0.0949,
+        "y": 0.5942
+      },
+      {
+        "id": "TK-2026-0211#3",
+        "ticket": "TK-2026-0211",
+        "sistema": "EAM",
+        "x": 0.11,
+        "y": 0.6157
+      },
+      {
+        "id": "TK-2026-0211#4",
+        "ticket": "TK-2026-0211",
+        "sistema": "EAM",
+        "x": 0.0909,
+        "y": 0.6132
+      },
+      {
+        "id": "TK-2026-0211#5",
+        "ticket": "TK-2026-0211",
+        "sistema": "EAM",
+        "x": 0.1112,
+        "y": 0.6165
+      },
+      {
+        "id": "TK-2026-0306#0",
+        "ticket": "TK-2026-0306",
+        "sistema": "SINS",
+        "x": 0.4982,
+        "y": 0.4475
+      },
+      {
+        "id": "TK-2026-0306#1",
+        "ticket": "TK-2026-0306",
+        "sistema": "SINS",
+        "x": 0.4664,
+        "y": 0.497
+      },
+      {
+        "id": "TK-2026-0306#2",
+        "ticket": "TK-2026-0306",
+        "sistema": "SINS",
+        "x": 0.453,
+        "y": 0.5149
+      },
+      {
+        "id": "TK-2026-0306#3",
+        "ticket": "TK-2026-0306",
+        "sistema": "SINS",
+        "x": 0.5019,
+        "y": 0.5073
+      },
+      {
+        "id": "TK-2026-0306#4",
+        "ticket": "TK-2026-0306",
+        "sistema": "SINS",
+        "x": 0.4638,
+        "y": 0.5036
+      },
+      {
+        "id": "TK-2026-0306#5",
+        "ticket": "TK-2026-0306",
+        "sistema": "SINS",
+        "x": 0.4921,
+        "y": 0.4507
+      },
+      {
+        "id": "TK-2026-0306#6",
+        "ticket": "TK-2026-0306",
+        "sistema": "SINS",
+        "x": 0.4615,
+        "y": 0.4994
+      },
+      {
+        "id": "TK-2026-0306#7",
+        "ticket": "TK-2026-0306",
+        "sistema": "SINS",
+        "x": 0.4439,
+        "y": 0.4628
+      },
+      {
+        "id": "TK-2026-0308#0",
+        "ticket": "TK-2026-0308",
+        "sistema": "SINS",
+        "x": 0.3797,
+        "y": 0.5966
+      },
+      {
+        "id": "TK-2026-0308#1",
+        "ticket": "TK-2026-0308",
+        "sistema": "SINS",
+        "x": 0.3972,
+        "y": 0.5859
+      },
+      {
+        "id": "TK-2026-0308#2",
+        "ticket": "TK-2026-0308",
+        "sistema": "SINS",
+        "x": 0.3655,
+        "y": 0.5917
+      },
+      {
+        "id": "TK-2026-0308#3",
+        "ticket": "TK-2026-0308",
+        "sistema": "SINS",
+        "x": 0.3982,
+        "y": 0.5794
+      },
+      {
+        "id": "TK-2026-0308#4",
+        "ticket": "TK-2026-0308",
+        "sistema": "SINS",
+        "x": 0.3979,
+        "y": 0.6066
+      },
+      {
+        "id": "TK-2026-0308#5",
+        "ticket": "TK-2026-0308",
+        "sistema": "SINS",
+        "x": 0.3716,
+        "y": 0.5876
+      },
+      {
+        "id": "TK-2026-0308#6",
+        "ticket": "TK-2026-0308",
+        "sistema": "SINS",
+        "x": 0.3824,
+        "y": 0.5707
+      }
+    ],
+    "consulta": {
+      "x": 0.6932,
+      "y": 0.661
+    }
+  }
+}

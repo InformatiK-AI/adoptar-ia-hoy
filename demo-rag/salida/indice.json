@@ -1,0 +1,116 @@
+{
+  "modelo": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+  "notas": 40,
+  "fragmentos": 304,
+  "dimensiones": 384,
+  "ejemplo_nota": "TK-2025-0112",
+  "ejemplo_fragmentos": [
+    {
+      "seccion": "Descripción (como la reportó el usuario)",
+      "chars": 389,
+      "inicio": "> URGENTE. En la cuadratura de esta mañana el CRM no tiene NINGÚN pago desde el sábado, en"
+    },
+    {
+      "seccion": "Diagnóstico",
+      "chars": 598,
+      "inicio": "**Contexto:** Matías Rivas de vacaciones (14 al 25 de julio). Gonzalo Reyes en terreno en "
+    },
+    {
+      "seccion": "Diagnóstico",
+      "chars": 675,
+      "inicio": "2. **09:40 – Búsqueda de ayuda.** Paula busca un procedimiento en la carpeta compartida de"
+    },
+    {
+      "seccion": "Diagnóstico",
+      "chars": 615,
+      "inicio": "- 0 mensajes en PENDIENTE. **Esto descarta la causa B** (servicio `svc-pagos-sgc` detenido"
+    },
+    {
+      "seccion": "Causa raíz",
+      "chars": 475,
+      "inicio": "El token de la conexión `SGC_WS_PAGOS` venció el sábado 19-07-2025, 180 días después de su"
+    },
+    {
+      "seccion": "Resolución paso a paso",
+      "chars": 558,
+      "inicio": "1. **Solicitud de token (12:30).** NexoSys abrió un requerimiento urgente en el portal de "
+    },
+    {
+      "seccion": "Resolución paso a paso",
+      "chars": 702,
+      "inicio": "3. **Reproceso de mensajes (14:15).** `Consola de Integración > Monitor de Mensajes > Cola"
+    },
+    {
+      "seccion": "Resolución paso a paso",
+      "chars": 681,
+      "inicio": "5. **Aviso a Operaciones (14:45).** Paula llamó a Pedro Sandoval (Jefe de Redes, Operacion"
+    },
+    {
+      "seccion": "Validación",
+      "chars": 425,
+      "inicio": "- Cola `Q.PAGOS.SGC.CRM`: 0 ERROR y 0 PENDIENTE a las 15:05; los pagos nuevos del día entr"
+    },
+    {
+      "seccion": "Nota de cierre original",
+      "chars": 432,
+      "inicio": "> Credencial SGC_WS_PAGOS vencida desde el 19/07. NexoSys gestionó token nuevo con proveed"
+    },
+    {
+      "seccion": "Prevención / lección",
+      "chars": 845,
+      "inicio": "- **Alerta de vencimiento:** aviso automático 15 días antes de la expiración de la credenc"
+    }
+  ],
+  "ejemplo_vector": [
+    -0.191,
+    0.079,
+    -0.093,
+    0.047,
+    -0.023,
+    -0.142,
+    0.089,
+    0.255
+  ],
+  "notas_lista": [
+    "TK-2024-0101",
+    "TK-2024-0102",
+    "TK-2024-0103",
+    "TK-2024-0105",
+    "TK-2024-0106",
+    "TK-2024-0107",
+    "TK-2024-0109",
+    "TK-2024-0110",
+    "TK-2024-0115",
+    "TK-2024-0118",
+    "TK-2024-0201",
+    "TK-2024-0202",
+    "TK-2024-0203",
+    "TK-2024-0204",
+    "TK-2024-0301",
+    "TK-2024-0302",
+    "TK-2024-0303",
+    "TK-2025-0101",
+    "TK-2025-0103",
+    "TK-2025-0104",
+    "TK-2025-0106",
+    "TK-2025-0109",
+    "TK-2025-0112",
+    "TK-2025-0118",
+    "TK-2025-0205",
+    "TK-2025-0206",
+    "TK-2025-0208",
+    "TK-2025-0209",
+    "TK-2025-0304",
+    "TK-2025-0305",
+    "TK-2025-0307",
+    "TK-2026-0102",
+    "TK-2026-0104",
+    "TK-2026-0105",
+    "TK-2026-0108",
+    "TK-2026-0207",
+    "TK-2026-0210",
+    "TK-2026-0211",
+    "TK-2026-0306",
+    "TK-2026-0308"
+  ]
+}

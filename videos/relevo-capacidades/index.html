@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1128">
+    <title>¿Dónde aplicarlas?</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face{font-family:"Figtree";font-style:normal;font-weight:400 900;
+        src:url("assets/fonts/Figtree-latin.woff2") format("woff2");}
+      /* OS-bundled colour emoji font (Windows render host). */
+      @font-face{font-family:"Segoe UI Emoji";src:local("Segoe UI Emoji");}
+      *{margin:0;padding:0;box-sizing:border-box}
+      html,body{width:1920px;height:1128px;overflow:hidden}
+      body{font-family:"Figtree",system-ui,sans-serif;color:#161A2E}
+
+      :root{
+        --box:#E1E8FF; --ink:#161A2E;
+        --coral:#FFE4DF; --amber:#FFF1D6; --ai:#EDE6FC; --blue:#D3DDFF;
+      }
+
+      #root{position:relative;width:1920px;height:1128px;overflow:hidden;background:var(--box)}
+      .clip{position:absolute;inset:0}
+
+      /* One row = a track of notes laid out on a fixed pitch so the loop is exact. */
+      .row{position:absolute;left:0;width:1920px;height:236px;margin-top:-20px;padding-top:20px;
+        /* Alpha mask: notes fade out at both edges of the box; no element covers the text. */
+        -webkit-mask-image:linear-gradient(to right,transparent 0,#000 150px,#000 1770px,transparent 1920px);
+                mask-image:linear-gradient(to right,transparent 0,#000 150px,#000 1770px,transparent 1920px)}
+      .track{position:absolute;left:0;top:20px;height:196px;will-change:transform}
+      .note{position:absolute;top:0;width:820px;height:196px;background:#fff;border-radius:6px;
+        box-shadow:0 18px 34px -20px rgba(22,26,46,.45);display:flex;align-items:center;gap:34px;padding:0 44px}
+      .ico{flex:none;width:124px;height:124px;border-radius:16px;display:grid;place-items:center;
+        font-family:"Segoe UI Emoji";font-size:66px;line-height:1}
+      .lbl{font-weight:800;font-size:62px;letter-spacing:-.01em;line-height:1.05;white-space:nowrap}
+
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-width="1920" data-height="1128" data-duration="36">
+      <div id="scene" class="clip" data-start="0" data-duration="36" data-track-index="1">
+        <div class="row" id="r1" style="top:88px"><div class="track"></div></div>
+        <div class="row" id="r2" style="top:340px"><div class="track"></div></div>
+        <div class="row" id="r3" style="top:592px"><div class="track"></div></div>
+        <div class="row" id="r4" style="top:844px"><div class="track"></div></div>
+      </div>
+    </div>
+
+    <script>
+      const T = 36;          // loop length (s)
+      const PITCH = 890;     // note width 820 + gap 70
+      const SET = PITCH * 2; // two capabilities per row -> repeat period 1780 px
+      const REPEATS = 4;     // 8 notes per track: covers 1920 px at every offset
+
+      // dir -1 = drifts left, +1 = drifts right; offset staggers rows so notes never form columns.
+      const ROWS = [
+        { id: 'r1', dir: -1, offset: 0,    items: [['🔎', 'Investigar', 'coral'], ['📊', 'Analizar datos', 'blue']] },
+        { id: 'r2', dir: 1,  offset: -445, items: [['⚙️', 'Automatizar', 'amber'], ['💻', 'Programar', 'ai']] },
+        { id: 'r3', dir: -1, offset: -222, items: [['✍️', 'Redactar', 'ai'], ['📄', 'Documentar', 'coral']] },
+        { id: 'r4', dir: 1,  offset: -667, items: [['⚡', 'Aprender rápido', 'blue'], ['🧭', 'Apoyar decisiones', 'amber']] }
+      ];
+
+      const tl = gsap.timeline({ paused: true });
+
+      ROWS.forEach(function (row, r) {
+        const track = document.querySelector('#' + row.id + ' .track');
+        for (let k = 0; k < row.items.length * REPEATS; k++) {
+          const [emoji, label, tint] = row.items[k % row.items.length];
+          const note = document.createElement('div');
+          note.className = 'note';
+          note.style.left = (k * PITCH) + 'px';
+          // Slight sticky-note tilt, fixed per note so every repeat looks identical.
+          note.style.transform = 'rotate(' + (((k + r) % 2) ? .8 : -.9) + 'deg)';
+          note.innerHTML = '<span class="ico" style="background:var(--' + tint + ')">' + emoji + '</span>' +
+            '<span class="lbl">' + label + '</span>';
+          track.appendChild(note);
+        }
+        track.style.width = (row.items.length * REPEATS * PITCH) + 'px';
+
+        // Linear drift of exactly one repeat period: frame T matches frame 0 -> seamless loop.
+        const a = row.offset, b = row.offset - SET;
+        tl.fromTo(track, { x: row.dir < 0 ? a : b }, { x: row.dir < 0 ? b : a, duration: T, ease: 'none' }, 0);
+      });
+
+      document.fonts.ready.then(function () {
+        window.__timelines = window.__timelines || {};
+        window.__timelines['main'] = tl;
+        if (window.__hfForceTimelineRebind) window.__hfForceTimelineRebind();
+      });
+    </script>
+  </body>
+</html>

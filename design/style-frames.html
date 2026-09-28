@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Style frames · Adoptar IA hoy</title>
+<!-- Preview only: fonts load from Google Fonts here; the final deck embeds woff2 as base64. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,300..900&family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=Fraunces:opsz,wght@9..144,300..900&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;background:#222}
+  body{display:grid;place-items:center;overflow:hidden}
+  .frame{display:none;position:relative;width:min(100vw,calc(100vh*16/9));aspect-ratio:16/9;overflow:hidden;
+    font-size:min(1.6vw,2.85vh)}
+  .frame.on{display:block}
+  .body{font-family:"Atkinson Hyperlegible",system-ui,sans-serif}
+
+  /* ───────── A · EL HILO ───────── */
+  .A{--ink:#0F1B2D;--fog:#E6EDF5;--mute:#8CA0B8;--vis:#FF8A5B;--cap:#4CD6E8;--val:#F5C84C;
+     background:radial-gradient(120% 90% at 80% 10%,#16294A 0%,var(--ink) 60%);color:var(--fog)}
+  .A .disp{font-family:"Bricolage Grotesque",sans-serif;font-variation-settings:"opsz" 96,"wdth" 80;font-weight:700;letter-spacing:-.03em;line-height:.9}
+  .A svg.thread{position:absolute;inset:0;width:100%;height:100%}
+  .A .thread path{fill:none;stroke-width:3;stroke-linecap:round;stroke-dasharray:3000;stroke-dashoffset:3000;animation:draw 3.2s cubic-bezier(.6,0,.2,1) forwards}
+  .A .thread path:nth-child(2){animation-delay:.5s}.A .thread path:nth-child(3){animation-delay:1s}
+  @keyframes draw{to{stroke-dashoffset:0}}
+  .A .title{position:absolute;left:7%;top:20%;font-size:6.4em}
+  .A .sub{position:absolute;left:7.3%;top:56%;width:48%;font-size:1.25em;line-height:1.4;color:var(--fog)}
+  .A .who{position:absolute;left:7.3%;bottom:9%;display:flex;gap:2.4em;font-size:1em}
+  .A .who b{display:block;font-size:1.25em}
+  .A .who span{color:var(--mute);font-size:.85em}
+  .A .dot{display:inline-block;width:.7em;height:.7em;border-radius:50%;margin-right:.45em;vertical-align:.05em}
+  .A .event{position:absolute;right:6%;top:8%;text-align:right;color:var(--mute);font-size:.9em;line-height:1.5}
+  .A .eq{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+  .A .eq .row{font-size:5.2em;display:flex;align-items:baseline;gap:.35em}
+  .A .eq .k{color:var(--fog)} .A .eq .x{color:var(--cap);font-size:1.3em;display:inline-block;animation:spin 2.4s ease-in-out infinite}
+  .A .eq .ia{color:var(--cap)}
+  @keyframes spin{0%,70%{transform:rotate(0)}85%{transform:rotate(90deg) scale(1.2)}100%{transform:rotate(90deg)}}
+  .A .eq p{margin-top:1.2em;font-size:1.35em;color:var(--mute)}
+  .A .eq p strong{color:var(--fog);font-weight:700}
+  .A .zero{position:absolute;right:7%;bottom:9%;font-size:1.1em;color:var(--mute)}
+  .A .zero em{font-style:normal;color:var(--vis)}
+  .A .speaker{position:absolute;left:0;right:0;bottom:0;height:.45em;display:grid;grid-template-columns:15fr 13fr 12fr}
+  .A .speaker i:nth-child(1){background:var(--vis);opacity:.35}.A .speaker i:nth-child(2){background:var(--cap)}.A .speaker i:nth-child(3){background:var(--val);opacity:.35}
+
+  /* ───────── B · ARAUCANÍA ───────── */
+  .B{--mist:#E8EEEA;--ink:#13261E;--forest:#1F5C45;--lake:#2B6E91;--ember:#D9481F;--lichen:#A9BFA0;background:var(--mist);color:var(--ink)}
+  .B .disp{font-family:"Fraunces",serif;font-variation-settings:"opsz" 144,"SOFT" 50;font-weight:600;letter-spacing:-.02em;line-height:.95}
+  .B svg.topo{position:absolute;right:-6%;top:-4%;width:70%;height:112%}
+  .B .topo path{fill:none;stroke:var(--lichen);stroke-width:1.4;animation:breathe 9s ease-in-out infinite}
+  .B .topo path.peak{stroke:var(--forest);stroke-width:2}
+  @keyframes breathe{50%{transform:translateY(-6px)}}
+  .B .title{position:absolute;left:6.5%;top:17%;font-size:6em;color:var(--ink)}
+  .B .sub{position:absolute;left:6.8%;top:52%;width:42%;font-size:1.3em;line-height:1.45}
+  .B .who{position:absolute;left:6.8%;bottom:9%;display:flex;gap:2.2em}
+  .B .who b{display:block;font-size:1.2em}.B .who span{font-size:.85em;color:#4E6358}
+  .B .axis{position:absolute;left:6.8%;top:74%;display:flex;gap:1.6em;font-size:1em}
+  .B .axis span{border-bottom:3px solid}.B .axis span:nth-child(1){border-color:var(--ember)}.B .axis span:nth-child(2){border-color:var(--lake)}.B .axis span:nth-child(3){border-color:var(--forest)}
+  .B .event{position:absolute;left:6.8%;top:8%;font-size:.95em;color:#4E6358}
+  .B .eq{position:absolute;inset:0;padding:9% 7%;display:grid;grid-template-columns:1.1fr 1fr;align-items:center;gap:4%}
+  .B .eq h2{font-size:4.4em}
+  .B .eq h2 .x{color:var(--lake)}
+  .B .eq p{font-size:1.35em;line-height:1.5;margin-top:1em;max-width:28em}
+  .B .bars{display:flex;align-items:flex-end;gap:1.2em;height:60%}
+  .B .bars div{flex:1;background:var(--lichen);position:relative;animation:grow 1.4s cubic-bezier(.3,.8,.2,1) both}
+  .B .bars div.big{background:var(--lake);animation-delay:.4s}
+  .B .bars div small{position:absolute;bottom:-1.8em;left:0;font-size:.8em;color:#4E6358;white-space:nowrap}
+  @keyframes grow{from{transform:scaleY(.05);transform-origin:bottom}to{transform:scaleY(1);transform-origin:bottom}}
+
+  /* ───────── C · AFICHE ───────── */
+  .C{--ink:#10131A;--paper:#F6F7FB;--vis:#FF4F7B;--cap:#2438FF;--val:#FFD23F;background:var(--paper);color:var(--ink)}
+  .C .disp{font-family:"Anybody",sans-serif;font-weight:900;line-height:.82;letter-spacing:-.02em}
+  .C .bands{position:absolute;inset:0;display:grid;grid-template-columns:15fr 13fr 12fr}
+  .C .bands>div{position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:1.4em}
+  .C .bands>div:nth-child(1){background:var(--vis)}.C .bands>div:nth-child(2){background:var(--cap);color:#fff}.C .bands>div:nth-child(3){background:var(--val)}
+  .C .bands b{font-family:"Anybody";font-weight:800;font-size:1.3em}
+  .C .bands small{display:block;font-size:.8em;opacity:.8}
+  .C .big{position:absolute;left:3%;top:10%;font-size:11em;color:var(--ink);animation:stretch 4s ease-in-out infinite alternate}
+  @keyframes stretch{from{font-variation-settings:"wdth" 60}to{font-variation-settings:"wdth" 130}}
+  .C .sub{position:absolute;left:3.4%;top:62%;width:44%;font-size:1.3em;line-height:1.35;color:var(--ink);background:var(--paper);padding:.6em .8em}
+  .C .event{position:absolute;right:2.4%;top:4%;font-size:.9em;text-align:right;color:var(--ink);background:var(--paper);padding:.4em .7em}
+  .C .eq{position:absolute;inset:0;background:var(--cap);color:#fff;display:flex;flex-direction:column;justify-content:center;padding:0 6%}
+  .C .eq .row{font-size:9em;display:flex;gap:.2em;align-items:center}
+  .C .eq .row .x{color:var(--val);animation:stretch 1.6s ease-in-out infinite alternate}
+  .C .eq p{font-size:1.5em;margin-top:.8em;max-width:30em}
+  .C .eq .tag{position:absolute;right:6%;bottom:8%;background:var(--val);color:var(--ink);padding:.5em .9em;font-weight:700}
+
+  .label{position:fixed;left:12px;top:10px;color:#fff;font:600 13px system-ui;background:#000a;padding:4px 8px;border-radius:4px;z-index:9}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important}.A .thread path{stroke-dashoffset:0}}
+</style>
+</head>
+<body>
+<div class="label" id="label"></div>
+
+<!-- A1 · title -->
+<section class="frame A body" id="A1">
+  <svg class="thread" viewBox="0 0 1600 900" preserveAspectRatio="none">
+    <path stroke="var(--vis)" d="M-20,700 C220,640 380,760 560,690 S860,520 1010,560"/>
+    <path stroke="var(--cap)" d="M1010,560 C1120,590 1180,420 1300,440 S1420,560 1460,470"/>
+    <path stroke="var(--val)" d="M1460,470 C1500,400 1540,360 1620,330"/>
+  </svg>
+  <div class="event">Semana de la Empleabilidad 2026<br>Universidad de La Frontera</div>
+  <h1 class="title disp">Adoptar<br>IA hoy</h1>
+  <p class="sub">Cómo ganar ventaja en tu área, tu carrera y tu industria al mismo tiempo.</p>
+  <div class="who">
+    <div><b><i class="dot" style="background:var(--vis)"></i>Camila</b><span>Visibilidad</span></div>
+    <div><b><i class="dot" style="background:var(--cap)"></i>Jorge</b><span>Capacidad</span></div>
+    <div><b><i class="dot" style="background:var(--val)"></i>Gonzalo</b><span>Valor</span></div>
+  </div>
+</section>
+<!-- A2 · interior -->
+<section class="frame A body" id="A2">
+  <div class="eq">
+    <div>
+      <div class="row disp"><span class="k">Lo que sabes</span><span class="x">×</span><span class="ia">IA</span></div>
+      <p>La IA no sustituye tu conocimiento profesional. <strong>Lo amplifica.</strong></p>
+    </div>
+  </div>
+  <div class="zero">Y si lo que sabes es cero: <em>0 × IA = 0</em></div>
+  <div class="speaker"><i></i><i></i><i></i></div>
+</section>
+
+<!-- B1 · title -->
+<section class="frame B body" id="B1">
+  <svg class="topo" viewBox="0 0 800 800">
+    <path d="M60,760 C160,560 300,420 400,260 C500,420 640,560 760,760"/>
+    <path d="M110,760 C200,580 320,460 400,320 C480,460 600,580 700,760"/>
+    <path d="M170,760 C250,600 340,500 400,380 C460,500 550,600 640,760"/>
+    <path d="M230,760 C290,630 360,540 400,440 C440,540 510,630 580,760"/>
+    <path class="peak" d="M300,760 C340,660 380,590 400,510 C420,590 460,660 500,760"/>
+    <path d="M0,700 C200,690 300,720 800,690"/><path d="M0,740 C260,730 420,760 800,735"/>
+  </svg>
+  <div class="event">Semana de la Empleabilidad 2026 — Universidad de La Frontera, Temuco</div>
+  <h1 class="title disp">Adoptar<br>IA hoy</h1>
+  <p class="sub">Cómo ganar ventaja en tu área, tu carrera y tu industria al mismo tiempo.</p>
+  <div class="axis"><span>Visibilidad</span><span>Capacidad</span><span>Valor</span></div>
+  <div class="who"><div><b>Camila</b></div><div><b>Jorge</b></div><div><b>Gonzalo</b></div></div>
+</section>
+<!-- B2 · interior -->
+<section class="frame B body" id="B2">
+  <div class="eq">
+    <div>
+      <h2 class="disp">Lo que sabes <span class="x">×</span> IA</h2>
+      <p>La IA no sustituye tu conocimiento profesional. Lo amplifica. Y si lo que sabes es cero, cero por IA sigue siendo cero.</p>
+    </div>
+    <div class="bars">
+      <div style="height:30%"><small>Lo que sabes</small></div>
+      <div class="big" style="height:95%"><small>Lo que sabes, con IA</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- C1 · title -->
+<section class="frame C body" id="C1">
+  <div class="bands">
+    <div><div><small>15 min</small><b>Camila<br>Visibilidad</b></div></div>
+    <div><div><small>13 min</small><b>Jorge<br>Capacidad</b></div></div>
+    <div><div><small>12 min</small><b>Gonzalo<br>Valor</b></div></div>
+  </div>
+  <div class="event">Semana de la Empleabilidad 2026<br>Universidad de La Frontera</div>
+  <h1 class="big disp">Adoptar<br>IA hoy</h1>
+  <p class="sub">Cómo ganar ventaja en tu área, tu carrera y tu industria al mismo tiempo.</p>
+</section>
+<!-- C2 · interior -->
+<section class="frame C body" id="C2">
+  <div class="eq">
+    <div class="row disp"><span>SABER</span><span class="x">×</span><span>IA</span></div>
+    <p>La IA no sustituye tu conocimiento profesional. Lo amplifica.</p>
+    <div class="tag">0 × IA = 0</div>
+  </div>
+</section>
+
+<script>
+  const id=(location.hash||'#A1').slice(1);
+  const el=document.getElementById(id)||document.getElementById('A1');
+  el.classList.add('on');
+  document.getElementById('label').textContent=el.id;
+  addEventListener('hashchange',()=>location.reload());
+</script>
+</body>
+</html>

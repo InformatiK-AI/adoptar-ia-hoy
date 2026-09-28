@@ -1,0 +1,30 @@
+# Herramientas locales (agentes, seguimiento de tareas)
+.king/
+.atl/
+.claude/
+odd/
+tasks/
+videos/*/AGENTS.md
+videos/*/CLAUDE.md
+
+# Capturas y salidas de trabajo (se regeneran con las herramientas del repo)
+shots/
+deck/shots/
+deck/tools/audit_*.txt
+videos/*/snapshots/
+
+# Salidas regenerables
+videos/*/renders/
+videos/rag-gonzalo/assets/audio/soundtrack.wav
+demo-rag/chroma/
+__pycache__/
+*.pyc
+node_modules/
+
+# SFX de terceros (licencia Pixabay: no permite redistribuirlos sueltos)
+videos/rag-gonzalo/assets/sfx/
+
+# Material privado
+*.docx
+.env
+.env.*

@@ -1,0 +1,30 @@
+{
+  "ficticio": true,
+  "n_total": 300,
+  "n_excluidos_meses_primer_empleo": 18,
+  "media_meses_por_carrera": {
+    "Ingeniería Civil Informática": 3.13,
+    "Enfermería": 4.63,
+    "Ingeniería Civil Industrial": 4.94,
+    "Ingeniería Comercial": 5.2,
+    "Kinesiología": 5.59,
+    "Pedagogía en Inglés": 5.93,
+    "Agronomía": 6.6,
+    "Derecho": 6.92
+  },
+  "media_meses_general": 5.33,
+  "pct_trabaja_en_su_area": 71.0,
+  "habilidad_mas_pedida": "Uso de IA",
+  "habilidad_mas_pedida_pct": 46.3,
+  "conteo_habilidades": {
+    "Análisis de datos": 85,
+    "Excel": 87,
+    "Uso de IA": 139,
+    "Comunicación efectiva": 87,
+    "Inglés": 74,
+    "Gestión de proyectos": 88,
+    "Trabajo en equipo": 71
+  },
+  "media_meses_usa_ia_si": 4.43,
+  "media_meses_usa_ia_no": 5.97
+}

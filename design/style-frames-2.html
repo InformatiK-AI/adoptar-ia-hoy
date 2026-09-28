@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Style frames 2 · Adoptar IA hoy</title>
+<!-- Preview only: fonts from Google Fonts; the final deck embeds woff2 as base64. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Bungee&family=Bungee+Shade&family=Dela+Gothic+One&family=Lexend:wght@400;600;800&family=Lilita+One&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;background:#222}
+  body{display:grid;place-items:center;overflow:hidden}
+  .frame{display:none;position:relative;width:min(100vw,calc(100vh*16/9));aspect-ratio:16/9;overflow:hidden;font-size:min(1.6vw,2.85vh);font-family:"Lexend",system-ui,sans-serif}
+  .frame.on{display:block}
+  .abs{position:absolute}
+
+  /* ───────── D · MANGA ───────── */
+  .D{--paper:#FFFDF8;--ink:#111;--red:#F2294E;--yel:#FFE34D;--sky:#34B6FF;background:var(--paper);color:var(--ink)}
+  .D .panel{position:absolute;border:.28em solid var(--ink);overflow:hidden;background:var(--paper)}
+  .D .tone{background-image:radial-gradient(var(--c,#111) 28%,transparent 30%);background-size:.9em .9em}
+  .D .speed{background:repeating-conic-gradient(from 0deg at var(--x,50%) var(--y,50%),var(--ink) 0deg 1.2deg,transparent 1.2deg 7deg)}
+  .D .speed::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at var(--x,50%) var(--y,50%),var(--paper) 0 32%,transparent 60%)}
+  .D .t{font-family:"Dela Gothic One",sans-serif;line-height:.95;letter-spacing:.01em}
+  .D .sfx{font-family:"Bangers",cursive;letter-spacing:.04em;color:var(--red);-webkit-text-stroke:.06em var(--ink);paint-order:stroke fill}
+  .D .cap{position:absolute;background:var(--yel);border:.2em solid var(--ink);padding:.35em .7em;font-weight:800;font-size:1em}
+  .D .bubble{position:absolute;background:#fff;border:.22em solid var(--ink);border-radius:50%;display:grid;place-items:center;text-align:center;padding:1.4em 2em;font-weight:600}
+  .D .burst{position:absolute;display:grid;place-items:center;text-align:center;background:var(--yel);
+    clip-path:polygon(50% 0,58% 18%,78% 6%,74% 28%,98% 26%,82% 44%,100% 58%,78% 64%,88% 88%,64% 78%,54% 100%,44% 80%,20% 94%,24% 70%,0 66%,18% 50%,2% 30%,26% 30%,20% 6%,42% 20%)}
+  .D .pop{animation:pop .6s cubic-bezier(.2,1.6,.4,1) both}
+  @keyframes pop{from{transform:scale(.2) rotate(-12deg);opacity:0}}
+  .D .shake{animation:shake .5s steps(2) infinite}
+  @keyframes shake{50%{transform:translate(.08em,-.06em) rotate(-2deg)}}
+
+  /* ───────── E · VIDEOJUEGO ───────── */
+  .E{--bg:#15124A;--grid:#2C2A7A;--mint:#3CF2B0;--pink:#FF4FB8;--gold:#FFD23F;--cyan:#39D2FF;--txt:#F4F2FF;
+     background:linear-gradient(180deg,#15124A 0%,#241D78 62%,#3A1F8C 100%);color:var(--txt)}
+  .E .floor{position:absolute;left:-20%;right:-20%;bottom:-8%;height:46%;transform:perspective(20em) rotateX(62deg);transform-origin:bottom;
+     background-image:linear-gradient(var(--grid) .12em,transparent .12em),linear-gradient(90deg,var(--grid) .12em,transparent .12em);background-size:3em 3em;animation:run 1.2s linear infinite;opacity:.9}
+  @keyframes run{to{background-position:0 3em}}
+  .E .px{font-family:"Press Start 2P",monospace;line-height:1.6}
+  .E .t{font-family:"Bungee",sans-serif;line-height:.9;color:var(--gold);text-shadow:.06em .06em 0 var(--pink),.12em .12em 0 #0B0930}
+  .E .hud{position:absolute;left:4%;right:4%;top:5%;display:flex;justify-content:space-between;font-size:.62em;color:var(--mint)}
+  .E .xp{display:inline-block;width:10em;height:.9em;border:.15em solid var(--txt);vertical-align:middle;margin-left:.6em;background:linear-gradient(90deg,var(--mint) 64%,transparent 64%)}
+  .E .card{position:absolute;bottom:9%;width:21%;background:#0E0B36;border:.22em solid var(--c);box-shadow:0 0 0 .22em #0E0B36,0 0 1.4em var(--c);padding:.9em 1em;animation:bob 2.4s ease-in-out infinite}
+  .E .card:nth-of-type(2){animation-delay:.3s}.E .card:nth-of-type(3){animation-delay:.6s}
+  @keyframes bob{50%{transform:translateY(-.35em)}}
+  .E .card h3{font-family:"Bungee";font-size:1.5em;color:var(--c)}
+  .E .card .cls{font-size:.55em;color:var(--txt);opacity:.8;margin:.5em 0 .8em}
+  .E .stat{display:grid;grid-template-columns:3.2em 1fr;align-items:center;gap:.5em;font-size:.5em;margin:.35em 0}
+  .E .stat i{height:.9em;background:linear-gradient(90deg,var(--c) var(--v),#2B2870 var(--v))}
+  .E .blink{animation:blink 1s steps(1) infinite}@keyframes blink{50%{opacity:0}}
+  .E .sel{position:absolute;font-size:.6em;color:var(--gold)}
+
+  /* ───────── F · STICKERS ───────── */
+  .F{--bg:#FFF36B;--ink:#1B1530;--lila:#B79CFF;--mint:#6EF0C2;--coral:#FF6B6B;--sky:#6EC8FF;--white:#FFFFFF;background:var(--bg);color:var(--ink)}
+  .F .dots{position:absolute;inset:0;background-image:radial-gradient(#F2D43A 22%,transparent 24%);background-size:1.4em 1.4em;opacity:.8}
+  .F .t{font-family:"Lilita One",sans-serif;line-height:.9;color:var(--white);-webkit-text-stroke:.09em var(--ink);paint-order:stroke fill;text-shadow:.07em .08em 0 var(--ink)}
+  .F .st{position:absolute;background:var(--c,#fff);border:.2em solid var(--ink);border-radius:1em;box-shadow:.3em .35em 0 var(--ink);padding:.6em 1em;font-weight:800}
+  .F .wig{animation:wig 3s ease-in-out infinite}
+  @keyframes wig{0%,100%{transform:rotate(var(--r,-4deg))}50%{transform:rotate(calc(var(--r,-4deg) * -1))}}
+  .F .robot{position:absolute}
+  .F .float{animation:float 3.2s ease-in-out infinite}@keyframes float{50%{transform:translateY(-.5em)}}
+
+  .label{position:fixed;left:12px;top:10px;color:#fff;font:600 13px system-ui;background:#000a;padding:4px 8px;border-radius:4px;z-index:9}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<div class="label" id="label"></div>
+
+<!-- ═════════ D1 · MANGA · title ═════════ -->
+<section class="frame D" id="D1">
+  <div class="panel speed" style="left:2%;top:3%;width:60%;height:62%;--x:30%;--y:55%"></div>
+  <div class="panel tone" style="left:63.5%;top:3%;width:34.5%;height:30%;--c:#F2294E55"></div>
+  <div class="panel tone" style="left:63.5%;top:35%;width:34.5%;height:30%;--c:#34B6FF66"></div>
+  <div class="panel" style="left:2%;top:67.5%;width:96%;height:29.5%;background:var(--ink)"></div>
+
+  <h1 class="abs t pop" style="left:5%;top:15%;font-size:5.1em;-webkit-text-stroke:.03em #111;color:#fff;text-shadow:.07em .07em 0 var(--red),.14em .14em 0 #111">ADOPTAR<br>IA HOY</h1>
+  <div class="abs sfx shake" style="left:44%;top:6%;font-size:3.4em;transform:rotate(12deg)">¡ZAS!</div>
+  <div class="cap" style="left:5%;top:55%">Semana de la Empleabilidad 2026 — UFRO</div>
+
+  <div class="abs t" style="left:66%;top:9%;font-size:1.9em;line-height:1.1">Tu carrera,<br>capítulo 1</div>
+  <div class="bubble" style="left:66%;top:39%;width:30%;height:22%;font-size:.95em">Cómo ganar ventaja en tu área, tu carrera y tu industria… ¡al mismo tiempo!</div>
+
+  <div class="abs" style="left:5%;top:73%;display:flex;gap:3%;width:90%">
+    <div class="cap" style="position:static;background:var(--red);color:#fff;font-size:1.25em">Camila · Visibilidad</div>
+    <div class="cap" style="position:static;background:var(--sky);font-size:1.25em">Jorge · Capacidad</div>
+    <div class="cap" style="position:static;background:var(--yel);font-size:1.25em">Gonzalo · Valor</div>
+  </div>
+  <div class="abs sfx" style="right:4%;bottom:6%;font-size:2.4em;color:var(--yel)">¡A LA ACCIÓN!</div>
+</section>
+
+<!-- ═════════ D2 · MANGA · interior ═════════ -->
+<section class="frame D" id="D2">
+  <div class="panel tone" style="left:2%;top:4%;width:36%;height:70%;--c:#11111122"></div>
+  <div class="panel speed" style="left:39.5%;top:4%;width:58.5%;height:70%;--x:55%;--y:50%"></div>
+  <div class="panel" style="left:2%;top:76%;width:96%;height:20%;background:var(--yel)"></div>
+
+  <div class="abs t" style="left:5%;top:14%;font-size:3.4em;line-height:1">LO QUE<br>SABES</div>
+  <div class="bubble" style="left:5%;top:47%;width:30%;height:20%;font-size:.9em">Tus ramos, tus prácticas, tus proyectos.</div>
+
+  <div class="burst pop" style="left:47%;top:10%;width:44%;height:58%">
+    <div><div class="t" style="font-size:6em;color:var(--red);-webkit-text-stroke:.03em #111">× IA</div></div>
+  </div>
+  <div class="abs sfx shake" style="right:5%;top:8%;font-size:2.6em;transform:rotate(-10deg)">¡BOOM!</div>
+
+  <div class="abs t" style="left:5%;top:80%;font-size:1.6em;width:72%;line-height:1.2">La IA no sustituye tu conocimiento profesional. Lo amplifica.</div>
+  <div class="abs" style="right:5%;top:81%;font-weight:800;font-size:1.05em;background:#fff;border:.2em solid #111;padding:.3em .6em;transform:rotate(-3deg)">0 × IA = 0</div>
+</section>
+
+<!-- ═════════ E1 · VIDEOJUEGO · title (character select) ═════════ -->
+<section class="frame E" id="E1">
+  <div class="floor"></div>
+  <div class="hud px"><span>JUGADOR 1: TÚ</span><span>MUNDO: UFRO 2026</span><span>XP<span class="xp"></span></span></div>
+  <h1 class="abs t" style="left:0;right:0;top:16%;text-align:center;font-size:6em">ADOPTAR<br>IA HOY</h1>
+  <p class="abs" style="left:0;right:0;top:50%;text-align:center;font-size:1.2em;color:var(--txt)">Cómo ganar ventaja en tu área, tu carrera y tu industria al mismo tiempo</p>
+  <p class="abs px blink" style="left:0;right:0;top:58.5%;text-align:center;font-size:.7em;color:var(--mint)">PRESIONA START</p>
+
+  <div class="card" style="--c:var(--pink);left:12%">
+    <h3>CAMILA</h3><div class="cls px">CLASE: CREADORA</div>
+    <div class="stat px"><span>VIS</span><i style="--v:95%"></i></div>
+    <div class="stat px"><span>CAP</span><i style="--v:60%"></i></div>
+    <div class="stat px"><span>VAL</span><i style="--v:55%"></i></div>
+  </div>
+  <div class="card" style="--c:var(--cyan);left:39.5%">
+    <h3>JORGE</h3><div class="cls px">CLASE: INGENIERO IA</div>
+    <div class="stat px"><span>VIS</span><i style="--v:55%"></i></div>
+    <div class="stat px"><span>CAP</span><i style="--v:95%"></i></div>
+    <div class="stat px"><span>VAL</span><i style="--v:60%"></i></div>
+  </div>
+  <div class="card" style="--c:var(--gold);left:67%">
+    <h3>GONZALO</h3><div class="cls px">CLASE: ESTRATEGA</div>
+    <div class="stat px"><span>VIS</span><i style="--v:55%"></i></div>
+    <div class="stat px"><span>CAP</span><i style="--v:65%"></i></div>
+    <div class="stat px"><span>VAL</span><i style="--v:95%"></i></div>
+  </div>
+  
+</section>
+
+<!-- ═════════ E2 · VIDEOJUEGO · interior (power-up) ═════════ -->
+<section class="frame E" id="E2">
+  <div class="floor" style="opacity:.5"></div>
+  <div class="hud px"><span>NIVEL 2: CAPACIDAD</span><span>JORGE</span><span>XP<span class="xp" style="background:linear-gradient(90deg,var(--cyan) 40%,transparent 40%)"></span></span></div>
+  <h2 class="abs t" style="left:6%;top:15%;font-size:3.7em">POWER-UP<br><span style="color:var(--cyan)">DESBLOQUEADO</span></h2>
+  <div class="abs" style="left:6%;top:48%;width:52%">
+    <div class="stat px" style="font-size:.7em;grid-template-columns:13em 1fr;--c:var(--mint)"><span>LO QUE SABES</span><i style="--v:34%;height:1.4em"></i></div>
+    <div class="stat px" style="font-size:.7em;grid-template-columns:13em 1fr;--c:var(--cyan);margin-top:1.2em"><span>LO QUE SABES × IA</span><i style="--v:96%;height:1.4em;animation:fill 1.6s ease-out both"></i></div>
+    <p style="margin-top:1.6em;font-size:1.35em;line-height:1.45">La IA no sustituye tu conocimiento profesional. <b style="color:var(--gold)">Lo amplifica.</b></p>
+  </div>
+  <div class="abs" style="right:6%;top:24%;width:21%;aspect-ratio:1;border:.3em solid var(--cyan);display:grid;place-items:center;box-shadow:0 0 2em var(--cyan);animation:bob 1.6s ease-in-out infinite">
+    <div class="t" style="font-size:5em;color:var(--cyan);text-shadow:.06em .06em 0 var(--pink)">IA</div>
+  </div>
+  <p class="abs px" style="right:6%;bottom:12%;font-size:.6em;color:var(--pink)">ADVERTENCIA: 0 × IA = 0</p>
+  <style>@keyframes fill{from{--v:34%}}</style>
+</section>
+
+<!-- ═════════ F1 · STICKERS · title ═════════ -->
+<section class="frame F" id="F1">
+  <div class="dots"></div>
+  <h1 class="abs t" style="left:5%;top:14%;font-size:7em;transform:rotate(-3deg)">Adoptar<br>IA hoy</h1>
+  <div class="st wig" style="--c:var(--white);--r:2deg;left:5.5%;top:60%;width:44%;font-weight:600;font-size:1.2em;line-height:1.35">Cómo ganar ventaja en tu área, tu carrera y tu industria al mismo tiempo</div>
+
+  <svg class="robot float" viewBox="0 0 200 220" style="left:62%;top:22%;width:24%">
+    <line x1="100" y1="10" x2="100" y2="40" stroke="#1B1530" stroke-width="6"/><circle cx="100" cy="12" r="10" fill="#FF6B6B" stroke="#1B1530" stroke-width="5"/>
+    <rect x="30" y="40" width="140" height="110" rx="34" fill="#6EF0C2" stroke="#1B1530" stroke-width="7"/>
+    <rect x="52" y="64" width="96" height="58" rx="22" fill="#1B1530"/>
+    <circle cx="80" cy="92" r="11" fill="#6EC8FF"/><circle cx="120" cy="92" r="11" fill="#6EC8FF"/>
+    <path d="M86 110 Q100 120 114 110" stroke="#6EC8FF" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <rect x="60" y="150" width="80" height="50" rx="14" fill="#B79CFF" stroke="#1B1530" stroke-width="7"/>
+    <rect x="128" y="160" width="52" height="40" rx="6" fill="#fff" stroke="#1B1530" stroke-width="6" transform="rotate(12 154 180)"/>
+    <text x="154" y="186" font-family="Lilita One" font-size="15" text-anchor="middle" fill="#1B1530" transform="rotate(12 154 180)">CV</text>
+  </svg>
+  <div class="st wig" style="--c:var(--coral);--r:-6deg;right:3%;top:5%;color:#fff;font-family:'Lilita One';font-size:1.6em">¡Contratad@!</div>
+
+  <div class="abs" style="left:5.5%;bottom:8%;display:flex;gap:1.4em">
+    <div class="st" style="position:static;--c:var(--coral);color:#fff">Camila<br><small style="font-weight:600">Visibilidad</small></div>
+    <div class="st" style="position:static;--c:var(--sky)">Jorge<br><small style="font-weight:600">Capacidad</small></div>
+    <div class="st" style="position:static;--c:var(--lila)">Gonzalo<br><small style="font-weight:600">Valor</small></div>
+  </div>
+  <div class="st" style="--c:var(--white);right:5%;bottom:8%;font-weight:600;font-size:.85em">Semana de la Empleabilidad 2026<br>Universidad de La Frontera</div>
+</section>
+
+<!-- ═════════ F2 · STICKERS · interior ═════════ -->
+<section class="frame F" id="F2" style="--bg:#B79CFF">
+  <div class="dots" style="background-image:radial-gradient(#A68AF5 22%,transparent 24%)"></div>
+  <div class="abs" style="left:0;right:0;top:22%;display:flex;justify-content:center;align-items:center;gap:2.2em">
+    <div class="st wig" style="position:static;--c:var(--white);--r:-3deg;font-family:'Lilita One';font-size:3.4em;font-weight:400">Lo que sabes</div>
+    <div class="t" style="font-size:5em">×</div>
+    <div class="st wig" style="position:static;--c:var(--mint);--r:4deg;font-family:'Lilita One';font-size:3.4em;font-weight:400">IA</div>
+  </div>
+  <div class="abs t" style="left:0;right:0;top:52%;text-align:center;font-size:3.2em">= superpoderes</div>
+  <div class="st" style="--c:var(--white);left:22%;right:22%;top:72%;text-align:center;font-weight:600;font-size:1.3em">La IA no sustituye tu conocimiento profesional. Lo amplifica.</div>
+  <div class="st wig" style="--c:var(--coral);--r:8deg;right:5%;top:8%;color:#fff">Ojo: 0 × IA = 0</div>
+</section>
+
+<script>
+  const id=(location.hash||'#D1').slice(1);
+  const el=document.getElementById(id)||document.getElementById('D1');
+  el.classList.add('on');
+  document.getElementById('label').textContent=el.id;
+</script>
+</body>
+</html>

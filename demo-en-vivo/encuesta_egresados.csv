@@ -1,0 +1,301 @@
+﻿id,carrera,anio_egreso,meses_primer_empleo,trabaja_en_su_area,usa_ia_en_el_trabajo,habilidades_pedidas
+1,Agronomía,2024,9.2,Sí,No,Análisis de datos; Excel; Uso de IA
+2,Ingeniería Comercial,2024,6.4,No,No,Comunicación efectiva; Inglés
+3,Pedagogía en Inglés,2025,6.4,Sí,,Gestión de proyectos; Análisis de datos; Comunicación efectiva
+4,Agronomía,2024,6.3,Sí,Sí,Gestión de proyectos; Uso de IA; Inglés
+5,Ingeniería Comercial,2023,2.7,Sí,Sí,Análisis de datos; Trabajo en equipo
+6,Ingeniería Civil Industrial,2024,6.5,Sí,No,Trabajo en equipo; Comunicación efectiva
+7,Ingeniería Comercial,2023,7.7,Sí,No,Uso de IA; Inglés; Comunicación efectiva
+8,Ingeniería Civil Industrial,2023,8.2,Sí,No,Inglés; Uso de IA; Excel
+9,Ingeniería Civil Informática,2023,1.0,Sí,Sí,Uso de IA
+10,Enfermería,2023,4.0,No,No,Uso de IA; Análisis de datos
+11,Ingeniería Civil Informática,2023,1.0,Sí,Sí,Uso de IA
+12,Ingeniería Civil Industrial,2023,7.5,Sí,No,Inglés; Uso de IA
+13,Pedagogía en Inglés,2023,7.7,Sí,No,Gestión de proyectos; Análisis de datos
+14,Agronomía,2025,6.5,Sí,No,Uso de IA; Comunicación efectiva; Trabajo en equipo
+15,Kinesiología,2025,5.3,Sí,No,Trabajo en equipo; Excel
+16,Ingeniería Civil Industrial,2024,7.5,Sí,Sí,Excel
+17,Ingeniería Civil Industrial,2023,5.1,Sí,No,Excel; Gestión de proyectos
+18,Kinesiología,2024,,Sí,No,Gestión de proyectos; Trabajo en equipo
+19,Kinesiología,2023,5.5,Sí,No,Análisis de datos
+20,Enfermería,2025,1.0,Sí,Sí,Comunicación efectiva; Trabajo en equipo
+21,Derecho,2025,4.8,Sí,Sí,Inglés
+22,Derecho,2024,9.4,Sí,No,Uso de IA; Inglés; Comunicación efectiva
+23,Pedagogía en Inglés,2023,2.4,No,Sí,Análisis de datos; Gestión de proyectos; Uso de IA
+24,Pedagogía en Inglés,2024,5.9,Sí,No,Análisis de datos
+25,Enfermería,2025,7.2,No,Sí,Comunicación efectiva
+26,Ingeniería Civil Informática,2024,7.7,Sí,No,Gestión de proyectos; Uso de IA; Comunicación efectiva
+27,Pedagogía en Inglés,2023,6.7,Sí,Sí,Trabajo en equipo; Inglés
+28,Agronomía,2023,,No,No,Excel
+29,Kinesiología,2024,7.2,Sí,,Uso de IA; Gestión de proyectos; Excel
+30,Pedagogía en Inglés,2024,4.3,Sí,No,Gestión de proyectos; Trabajo en equipo
+31,Ingeniería Civil Industrial,2025,3.0,Sí,Sí,Análisis de datos
+32,Pedagogía en Inglés,2025,,Sí,Sí,Trabajo en equipo; Uso de IA; Inglés
+33,Agronomía,2025,11.9,Sí,No,Análisis de datos; Excel; Inglés
+34,Derecho,2023,5.2,Sí,No,Comunicación efectiva; Uso de IA; Excel
+35,Kinesiología,2023,3.6,Sí,Sí,Uso de IA; Trabajo en equipo
+36,Agronomía,2025,7.7,Sí,No,Comunicación efectiva
+37,Derecho,2024,3.3,No,Sí,Gestión de proyectos
+38,Kinesiología,2023,7.5,No,No,Análisis de datos; Trabajo en equipo; Excel
+39,Ingeniería Comercial,2024,1.0,Sí,No,Uso de IA; Comunicación efectiva
+40,Kinesiología,2024,10.5,Sí,No,Uso de IA; Análisis de datos
+41,Ingeniería Civil Industrial,2025,10.0,Sí,No,Análisis de datos; Trabajo en equipo
+42,Ingeniería Civil Informática,2025,3.1,Sí,Sí,Uso de IA; Inglés; Análisis de datos
+43,Pedagogía en Inglés,2024,9.4,Sí,Sí,Comunicación efectiva; Gestión de proyectos; Análisis de datos
+44,Ingeniería Civil Industrial,2024,4.4,No,No,Inglés; Excel
+45,Kinesiología,2023,7.9,Sí,,Análisis de datos; Uso de IA
+46,Kinesiología,2024,7.9,Sí,No,Trabajo en equipo
+47,Derecho,2025,10.0,No,No,Comunicación efectiva; Uso de IA; Excel
+48,Enfermería,2023,2.6,Sí,No,Inglés; Gestión de proyectos; Análisis de datos
+49,Kinesiología,2024,8.5,No,No,Análisis de datos
+50,Enfermería,2024,7.1,Sí,Sí,Inglés
+51,Derecho,2023,5.7,Sí,No,Análisis de datos; Excel; Gestión de proyectos
+52,Ingeniería Comercial,2025,5.7,Sí,Sí,Trabajo en equipo; Inglés; Excel
+53,Derecho,2023,5.5,Sí,Sí,Gestión de proyectos
+54,Pedagogía en Inglés,2025,4.9,Sí,Sí,Análisis de datos; Comunicación efectiva
+55,Ingeniería Civil Informática,2023,3.8,No,No,Análisis de datos; Excel
+56,Ingeniería Comercial,2023,4.4,Sí,Sí,Análisis de datos; Comunicación efectiva
+57,Ingeniería Comercial,2023,6.4,No,Sí,Excel; Inglés
+58,Derecho,2023,3.3,Sí,No,Comunicación efectiva
+59,Enfermería,2024,4.6,Sí,No,Gestión de proyectos
+60,Pedagogía en Inglés,2024,9.3,Sí,No,Comunicación efectiva; Inglés; Uso de IA
+61,Pedagogía en Inglés,2023,5.6,Sí,Sí,Trabajo en equipo; Uso de IA
+62,Enfermería,2024,1.0,Sí,Sí,Uso de IA
+63,Enfermería,2023,5.8,Sí,No,Trabajo en equipo; Uso de IA
+64,Enfermería,2025,2.4,Sí,No,Inglés; Análisis de datos
+65,Kinesiología,2025,6.1,No,No,Análisis de datos; Inglés
+66,Pedagogía en Inglés,2023,7.7,Sí,Sí,Uso de IA; Comunicación efectiva
+67,Derecho,2025,1.3,No,Sí,Comunicación efectiva; Trabajo en equipo
+68,Ingeniería Civil Informática,2023,1.6,No,Sí,Uso de IA; Inglés; Trabajo en equipo
+69,Ingeniería Comercial,2024,6.4,Sí,Sí,Comunicación efectiva
+70,Enfermería,2025,2.8,No,No,Excel; Inglés; Uso de IA
+71,Ingeniería Civil Informática,2025,6.5,Sí,,Gestión de proyectos
+72,Agronomía,2023,6.9,Sí,Sí,Inglés; Excel
+73,Ingeniería Civil Informática,2025,2.5,Sí,Sí,Excel; Uso de IA; Inglés
+74,Ingeniería Civil Industrial,2025,5.1,No,Sí,Gestión de proyectos; Inglés
+75,Agronomía,2024,5.8,Sí,No,Gestión de proyectos; Trabajo en equipo
+76,Ingeniería Comercial,2023,6.3,Sí,Sí,Uso de IA; Inglés; Excel
+77,Enfermería,2025,,Sí,No,Análisis de datos; Gestión de proyectos
+78,Ingeniería Civil Informática,2025,3.8,No,No,Trabajo en equipo
+79,Ingeniería Comercial,2024,,No,No,Trabajo en equipo; Uso de IA
+80,Enfermería,2023,2.4,Sí,Sí,Inglés; Gestión de proyectos; Uso de IA
+81,Agronomía,2023,5.5,No,No,Excel; Uso de IA; Comunicación efectiva
+82,Ingeniería Comercial,2025,7.2,No,No,Análisis de datos; Excel; Uso de IA
+83,Agronomía,2025,6.0,Sí,Sí,Uso de IA
+84,Kinesiología,2025,4.1,No,No,Análisis de datos; Uso de IA
+85,Derecho,2024,5.5,Sí,Sí,Uso de IA
+86,Kinesiología,2025,11.2,Sí,No,Excel; Trabajo en equipo
+87,Ingeniería Civil Industrial,2025,6.4,No,No,Comunicación efectiva; Uso de IA
+88,Pedagogía en Inglés,2023,5.9,Sí,Sí,Uso de IA; Gestión de proyectos
+89,Pedagogía en Inglés,2024,5.0,Sí,Sí,Gestión de proyectos; Inglés
+90,Ingeniería Comercial,2025,6.8,Sí,No,Uso de IA
+91,Ingeniería Civil Industrial,2025,5.4,Sí,Sí,Uso de IA; Gestión de proyectos; Trabajo en equipo
+92,Ingeniería Civil Industrial,2025,5.0,Sí,No,Excel; Trabajo en equipo
+93,Ingeniería Civil Informática,2024,5.1,No,Sí,Excel
+94,Pedagogía en Inglés,2023,3.1,Sí,Sí,Excel; Inglés
+95,Ingeniería Comercial,2025,5.9,Sí,Sí,Excel; Análisis de datos
+96,Agronomía,2023,4.2,Sí,No,Análisis de datos; Comunicación efectiva
+97,Ingeniería Civil Industrial,2023,2.3,Sí,Sí,Gestión de proyectos; Excel
+98,Ingeniería Civil Informática,2024,3.0,Sí,Sí,Gestión de proyectos
+99,Agronomía,2023,,Sí,Sí,Inglés
+100,Agronomía,2024,7.2,No,No,Comunicación efectiva; Análisis de datos
+101,Pedagogía en Inglés,2023,4.5,Sí,No,Uso de IA; Análisis de datos; Trabajo en equipo
+102,Ingeniería Comercial,2024,6.1,Sí,Sí,Excel
+103,Derecho,2023,3.0,Sí,Sí,Uso de IA; Gestión de proyectos; Trabajo en equipo
+104,Ingeniería Civil Informática,2023,,Sí,Sí,Gestión de proyectos; Excel
+105,Pedagogía en Inglés,2025,6.8,No,No,Inglés; Trabajo en equipo; Comunicación efectiva
+106,Agronomía,2023,8.2,Sí,No,Excel; Inglés; Comunicación efectiva
+107,Ingeniería Comercial,2023,3.7,Sí,No,Trabajo en equipo; Inglés
+108,Ingeniería Comercial,2025,,Sí,No,Análisis de datos
+109,Ingeniería Civil Informática,2024,3.6,Sí,Sí,Comunicación efectiva; Gestión de proyectos
+110,Kinesiología,2023,2.2,Sí,Sí,Gestión de proyectos; Uso de IA; Inglés
+111,Agronomía,2025,10.6,Sí,No,Análisis de datos; Excel; Uso de IA
+112,Derecho,2025,10.3,Sí,Sí,Gestión de proyectos; Uso de IA; Trabajo en equipo
+113,Kinesiología,2024,5.7,Sí,No,Uso de IA
+114,Kinesiología,2024,5.7,Sí,Sí,Gestión de proyectos; Comunicación efectiva
+115,Ingeniería Civil Industrial,2025,4.4,Sí,No,Uso de IA
+116,Agronomía,2024,6.0,Sí,Sí,Trabajo en equipo; Inglés; Excel
+117,Ingeniería Civil Industrial,2023,5.9,No,No,Gestión de proyectos; Excel; Comunicación efectiva
+118,Ingeniería Civil Informática,2024,1.0,No,Sí,Uso de IA; Comunicación efectiva
+119,Agronomía,2023,5.4,No,No,Uso de IA; Análisis de datos
+120,Ingeniería Civil Informática,2025,1.5,Sí,Sí,Comunicación efectiva; Uso de IA; Análisis de datos
+121,Kinesiología,2024,5.1,Sí,No,Gestión de proyectos; Uso de IA; Inglés
+122,Ingeniería Civil Industrial,2023,3.7,No,Sí,Análisis de datos; Uso de IA; Inglés
+123,Enfermería,2024,,No,Sí,Gestión de proyectos; Comunicación efectiva
+124,Kinesiología,2024,4.7,Sí,Sí,Gestión de proyectos
+125,Agronomía,2024,7.7,Sí,No,Gestión de proyectos
+126,Ingeniería Civil Informática,2025,1.0,Sí,No,Uso de IA; Excel; Análisis de datos
+127,Derecho,2025,11.2,No,No,Trabajo en equipo; Excel
+128,Kinesiología,2025,,Sí,Sí,Comunicación efectiva
+129,Ingeniería Comercial,2024,3.9,No,No,Trabajo en equipo; Inglés
+130,Derecho,2024,4.0,Sí,,Análisis de datos; Excel
+131,Pedagogía en Inglés,2025,8.2,Sí,No,Uso de IA; Gestión de proyectos
+132,Enfermería,2024,4.7,Sí,No,Inglés; Gestión de proyectos; Uso de IA
+133,Ingeniería Civil Industrial,2024,5.9,Sí,Sí,Trabajo en equipo
+134,Derecho,2025,8.4,Sí,No,Análisis de datos
+135,Pedagogía en Inglés,2023,6.9,Sí,No,Uso de IA
+136,Ingeniería Comercial,2025,7.1,Sí,No,Gestión de proyectos; Inglés; Uso de IA
+137,Ingeniería Civil Informática,2024,5.0,Sí,No,Uso de IA
+138,Derecho,2025,,No,No,Uso de IA; Inglés; Análisis de datos
+139,Ingeniería Comercial,2023,7.4,No,No,Trabajo en equipo; Uso de IA; Comunicación efectiva
+140,Ingeniería Civil Informática,2024,3.2,Sí,Sí,Uso de IA; Análisis de datos
+141,Ingeniería Civil Informática,2023,1.0,Sí,Sí,Comunicación efectiva; Trabajo en equipo; Uso de IA
+142,Ingeniería Comercial,2025,5.1,Sí,Sí,Gestión de proyectos; Excel
+143,Pedagogía en Inglés,2025,5.5,Sí,Sí,Análisis de datos
+144,Ingeniería Civil Industrial,2023,3.0,Sí,Sí,Trabajo en equipo; Gestión de proyectos
+145,Agronomía,2024,6.5,No,Sí,Uso de IA; Excel
+146,Pedagogía en Inglés,2025,6.8,No,Sí,Uso de IA; Análisis de datos; Gestión de proyectos
+147,Ingeniería Civil Industrial,2025,4.6,Sí,Sí,Inglés
+148,Enfermería,2023,3.4,Sí,Sí,Excel; Trabajo en equipo; Análisis de datos
+149,Ingeniería Civil Informática,2023,2.4,Sí,No,Excel; Uso de IA; Trabajo en equipo
+150,Ingeniería Civil Industrial,2023,5.8,No,No,Uso de IA; Comunicación efectiva
+151,Derecho,2025,7.0,Sí,Sí,Análisis de datos
+152,Ingeniería Civil Industrial,2024,6.6,Sí,No,Uso de IA; Análisis de datos
+153,Pedagogía en Inglés,2025,2.5,Sí,Sí,Análisis de datos; Inglés
+154,Pedagogía en Inglés,2024,10.9,Sí,No,Trabajo en equipo
+155,Ingeniería Civil Informática,2023,,No,Sí,Uso de IA; Trabajo en equipo
+156,Enfermería,2024,3.2,Sí,No,Comunicación efectiva
+157,Kinesiología,2024,4.6,Sí,Sí,Gestión de proyectos; Excel
+158,Pedagogía en Inglés,2023,4.0,Sí,No,Excel
+159,Enfermería,2024,3.2,No,Sí,Uso de IA; Excel
+160,Ingeniería Civil Industrial,2024,6.4,Sí,Sí,Gestión de proyectos; Excel; Comunicación efectiva
+161,Enfermería,2023,4.9,No,No,Gestión de proyectos; Excel
+162,Kinesiología,2024,5.2,Sí,No,Comunicación efectiva; Gestión de proyectos; Inglés
+163,Kinesiología,2025,7.3,Sí,No,Uso de IA
+164,Enfermería,2023,6.3,Sí,Sí,Uso de IA; Inglés
+165,Ingeniería Comercial,2025,5.8,Sí,No,Inglés; Uso de IA
+166,Derecho,2025,6.1,Sí,No,Excel; Comunicación efectiva
+167,Kinesiología,2024,3.9,Sí,Sí,Análisis de datos; Gestión de proyectos
+168,Derecho,2024,11.0,No,No,Gestión de proyectos; Inglés
+169,Pedagogía en Inglés,2023,7.6,Sí,No,Análisis de datos; Inglés; Excel
+170,Agronomía,2025,5.3,Sí,Sí,Uso de IA; Comunicación efectiva
+171,Enfermería,2024,6.9,No,,Comunicación efectiva; Trabajo en equipo; Gestión de proyectos
+172,Ingeniería Comercial,2024,6.0,Sí,Sí,Gestión de proyectos; Inglés
+173,Pedagogía en Inglés,2024,4.1,No,No,Uso de IA; Gestión de proyectos; Excel
+174,Enfermería,2024,7.7,Sí,No,Uso de IA; Trabajo en equipo
+175,Ingeniería Civil Industrial,2024,2.3,Sí,No,Uso de IA
+176,Agronomía,2023,7.6,No,No,Excel; Trabajo en equipo; Gestión de proyectos
+177,Pedagogía en Inglés,2024,7.8,Sí,No,Gestión de proyectos; Excel; Trabajo en equipo
+178,Derecho,2024,6.9,No,No,Excel; Análisis de datos; Comunicación efectiva
+179,Derecho,2025,6.9,Sí,No,Gestión de proyectos
+180,Kinesiología,2024,5.8,No,Sí,Gestión de proyectos
+181,Ingeniería Civil Industrial,2025,6.9,No,No,Análisis de datos
+182,Derecho,2024,8.2,No,No,Inglés; Uso de IA; Comunicación efectiva
+183,Ingeniería Civil Industrial,2023,5.2,Sí,Sí,Inglés; Excel; Comunicación efectiva
+184,Enfermería,2023,6.4,Sí,No,Gestión de proyectos; Comunicación efectiva; Excel
+185,Ingeniería Civil Informática,2023,4.5,No,Sí,Inglés; Uso de IA
+186,Ingeniería Civil Industrial,2025,2.4,No,No,Excel; Comunicación efectiva
+187,Enfermería,2025,4.5,Sí,No,Uso de IA
+188,Enfermería,2025,6.9,Sí,No,Comunicación efectiva; Gestión de proyectos; Excel
+189,Kinesiología,2024,5.5,No,No,Inglés; Uso de IA
+190,Enfermería,2023,8.3,Sí,No,Gestión de proyectos
+191,Agronomía,2025,,No,No,Análisis de datos; Uso de IA
+192,Enfermería,2024,5.2,Sí,No,Trabajo en equipo; Gestión de proyectos
+193,Derecho,2024,7.6,No,No,Comunicación efectiva; Análisis de datos
+194,Ingeniería Civil Informática,2023,2.9,Sí,Sí,Uso de IA; Comunicación efectiva; Gestión de proyectos
+195,Ingeniería Comercial,2023,5.9,No,Sí,Trabajo en equipo; Comunicación efectiva; Uso de IA
+196,Ingeniería Civil Industrial,2024,4.8,Sí,Sí,Inglés
+197,Ingeniería Comercial,2023,6.9,No,No,Uso de IA; Análisis de datos; Comunicación efectiva
+198,Derecho,2023,,Sí,No,Uso de IA; Comunicación efectiva; Excel
+199,Agronomía,2024,3.1,No,No,Inglés; Trabajo en equipo; Gestión de proyectos
+200,Enfermería,2025,4.5,No,No,Inglés; Excel; Trabajo en equipo
+201,Enfermería,2024,7.3,No,No,Comunicación efectiva
+202,Enfermería,2025,2.9,No,No,Uso de IA; Comunicación efectiva; Análisis de datos
+203,Derecho,2024,8.8,Sí,No,Excel
+204,Pedagogía en Inglés,2025,3.6,Sí,No,Comunicación efectiva
+205,Ingeniería Civil Industrial,2023,6.3,Sí,No,Comunicación efectiva; Uso de IA; Gestión de proyectos
+206,Ingeniería Comercial,2023,1.0,Sí,Sí,Trabajo en equipo; Uso de IA; Análisis de datos
+207,Ingeniería Comercial,2023,1.1,Sí,No,Uso de IA
+208,Ingeniería Civil Industrial,2025,4.1,Sí,Sí,Comunicación efectiva; Uso de IA
+209,Enfermería,2025,3.3,No,No,Uso de IA; Gestión de proyectos
+210,Enfermería,2023,4.9,Sí,No,Comunicación efectiva; Inglés
+211,Ingeniería Civil Industrial,2025,5.1,Sí,No,Uso de IA; Comunicación efectiva
+212,Ingeniería Civil Informática,2025,9.6,No,Sí,Excel; Comunicación efectiva
+213,Ingeniería Comercial,2025,5.0,No,Sí,Uso de IA; Excel; Análisis de datos
+214,Derecho,2024,7.8,Sí,No,Gestión de proyectos; Análisis de datos; Uso de IA
+215,Agronomía,2024,8.2,No,No,Excel; Comunicación efectiva
+216,Pedagogía en Inglés,2024,9.5,Sí,No,Gestión de proyectos; Comunicación efectiva; Análisis de datos
+217,Ingeniería Civil Informática,2024,3.8,No,Sí,Gestión de proyectos; Uso de IA; Trabajo en equipo
+218,Derecho,2024,5.9,Sí,No,Uso de IA; Análisis de datos; Gestión de proyectos
+219,Enfermería,2024,1.3,Sí,No,Análisis de datos; Excel
+220,Pedagogía en Inglés,2023,5.6,Sí,No,Uso de IA
+221,Ingeniería Comercial,2023,,Sí,Sí,Uso de IA; Análisis de datos; Trabajo en equipo
+222,Ingeniería Comercial,2025,5.5,Sí,Sí,Uso de IA
+223,Enfermería,2025,5.3,No,No,Inglés; Trabajo en equipo
+224,Agronomía,2023,5.7,Sí,No,Comunicación efectiva; Gestión de proyectos
+225,Ingeniería Civil Industrial,2025,5.8,Sí,Sí,Comunicación efectiva
+226,Pedagogía en Inglés,2023,9.4,Sí,No,Inglés; Análisis de datos; Trabajo en equipo
+227,Enfermería,2024,1.7,Sí,No,Inglés; Comunicación efectiva
+228,Pedagogía en Inglés,2025,4.3,Sí,Sí,Uso de IA; Trabajo en equipo; Análisis de datos
+229,Pedagogía en Inglés,2025,7.3,Sí,Sí,Uso de IA; Inglés; Trabajo en equipo
+230,Agronomía,2024,4.6,Sí,No,Trabajo en equipo; Excel
+231,Ingeniería Comercial,2024,6.5,Sí,Sí,Uso de IA; Análisis de datos; Inglés
+232,Enfermería,2025,8.9,Sí,No,Inglés; Trabajo en equipo; Análisis de datos
+233,Agronomía,2024,4.7,Sí,No,Gestión de proyectos; Uso de IA
+234,Agronomía,2023,1.6,Sí,Sí,Análisis de datos; Excel
+235,Ingeniería Civil Industrial,2023,5.0,Sí,No,Inglés; Uso de IA
+236,Kinesiología,2025,6.0,Sí,Sí,Análisis de datos; Gestión de proyectos; Comunicación efectiva
+237,Derecho,2023,4.8,No,Sí,Inglés; Trabajo en equipo; Análisis de datos
+238,Ingeniería Civil Informática,2025,4.4,No,Sí,Uso de IA; Gestión de proyectos
+239,Enfermería,2025,5.1,Sí,No,Inglés; Trabajo en equipo
+240,Pedagogía en Inglés,2024,4.7,Sí,No,Comunicación efectiva
+241,Kinesiología,2024,,Sí,Sí,Uso de IA
+242,Ingeniería Comercial,2023,5.5,Sí,No,Inglés
+243,Ingeniería Comercial,2025,1.4,Sí,Sí,Excel; Análisis de datos
+244,Agronomía,2025,4.9,No,Sí,Comunicación efectiva; Trabajo en equipo
+245,Ingeniería Civil Industrial,2024,1.8,Sí,No,Uso de IA; Comunicación efectiva
+246,Derecho,2023,6.4,Sí,No,Trabajo en equipo; Análisis de datos
+247,Kinesiología,2025,3.1,Sí,Sí,Excel
+248,Ingeniería Comercial,2023,5.6,Sí,Sí,Gestión de proyectos; Comunicación efectiva; Excel
+249,Ingeniería Civil Informática,2025,3.2,No,Sí,Gestión de proyectos; Uso de IA; Excel
+250,Pedagogía en Inglés,2025,1.0,Sí,,Comunicación efectiva; Análisis de datos
+251,Derecho,2025,10.1,Sí,No,Gestión de proyectos; Análisis de datos
+252,Agronomía,2024,,Sí,Sí,Análisis de datos; Comunicación efectiva; Uso de IA
+253,Ingeniería Civil Industrial,2023,3.1,Sí,No,Gestión de proyectos; Comunicación efectiva
+254,Ingeniería Comercial,2023,4.1,Sí,No,Trabajo en equipo; Uso de IA
+255,Kinesiología,2025,4.1,Sí,No,Trabajo en equipo; Excel; Gestión de proyectos
+256,Ingeniería Civil Informática,2024,2.4,Sí,Sí,Uso de IA
+257,Enfermería,2024,4.5,Sí,No,Trabajo en equipo
+258,Ingeniería Civil Industrial,2024,1.6,Sí,No,Uso de IA
+259,Ingeniería Civil Informática,2025,2.3,Sí,Sí,Uso de IA
+260,Enfermería,2024,1.9,No,No,Excel; Trabajo en equipo; Análisis de datos
+261,Pedagogía en Inglés,2025,5.6,No,No,Uso de IA
+262,Ingeniería Civil Informática,2024,1.0,No,Sí,Uso de IA
+263,Agronomía,2024,11.1,Sí,No,Excel
+264,Ingeniería Comercial,2025,,Sí,Sí,Gestión de proyectos; Uso de IA
+265,Pedagogía en Inglés,2023,3.7,Sí,No,Análisis de datos; Uso de IA
+266,Pedagogía en Inglés,2024,5.7,Sí,No,Uso de IA
+267,Kinesiología,2025,2.6,Sí,Sí,Uso de IA; Análisis de datos
+268,Ingeniería Civil Industrial,2024,2.1,Sí,Sí,Gestión de proyectos
+269,Enfermería,2023,7.7,Sí,No,Excel; Análisis de datos; Gestión de proyectos
+270,Ingeniería Civil Informática,2024,1.0,No,Sí,Comunicación efectiva; Uso de IA
+271,Ingeniería Comercial,2023,6.1,No,No,Excel; Uso de IA
+272,Kinesiología,2023,3.6,Sí,Sí,Uso de IA; Comunicación efectiva
+273,Ingeniería Civil Informática,2023,3.3,No,Sí,Uso de IA; Análisis de datos; Gestión de proyectos
+274,Agronomía,2025,7.2,No,No,Gestión de proyectos; Excel
+275,Pedagogía en Inglés,2025,3.6,Sí,Sí,Análisis de datos; Trabajo en equipo; Excel
+276,Pedagogía en Inglés,2023,7.9,Sí,No,Uso de IA; Gestión de proyectos
+277,Ingeniería Civil Industrial,2025,5.7,Sí,Sí,Uso de IA; Excel
+278,Ingeniería Civil Informática,2024,3.9,No,Sí,Gestión de proyectos; Trabajo en equipo
+279,Enfermería,2025,4.0,Sí,Sí,Trabajo en equipo; Comunicación efectiva; Gestión de proyectos
+280,Pedagogía en Inglés,2023,5.1,Sí,No,Análisis de datos; Excel
+281,Kinesiología,2023,4.6,No,No,Comunicación efectiva; Uso de IA; Trabajo en equipo
+282,Kinesiología,2025,5.3,Sí,No,Inglés; Gestión de proyectos; Análisis de datos
+283,Pedagogía en Inglés,2023,5.1,Sí,No,Inglés; Uso de IA
+284,Agronomía,2023,7.1,Sí,No,Excel
+285,Agronomía,2024,2.7,No,No,Gestión de proyectos; Comunicación efectiva; Uso de IA
+286,Derecho,2024,9.2,Sí,No,Comunicación efectiva; Uso de IA
+287,Ingeniería Civil Industrial,2023,5.5,Sí,No,Análisis de datos; Uso de IA
+288,Ingeniería Civil Industrial,2024,5.3,No,No,Excel; Uso de IA; Trabajo en equipo
+289,Kinesiología,2024,2.9,Sí,Sí,Inglés; Análisis de datos; Gestión de proyectos
+290,Pedagogía en Inglés,2024,7.0,No,No,Excel; Inglés; Comunicación efectiva
+291,Ingeniería Civil Industrial,2024,1.9,Sí,Sí,Comunicación efectiva; Excel; Gestión de proyectos
+292,Ingeniería Comercial,2025,3.9,No,Sí,Inglés; Uso de IA; Excel
+293,Agronomía,2023,8.1,No,Sí,Inglés; Uso de IA; Comunicación efectiva
+294,Derecho,2024,10.0,No,No,Excel; Uso de IA; Comunicación efectiva
+295,Ingeniería Comercial,2023,4.1,Sí,Sí,Excel; Uso de IA; Comunicación efectiva
+296,Ingeniería Civil Informática,2023,1.6,Sí,No,Uso de IA; Inglés
+297,Ingeniería Civil Informática,2023,3.7,No,Sí,Uso de IA; Excel
+298,Ingeniería Comercial,2023,7.4,Sí,Sí,Excel; Análisis de datos; Comunicación efectiva
+299,Ingeniería Civil Informática,2023,1.0,Sí,No,Trabajo en equipo; Uso de IA
+300,Agronomía,2024,7.6,No,No,Inglés

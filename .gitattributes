@@ -1,0 +1,15 @@
+# Normaliza fin de línea: el proyecto se edita en Windows y se clona en cualquier sistema
+* text=auto eol=lf
+
+# Binarios: sin conversión de fin de línea ni diff de texto
+*.mp4 binary
+*.mp3 binary
+*.wav binary
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.woff2 binary
+
+# Archivos generados: fuera de los diffs y de las estadísticas de lenguaje
+deck/index.html linguist-generated=true -diff
+videos/rag-gonzalo/data.js linguist-generated=true -diff

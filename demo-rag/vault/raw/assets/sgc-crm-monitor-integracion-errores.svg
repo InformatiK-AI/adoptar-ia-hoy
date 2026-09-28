@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" font-family="Segoe UI, Arial, sans-serif">
+<rect width="960" height="540" fill="#f4f6f8"/>
+<rect x="0" y="0" width="960" height="44" fill="#34495e"/>
+<circle cx="20" cy="22" r="6" fill="#ff5f57"/><circle cx="40" cy="22" r="6" fill="#febc2e"/><circle cx="60" cy="22" r="6" fill="#28c840"/>
+<text x="84" y="28" fill="#fff" font-size="16" font-weight="700">Consola de Integración</text>
+<text x="944" y="28" fill="#fff" font-size="12" text-anchor="end" opacity="0.85">usuario: soporte.ti</text>
+<rect x="0" y="44" width="960" height="34" fill="#fff" stroke="#dde2e7"/>
+<text x="16" y="66" fill="#44505c" font-size="13">Monitor de Mensajes  ›  Colas  ›  Q.PAGOS.SGC.CRM</text>
+<text x="16" y="110" font-size="13" fill="#44505c">Cola: <tspan font-weight="700">Q.PAGOS.SGC.CRM</tspan>   Filtro Estado: <tspan font-weight="700">ERROR</tspan>   Rango: desde 19-07-2025</text><rect x="700" y="92" width="244" height="30" rx="6" fill="#fde8e8" stroke="#c0392b"/><text x="822" y="112" font-size="14" fill="#c0392b" text-anchor="middle" font-weight="700">312 mensajes en ERROR</text><rect x="16" y="136" width="928" height="28" fill="#e9edf1"/>
+<text x="24" y="155" font-size="12" font-weight="700" fill="#33404d">ID msg</text>
+<text x="104" y="155" font-size="12" font-weight="700" fill="#33404d">Cola</text>
+<text x="274" y="155" font-size="12" font-weight="700" fill="#33404d">Recibido</text>
+<text x="434" y="155" font-size="12" font-weight="700" fill="#33404d">Estado</text>
+<text x="524" y="155" font-size="12" font-weight="700" fill="#33404d">Detalle</text>
+<rect x="16" y="164" width="928" height="28" fill="#fde8e8" stroke="#e3e7eb"/>
+<text x="24" y="183" font-size="12" fill="#2c3e50" font-weight="400">48213</text>
+<text x="104" y="183" font-size="12" fill="#2c3e50" font-weight="400">Q.PAGOS.SGC.CRM</text>
+<text x="274" y="183" font-size="12" fill="#2c3e50" font-weight="400">2025-07-19 00:01</text>
+<text x="434" y="183" font-size="12" fill="#c0392b" font-weight="700">ERROR</text>
+<text x="524" y="183" font-size="12" fill="#2c3e50" font-weight="400">401 Unauthorized - token expirado</text>
+<rect x="16" y="192" width="928" height="28" fill="#fde8e8" stroke="#e3e7eb"/>
+<text x="24" y="211" font-size="12" fill="#2c3e50" font-weight="400">48214</text>
+<text x="104" y="211" font-size="12" fill="#2c3e50" font-weight="400">Q.PAGOS.SGC.CRM</text>
+<text x="274" y="211" font-size="12" fill="#2c3e50" font-weight="400">2025-07-19 00:01</text>
+<text x="434" y="211" font-size="12" fill="#c0392b" font-weight="700">ERROR</text>
+<text x="524" y="211" font-size="12" fill="#2c3e50" font-weight="400">401 Unauthorized - token expirado</text>
+<rect x="16" y="220" width="928" height="28" fill="#fde8e8" stroke="#e3e7eb"/>
+<text x="24" y="239" font-size="12" fill="#2c3e50" font-weight="400">48215</text>
+<text x="104" y="239" font-size="12" fill="#2c3e50" font-weight="400">Q.PAGOS.SGC.CRM</text>
+<text x="274" y="239" font-size="12" fill="#2c3e50" font-weight="400">2025-07-19 09:47</text>
+<text x="434" y="239" font-size="12" fill="#c0392b" font-weight="700">ERROR</text>
+<text x="524" y="239" font-size="12" fill="#2c3e50" font-weight="400">401 Unauthorized - token expirado</text>
+<rect x="16" y="248" width="928" height="28" fill="#fde8e8" stroke="#e3e7eb"/>
+<text x="24" y="267" font-size="12" fill="#2c3e50" font-weight="400">48216</text>
+<text x="104" y="267" font-size="12" fill="#2c3e50" font-weight="400">Q.PAGOS.SGC.CRM</text>
+<text x="274" y="267" font-size="12" fill="#2c3e50" font-weight="400">2025-07-19 09:47</text>
+<text x="434" y="267" font-size="12" fill="#c0392b" font-weight="700">ERROR</text>
+<text x="524" y="267" font-size="12" fill="#2c3e50" font-weight="400">401 Unauthorized - token expirado</text>
+<rect x="16" y="276" width="928" height="28" fill="#fde8e8" stroke="#e3e7eb"/>
+<text x="24" y="295" font-size="12" fill="#2c3e50" font-weight="400">48217</text>
+<text x="104" y="295" font-size="12" fill="#2c3e50" font-weight="400">Q.PAGOS.SGC.CRM</text>
+<text x="274" y="295" font-size="12" fill="#2c3e50" font-weight="400">2025-07-19 11:32</text>
+<text x="434" y="295" font-size="12" fill="#c0392b" font-weight="700">ERROR</text>
+<text x="524" y="295" font-size="12" fill="#2c3e50" font-weight="400">401 Unauthorized - token expirado</text>
+<rect x="16" y="304" width="928" height="28" fill="#f8fafb" stroke="#e3e7eb"/>
+<text x="24" y="323" font-size="12" fill="#2c3e50" font-weight="400">…</text>
+<text x="104" y="323" font-size="12" fill="#2c3e50" font-weight="400">…</text>
+<text x="274" y="323" font-size="12" fill="#2c3e50" font-weight="400">…</text>
+<text x="434" y="323" font-size="12" fill="#2c3e50" font-weight="400">…</text>
+<text x="524" y="323" font-size="12" fill="#2c3e50" font-weight="400">…</text><rect x="506" y="164" width="428" height="140" rx="4" fill="none" stroke="#c0392b" stroke-width="2.5" stroke-dasharray="6 4"/><rect x="16" y="350" width="560" height="70" rx="8" fill="#fff8db" stroke="#e0b100" stroke-width="1.5"/><circle cx="36" cy="372" r="12" fill="#e0b100"/><text x="36" y="377" font-size="13" text-anchor="middle" fill="#fff" font-weight="700">1</text><text x="56" y="376" font-size="12.5" fill="#5c4a00"><tspan x="56" dy="0">El error 401 = credencial SGC_WS_PAGOS vencida (causa A).</tspan><tspan x="56" dy="16">Si los mensajes están en PENDIENTE sin error → servicio detenido (causa B).</tspan></text>
+<text x="16" y="528" fill="#8a96a3" font-size="11">Mockup ficticio — Sanitaria Los Coihues S.A. (demo charla UFRO)</text>
+</svg>

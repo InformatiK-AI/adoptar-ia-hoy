@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" font-family="Segoe UI, Arial, sans-serif">
+<rect width="960" height="540" fill="#f4f6f8"/>
+<rect x="0" y="0" width="960" height="44" fill="#34495e"/>
+<circle cx="20" cy="22" r="6" fill="#ff5f57"/><circle cx="40" cy="22" r="6" fill="#febc2e"/><circle cx="60" cy="22" r="6" fill="#28c840"/>
+<text x="84" y="28" fill="#fff" font-size="16" font-weight="700">Consola de Integración</text>
+<text x="944" y="28" fill="#fff" font-size="12" text-anchor="end" opacity="0.85">usuario: soporte.ti</text>
+<rect x="0" y="44" width="960" height="34" fill="#fff" stroke="#dde2e7"/>
+<text x="16" y="66" fill="#44505c" font-size="13">Monitor de Mensajes  ›  Q.PAGOS.SGC.CRM  ›  Reproceso</text>
+<text x="16" y="110" font-size="13" fill="#44505c">Seleccionar en lotes de <tspan font-weight="700">100</tspan> mensajes y reprocesar</text><rect x="16" y="124" width="426" height="28" fill="#e9edf1"/>
+<text x="24" y="143" font-size="12" font-weight="700" fill="#33404d"></text>
+<text x="60" y="143" font-size="12" font-weight="700" fill="#33404d">ID msg</text>
+<text x="150" y="143" font-size="12" font-weight="700" fill="#33404d">Estado</text>
+<text x="250" y="143" font-size="12" font-weight="700" fill="#33404d">Detalle</text>
+<rect x="16" y="152" width="426" height="28" fill="#eaf2fe" stroke="#e3e7eb"/>
+<text x="24" y="171" font-size="12" fill="#2c3e50" font-weight="400">☑</text>
+<text x="60" y="171" font-size="12" fill="#2c3e50" font-weight="400">48213</text>
+<text x="150" y="171" font-size="12" fill="#c0392b" font-weight="700">ERROR</text>
+<text x="250" y="171" font-size="12" fill="#2c3e50" font-weight="400">401 Unauthorized</text>
+<rect x="16" y="180" width="426" height="28" fill="#eaf2fe" stroke="#e3e7eb"/>
+<text x="24" y="199" font-size="12" fill="#2c3e50" font-weight="400">☑</text>
+<text x="60" y="199" font-size="12" fill="#2c3e50" font-weight="400">48214</text>
+<text x="150" y="199" font-size="12" fill="#c0392b" font-weight="700">ERROR</text>
+<text x="250" y="199" font-size="12" fill="#2c3e50" font-weight="400">401 Unauthorized</text>
+<rect x="16" y="208" width="426" height="28" fill="#eaf2fe" stroke="#e3e7eb"/>
+<text x="24" y="227" font-size="12" fill="#2c3e50" font-weight="400">☑</text>
+<text x="60" y="227" font-size="12" fill="#2c3e50" font-weight="400">48215</text>
+<text x="150" y="227" font-size="12" fill="#c0392b" font-weight="700">ERROR</text>
+<text x="250" y="227" font-size="12" fill="#2c3e50" font-weight="400">401 Unauthorized</text>
+<rect x="16" y="236" width="426" height="28" fill="#eaf2fe" stroke="#e3e7eb"/>
+<text x="24" y="255" font-size="12" fill="#2c3e50" font-weight="400">☑</text>
+<text x="60" y="255" font-size="12" fill="#2c3e50" font-weight="400">48216</text>
+<text x="150" y="255" font-size="12" fill="#c0392b" font-weight="700">ERROR</text>
+<text x="250" y="255" font-size="12" fill="#2c3e50" font-weight="400">401 Unauthorized</text>
+<rect x="16" y="264" width="426" height="28" fill="#eaf2fe" stroke="#e3e7eb"/>
+<text x="24" y="283" font-size="12" fill="#2c3e50" font-weight="400">☑</text>
+<text x="60" y="283" font-size="12" fill="#2c3e50" font-weight="400">…</text>
+<text x="150" y="283" font-size="12" fill="#2c3e50" font-weight="400">…</text>
+<text x="250" y="283" font-size="12" fill="#2c3e50" font-weight="400">… (100 seleccionados)</text><rect x="16" y="300" width="230" height="30" rx="5" fill="#1f6feb"/><text x="131.0" y="320" font-size="12.5" fill="#fff" text-anchor="middle" font-weight="600">Reprocesar seleccionados (100)</text><text x="460" y="110" font-size="13" fill="#44505c">Resultado del lote</text><rect x="460" y="124" width="484" height="28" fill="#e9edf1"/>
+<text x="468" y="143" font-size="12" font-weight="700" fill="#33404d">ID msg</text>
+<text x="558" y="143" font-size="12" font-weight="700" fill="#33404d">Estado</text>
+<text x="668" y="143" font-size="12" font-weight="700" fill="#33404d">Resultado</text>
+<rect x="460" y="152" width="484" height="28" fill="#ffffff" stroke="#e3e7eb"/>
+<text x="468" y="171" font-size="12" fill="#2c3e50" font-weight="400">48213</text>
+<text x="558" y="171" font-size="12" fill="#1e8449" font-weight="700">PROCESADO</text>
+<text x="668" y="171" font-size="12" fill="#2c3e50" font-weight="400">Pago aplicado cta. 7730219</text>
+<rect x="460" y="180" width="484" height="28" fill="#f8fafb" stroke="#e3e7eb"/>
+<text x="468" y="199" font-size="12" fill="#2c3e50" font-weight="400">48214</text>
+<text x="558" y="199" font-size="12" fill="#1e8449" font-weight="700">PROCESADO</text>
+<text x="668" y="199" font-size="12" fill="#2c3e50" font-weight="400">Pago aplicado cta. 7731845</text>
+<rect x="460" y="208" width="484" height="28" fill="#ffffff" stroke="#e3e7eb"/>
+<text x="468" y="227" font-size="12" fill="#2c3e50" font-weight="400">48215</text>
+<text x="558" y="227" font-size="12" fill="#1e8449" font-weight="700">PROCESADO</text>
+<text x="668" y="227" font-size="12" fill="#2c3e50" font-weight="400">Pago aplicado cta. 7702231</text>
+<rect x="460" y="236" width="484" height="28" fill="#f8fafb" stroke="#e3e7eb"/>
+<text x="468" y="255" font-size="12" fill="#2c3e50" font-weight="400">48216</text>
+<text x="558" y="255" font-size="12" fill="#1e8449" font-weight="700">PROCESADO</text>
+<text x="668" y="255" font-size="12" fill="#2c3e50" font-weight="400">Pago aplicado cta. 7755610</text><rect x="460" y="290" width="484" height="70" rx="8" fill="#fff8db" stroke="#e0b100" stroke-width="1.5"/><circle cx="480" cy="312" r="12" fill="#e0b100"/><text x="480" y="317" font-size="13" text-anchor="middle" fill="#fff" font-weight="700">3</text><text x="500" y="316" font-size="12.5" fill="#5c4a00"><tspan x="500" dy="0">Repetir hasta que la cola quede en 0 ERROR.</tspan><tspan x="500" dy="16">Luego validar la cuenta corriente en CRM.</tspan></text>
+<text x="16" y="528" fill="#8a96a3" font-size="11">Mockup ficticio — Sanitaria Los Coihues S.A. (demo charla UFRO)</text>
+</svg>

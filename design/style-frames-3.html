@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Style frames 3 · Adoptar IA hoy</title>
+<!-- Preview only: fonts from Google Fonts; the final deck embeds woff2 as base64. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Big+Shoulders+Display:wght@500;800;900&family=Figtree:wght@400;600;800&family=Schibsted+Grotesk:wght@500;700;900&family=Young+Serif&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;background:#222}
+  body{display:grid;place-items:center;overflow:hidden}
+  .frame{display:none;position:relative;width:min(100vw,calc(100vh*16/9));aspect-ratio:16/9;overflow:hidden;font-size:min(1.6vw,2.85vh);font-family:"Figtree",system-ui,sans-serif}
+  .frame.on{display:block}
+  .abs{position:absolute}
+
+  /* ───────── G · TABLERO COMPARTIDO (humanos + IA trabajando juntos) ───────── */
+  .G{--bg:#F3F5FA;--ink:#161A2E;--mute:#6B7390;--line:#DCE1EC;--coral:#FF7A6B;--blue:#3D6BFF;--amber:#FFB938;--ai:#8B5CF6;background:var(--bg);color:var(--ink)}
+  .G .canvas{position:absolute;inset:0;background-image:radial-gradient(#C9D0DF 1.2px,transparent 1.4px);background-size:1.6em 1.6em}
+  .G .bar{position:absolute;left:0;right:0;top:0;height:3.2em;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 2em;gap:1em;font-weight:600;font-size:.9em}
+  .G .bar .doc{flex:1;color:var(--ink)} .G .bar .doc span{color:var(--mute);font-weight:400}
+  .G .av{width:2em;height:2em;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:800;font-size:.8em;margin-left:-.5em;border:.15em solid #fff}
+  .G .t{font-family:"Schibsted Grotesk",sans-serif;font-weight:900;letter-spacing:-.035em;line-height:.92}
+  .G .note{position:absolute;width:11em;padding:1em 1.1em;font-weight:700;box-shadow:0 .6em 1.2em -0.6em rgba(22,26,46,.35);font-size:1.05em}
+  .G .note small{display:block;font-weight:400;margin-top:.4em;font-size:.8em;opacity:.8}
+  .G .cur{position:absolute;display:flex;align-items:flex-start;gap:.1em;z-index:5}
+  .G .cur svg{width:1.4em;height:1.4em}
+  .G .cur b{font-size:.75em;color:#fff;padding:.2em .55em;border-radius:.3em;margin-top:1em}
+  .G .m1{animation:m1 7s ease-in-out infinite}.G .m2{animation:m2 8s ease-in-out infinite}.G .m3{animation:m3 6.5s ease-in-out infinite}.G .m4{animation:m4 5.5s ease-in-out infinite}
+  @keyframes m1{50%{transform:translate(6em,2em)}}@keyframes m2{50%{transform:translate(-5em,3em)}}@keyframes m3{50%{transform:translate(3em,-4em)}}@keyframes m4{30%{transform:translate(-8em,1em)}70%{transform:translate(-3em,-2em)}}
+  .G .type{display:inline;border-right:.12em solid var(--ai);animation:reveal 2.4s steps(40) .6s both,caret .8s steps(1) infinite}
+  @keyframes reveal{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}@keyframes caret{50%{border-color:transparent}}
+  .G .ins{background:linear-gradient(transparent 62%,#8B5CF640 62%);color:var(--ai)}
+  .G .cmt{position:absolute;background:#fff;border:1px solid var(--line);border-radius:.6em;padding:.9em 1.1em;box-shadow:0 .8em 1.6em -1em rgba(22,26,46,.4);font-size:1em;line-height:1.4}
+  .G .cmt .who{display:flex;align-items:center;gap:.5em;font-weight:800;font-size:.85em;margin-bottom:.4em}
+  .G .cmt .who i{width:1.5em;height:1.5em;border-radius:50%;display:inline-block}
+
+  /* ───────── H · PLANO DE OBRA (tu carrera como proyecto) ───────── */
+  .H{--bp:#0B3D6E;--bp2:#0E4A85;--line:#CFE3FF;--dim:#7FB2F0;--hi:#FFD166;background:var(--bp);color:var(--line)}
+  .H .grid{position:absolute;inset:0;background-image:linear-gradient(#ffffff14 1px,transparent 1px),linear-gradient(90deg,#ffffff14 1px,transparent 1px),linear-gradient(#ffffff08 1px,transparent 1px),linear-gradient(90deg,#ffffff08 1px,transparent 1px);background-size:5em 5em,5em 5em,1em 1em,1em 1em}
+  .H .t{font-family:"Big Shoulders Display",sans-serif;font-weight:900;line-height:.86;letter-spacing:.01em;color:#fff}
+  .H .ar{font-family:"Archivo",sans-serif;font-variation-settings:"wdth" 75}
+  .H svg .dr{fill:none;stroke:var(--line);stroke-width:2;stroke-dasharray:1400;stroke-dashoffset:1400;animation:draw 3.2s ease-out forwards}
+  .H svg .dr.d2{animation-delay:.6s}.H svg .dr.d3{animation-delay:1.2s}.H svg .dr.hi{stroke:var(--hi)}
+  .H svg .dim{stroke:var(--dim);stroke-width:1.2;fill:none}
+  .H svg text{fill:var(--line);font-family:"Archivo";font-variation-settings:"wdth" 75}
+  @keyframes draw{to{stroke-dashoffset:0}}
+  .H .block{position:absolute;right:3%;bottom:4%;width:34%;border:2px solid var(--line);display:grid;grid-template-columns:1fr 1fr;font-size:.8em}
+  .H .block div{border:1px solid #CFE3FF55;padding:.45em .7em}.H .block div small{display:block;color:var(--dim);font-size:.8em}
+  .H .block .full{grid-column:1/3;font-size:1.1em;color:#fff;font-weight:700}
+
+  /* ───────── I · OFERTA LABORAL (el perfil que busca el mercado) ───────── */
+  .I{--bg:#F6F8FB;--ink:#14213D;--mute:#5B6682;--line:#DDE3EE;--or:#FF6B1A;--teal:#0F9E9A;--sky:#4C7DFF;background:var(--bg);color:var(--ink)}
+  .I .serif{font-family:"Young Serif",serif;line-height:1.02;letter-spacing:-.01em}
+  .I .card{position:absolute;background:#fff;border:1px solid var(--line);border-radius:.9em;box-shadow:0 1.4em 3em -1.6em rgba(20,33,61,.35)}
+  .I .req{display:flex;align-items:center;gap:.9em;padding:.7em 0;border-top:1px solid var(--line);font-size:1.05em}
+  .I .box{flex:none;width:1.5em;height:1.5em;border:.15em solid var(--ink);border-radius:.3em;position:relative}
+  .I .box::after{content:"";position:absolute;left:.38em;top:.08em;width:.4em;height:.8em;border:solid var(--c);border-width:0 .2em .2em 0;transform:rotate(45deg) scale(0);animation:tick .35s cubic-bezier(.3,1.8,.5,1) forwards;animation-delay:var(--d)}
+  @keyframes tick{to{transform:rotate(45deg) scale(1)}}
+  .I .req b{font-weight:800}.I .req small{color:var(--mute);margin-left:auto;font-size:.85em;white-space:nowrap}
+  .I .btn{display:inline-block;background:var(--ink);color:#fff;font-weight:800;padding:.75em 1.4em;border-radius:.35em}
+  .I .stamp{position:absolute;border:.2em solid var(--teal);color:var(--teal);font-weight:800;padding:.4em .8em;border-radius:.4em;transform:rotate(-8deg);animation:stamp .5s cubic-bezier(.2,1.6,.4,1) 2.2s both;font-size:1.1em;background:#ffffffcc}
+  @keyframes stamp{from{transform:rotate(-8deg) scale(2.2);opacity:0}}
+  .I .skill{display:grid;grid-template-columns:11em 1fr;align-items:center;gap:1em;margin:1em 0;font-weight:600}
+  .I .skill i{height:1.1em;border-radius:.2em;background:linear-gradient(90deg,var(--c) var(--v),#E6EBF3 var(--v));animation:grow 1.6s cubic-bezier(.2,.8,.2,1) both;animation-delay:var(--d,0s);transform-origin:left}
+  @keyframes grow{from{transform:scaleX(.05)}}
+
+  .label{position:fixed;left:12px;top:10px;color:#fff;font:600 13px system-ui;background:#000a;padding:4px 8px;border-radius:4px;z-index:9}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important}.H svg .dr{stroke-dashoffset:0}}
+</style>
+</head>
+<body>
+<div class="label" id="label"></div>
+
+<!-- ═════════ G1 · TABLERO · title ═════════ -->
+<section class="frame G" id="G1">
+  <div class="canvas"></div>
+  <div class="bar">
+    <div class="doc">Adoptar IA hoy <span>— tablero compartido, Semana de la Empleabilidad 2026, UFRO</span></div>
+    <div style="display:flex;padding-left:.5em"><div class="av" style="background:var(--coral)">C</div><div class="av" style="background:var(--blue)">J</div><div class="av" style="background:var(--amber);color:var(--ink)">G</div><div class="av" style="background:var(--ai)">IA</div></div>
+  </div>
+  <h1 class="abs t" style="left:6%;top:20%;font-size:6.6em">Adoptar<br>IA hoy</h1>
+  <p class="abs" style="left:6.2%;top:57%;font-size:1.35em;color:var(--ink);width:44%;line-height:1.45"><span class="type">Cómo ganar ventaja en tu área, tu carrera y tu industria al mismo tiempo.</span></p>
+
+  <div class="note" style="left:60%;top:17%;background:#FFD9D3;transform:rotate(-3deg)">Visibilidad<small>Camila</small></div>
+  <div class="note" style="left:76%;top:30%;background:#D6E0FF;transform:rotate(2deg)">Capacidad<small>Jorge</small></div>
+  <div class="note" style="left:63%;top:48%;background:#FFE9BF;transform:rotate(-1.5deg)">Valor<small>Gonzalo</small></div>
+  <svg class="abs" style="left:60%;top:17%;width:32%;height:50%" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M30 22 C45 25 55 30 62 38 M62 50 C55 60 45 66 38 70" stroke="#161A2E" stroke-width=".5" fill="none" stroke-dasharray="1.5 1.5"/></svg>
+
+  <div class="cur m1" style="left:52%;top:30%"><svg viewBox="0 0 24 24"><path d="M3 2l7 19 2.5-7.5L20 11z" fill="#FF7A6B" stroke="#fff" stroke-width="1.5"/></svg><b style="background:var(--coral)">Camila</b></div>
+  <div class="cur m2" style="left:86%;top:56%"><svg viewBox="0 0 24 24"><path d="M3 2l7 19 2.5-7.5L20 11z" fill="#3D6BFF" stroke="#fff" stroke-width="1.5"/></svg><b style="background:var(--blue)">Jorge</b></div>
+  <div class="cur m3" style="left:74%;top:74%"><svg viewBox="0 0 24 24"><path d="M3 2l7 19 2.5-7.5L20 11z" fill="#FFB938" stroke="#fff" stroke-width="1.5"/></svg><b style="background:var(--amber);color:var(--ink)">Gonzalo</b></div>
+  <div class="cur m4" style="left:48%;top:62%"><svg viewBox="0 0 24 24"><path d="M3 2l7 19 2.5-7.5L20 11z" fill="#8B5CF6" stroke="#fff" stroke-width="1.5"/></svg><b style="background:var(--ai)">IA</b></div>
+</section>
+
+<!-- ═════════ G2 · TABLERO · interior ═════════ -->
+<section class="frame G" id="G2">
+  <div class="canvas"></div>
+  <div class="bar"><div class="doc">Nivel 2 <span>— Capacidad, con Jorge</span></div><div style="display:flex;padding-left:.5em"><div class="av" style="background:var(--blue)">J</div><div class="av" style="background:var(--ai)">IA</div></div></div>
+  <div class="abs" style="left:6%;top:16%;width:56%;background:#fff;border:1px solid var(--line);border-radius:.8em;padding:2.4em 2.6em;box-shadow:0 1.4em 3em -1.8em rgba(22,26,46,.4)">
+    <p style="color:var(--mute);font-size:.85em;margin-bottom:1em">Documento: tu carrera</p>
+    <h2 class="t" style="font-size:4.6em">Lo que sabes <span class="ins">× IA</span></h2>
+    <p style="margin-top:1.2em;font-size:1.25em;line-height:1.5">Tus ramos, tus prácticas y tus proyectos siguen siendo la base. La IA multiplica lo que ya existe.</p>
+  </div>
+  <div class="cur m4" style="left:56%;top:34%"><svg viewBox="0 0 24 24"><path d="M3 2l7 19 2.5-7.5L20 11z" fill="#8B5CF6" stroke="#fff" stroke-width="1.5"/></svg><b style="background:var(--ai)">IA</b></div>
+  <div class="cmt" style="left:66%;top:20%;width:28%"><div class="who"><i style="background:var(--blue)"></i>Jorge</div>La IA no sustituye tu conocimiento profesional. <b>Lo amplifica.</b></div>
+  <div class="cmt" style="left:66%;top:52%;width:28%"><div class="who"><i style="background:var(--ai)"></i>IA</div>Nota: si lo que sabes es cero, cero por IA sigue siendo cero.</div>
+</section>
+
+<!-- ═════════ H1 · PLANO · title ═════════ -->
+<section class="frame H" id="H1">
+  <div class="grid"></div>
+  <p class="abs ar" style="left:5%;top:7%;font-size:1em;color:var(--dim)">Proyecto: tu carrera. Lámina 1 de 3</p>
+  <h1 class="abs t" style="left:5%;top:13%;font-size:8.2em">ADOPTAR<br>IA HOY</h1>
+  <p class="abs" style="left:5.2%;top:57%;width:40%;font-size:1.3em;line-height:1.45;color:#fff">Cómo ganar ventaja en tu área, tu carrera y tu industria al mismo tiempo.</p>
+  <svg class="abs" style="left:46%;top:8%;width:52%;height:62%" viewBox="0 0 680 420">
+    <!-- building: 3 levels -->
+    <path class="dr" d="M80 400 H520 M100 400 V300 H500 V400"/>
+    <path class="dr d2" d="M130 300 V200 H470 V300"/>
+    <path class="dr d3 hi" d="M170 200 V110 L300 40 L430 110 V200"/>
+    <path class="dr d2" d="M150 330 h60 v40 h-60z M270 330 h60 v40 h-60z M390 330 h60 v40 h-60z M180 230 h50 v40 h-50z M370 230 h50 v40 h-50z"/>
+    <!-- dimension lines -->
+    <path class="dim" d="M550 400 V40 M545 400 h10 M545 300 h10 M545 200 h10 M545 40 h10"/>
+    <text x="562" y="355" font-size="16">Visibilidad</text>
+    <text x="562" y="255" font-size="16">Capacidad</text>
+    <text x="562" y="125" font-size="16" style="fill:var(--hi)">Valor</text>
+    <text x="80" y="418" font-size="13">Cimiento: lo que sabes</text>
+  </svg>
+  <div class="block ar">
+    <div class="full">Semana de la Empleabilidad 2026 — UFRO</div>
+    <div><small>Relatores</small>Camila, Jorge, Gonzalo</div>
+    <div><small>Fecha</small>28.09.2026, 15:00</div>
+    <div><small>Duración</small>40 minutos</div>
+    <div><small>Escala</small>1 : IA</div>
+  </div>
+</section>
+
+<!-- ═════════ H2 · PLANO · interior ═════════ -->
+<section class="frame H" id="H2">
+  <div class="grid"></div>
+  <p class="abs ar" style="left:5%;top:7%;font-size:1em;color:var(--dim)">Lámina 2 de 3: Capacidad, con Jorge</p>
+  <h2 class="abs t" style="left:5%;top:13%;font-size:5.4em">LO QUE SABES × IA</h2>
+  <svg class="abs" style="left:5%;top:36%;width:62%;height:50%" viewBox="0 0 700 300">
+    <path class="dr" d="M20 260 H200 V200 H20 Z"/>
+    <path class="dim" d="M20 280 H200 M20 275 v10 M200 275 v10"/><text x="80" y="298" font-size="18">lo que sabes</text>
+    <path class="dr d2 hi" d="M260 260 H680 V60 H260 Z"/>
+    <path class="dim" d="M260 280 H680 M260 275 v10 M680 275 v10"/><text x="420" y="298" font-size="18" style="fill:var(--hi)">lo que sabes, con IA</text>
+    <path class="dim" d="M210 230 C225 220 240 220 252 230" /><text x="208" y="214" font-size="22" style="fill:#fff">×</text>
+  </svg>
+  <div class="abs" style="right:5%;top:40%;width:26%;font-size:1.3em;line-height:1.45;color:#fff;border-left:3px solid var(--hi);padding-left:1em">La IA no sustituye tu conocimiento profesional. Lo amplifica.</div>
+  <p class="abs ar" style="right:5%;top:70%;width:26%;color:var(--dim);font-size:1em">Nota técnica: sin cimiento no hay obra. 0 × IA = 0.</p>
+</section>
+
+<!-- ═════════ I1 · OFERTA · title ═════════ -->
+<section class="frame I" id="I1">
+  <div class="card" style="left:5%;top:5%;width:58%;padding:2em 2.6em">
+    <p style="color:var(--mute);font-weight:600">Oferta laboral, publicada hoy en Temuco</p>
+    <h1 class="serif" style="font-size:3em;margin:.3em 0 .35em">Se busca: profesional que sepa adoptar IA hoy</h1>
+    <p style="font-size:1.15em;color:var(--mute);margin-bottom:1em">Para ganar ventaja en su área, su carrera y su industria al mismo tiempo.</p>
+    <div class="req"><span class="box" style="--c:var(--or);--d:.8s"></span><span>Muestra lo que sabe hacer</span><small><b style="color:var(--or)">Visibilidad</b> con Camila</small></div>
+    <div class="req"><span class="box" style="--c:var(--sky);--d:1.3s"></span><span>Multiplica lo que sabe con IA</span><small><b style="color:var(--sky)">Capacidad</b> con Jorge</small></div>
+    <div class="req" style="border-bottom:1px solid var(--line)"><span class="box" style="--c:var(--teal);--d:1.8s"></span><span>Convierte capacidades en valor</span><small><b style="color:var(--teal)">Valor</b> con Gonzalo</small></div>
+  </div>
+  <div class="abs" style="left:67%;top:14%;width:28%">
+    <p style="font-weight:800;font-size:1.1em">Semana de la Empleabilidad 2026</p>
+    <p style="color:var(--mute);margin-top:.3em">Universidad de La Frontera</p>
+    <p style="color:var(--mute)">Lunes 28 de septiembre, 15:00</p>
+    <p style="margin-top:2em;font-size:1.05em;line-height:1.5">Requisito excluyente: ganas de empezar esta semana.</p>
+    <p style="margin-top:2em"><span class="btn">Postular ahora</span></p>
+  </div>
+  <div class="stamp" style="left:70%;top:66%">Perfil compatible: tú</div>
+</section>
+
+<!-- ═════════ I2 · OFERTA · interior ═════════ -->
+<section class="frame I" id="I2">
+  <div class="card" style="left:5%;top:10%;width:56%;height:80%;padding:2.6em 2.8em">
+    <p style="color:var(--mute);font-weight:600">Tu CV, sección habilidades</p>
+    <h2 class="serif" style="font-size:3.3em;margin:.3em 0 .6em">Lo que sabes × IA</h2>
+    <div class="skill"><span>Lo que sabes</span><i style="--c:var(--mute);--v:35%"></i></div>
+    <div class="skill"><span>Lo que sabes, con IA</span><i style="--c:var(--sky);--v:94%;--d:.5s"></i></div>
+    <div class="skill" style="color:var(--mute)"><span>Solo IA, sin base</span><i style="--c:var(--or);--v:2%;--d:1s"></i></div>
+  </div>
+  <div class="abs serif" style="left:65%;top:28%;width:30%;font-size:2.1em;line-height:1.2">La IA no sustituye tu conocimiento profesional. <span style="color:var(--sky)">Lo amplifica.</span></div>
+  <p class="abs" style="left:65%;top:62%;width:28%;color:var(--mute);font-size:1.05em;line-height:1.5">Por eso la última barra casi no existe: cero por IA sigue siendo cero.</p>
+</section>
+
+<script>
+  const id=(location.hash||'#G1').slice(1);
+  const el=document.getElementById(id)||document.getElementById('G1');
+  el.classList.add('on');
+  document.getElementById('label').textContent=el.id;
+</script>
+</body>
+</html>

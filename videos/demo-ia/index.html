@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <title>Demo: de un problema a un entregable</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face{
+        font-family:"Schibsted Grotesk";
+        font-style:normal;
+        font-weight:400 900;
+        src:url("assets/fonts/SchibstedGrotesk-latin.woff2") format("woff2");
+      }
+      @font-face{
+        font-family:"Figtree";
+        font-style:normal;
+        font-weight:400 900;
+        src:url("assets/fonts/Figtree-latin.woff2") format("woff2");
+      }
+      *{margin:0;padding:0;box-sizing:border-box}
+      html,body{width:1920px;height:1080px;overflow:hidden}
+      body{font-family:"Figtree",system-ui,sans-serif;color:#161A2E}
+
+      :root{
+        --bg:#F3F5FA; --ink:#161A2E; --mute:#565D76; --line:#DCE1EC;
+        --blue:#3D6BFF; --ai:#8B5CF6; --coral:#FF7A6B; --amber:#FFB938;
+        --coral-tint:#FFE3DE; --ai-tint:#EDE7FC; --amber-tint:#FFF3D9;
+        /* variantes mas oscuras: SOLO para texto o texto-sobre-color,
+           donde el token de marca puro no llega a 4.5:1 de contraste.
+           Los rellenos decorativos (barras, subrayado, puntos) siguen
+           usando el token de marca exacto del deck. */
+        --blue-dark:#2F56E6; --ai-dark:#5A2FC0; --coral-dark:#BC3C2B;
+      }
+
+      #root{position:relative;width:1920px;height:1080px;overflow:hidden;background:var(--bg)}
+      .clip{position:absolute;inset:0}
+
+      .t{font-family:"Schibsted Grotesk",sans-serif;font-weight:900;letter-spacing:-.02em}
+
+      .canvas{position:absolute;inset:0;
+        background-image:radial-gradient(#C9D0DF 2px,transparent 2.4px);
+        background-size:34px 34px}
+
+      /* ---------- top bar ---------- */
+      .bar{position:absolute;left:0;right:0;top:0;height:84px;background:#fff;
+        border-bottom:1px solid var(--line);display:flex;align-items:center;
+        padding:0 48px;gap:20px;z-index:20}
+      .bar .doc{flex:1;font-weight:700;font-size:24px;color:var(--ink)}
+      .bar .doc span{display:block;font-weight:400;font-size:16px;color:var(--mute);margin-top:2px}
+      .badge{background:var(--coral-tint);color:var(--coral-dark);font-weight:700;font-size:16px;
+        padding:8px 16px;border-radius:8px}
+      .avatars{display:flex}
+      .av{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+        color:#fff;font-weight:800;font-size:17px;margin-left:-10px;border:3px solid #fff}
+
+      /* ---------- cursors ---------- */
+      .cur{position:absolute;display:flex;align-items:flex-start;gap:4px;z-index:30;opacity:0}
+      .cur svg{width:30px;height:30px;filter:drop-shadow(0 2px 4px rgba(22,26,46,.25))}
+      .cur b{font-size:15px;font-weight:700;color:#fff;padding:4px 10px;border-radius:6px;
+        margin-top:20px;white-space:nowrap}
+      .cur.jorge b{background:var(--blue-dark)}
+      .cur.ia b{background:var(--ai-dark)}
+
+      /* ---------- main panel ---------- */
+      .panel{position:absolute;top:130px;background:#fff;border:1px solid var(--line);
+        border-radius:20px;box-shadow:0 24px 48px -28px rgba(22,26,46,.35)}
+      #mainPanel{left:64px;width:1140px;height:900px;padding:48px 56px;overflow:hidden}
+      #sidePanel{left:1252px;width:604px;height:900px;padding:28px 32px;overflow:hidden}
+
+      .state{position:absolute;left:56px;right:56px;top:48px;bottom:48px;opacity:0}
+
+      .eyebrow{font-size:18px;color:var(--mute);font-weight:600}
+      .h2{font-size:38px;margin-top:6px}
+
+      /* ---------- file card state ---------- */
+      #stateFile{display:flex;flex-direction:column;align-items:flex-start;justify-content:center}
+      .file-icon{width:104px;height:104px;border-radius:20px;background:var(--ai-tint);
+        display:grid;place-items:center;margin-bottom:36px}
+      .file-icon svg{width:52px;height:52px}
+      .file-name{font-size:56px;line-height:1.05}
+      .file-sub{font-size:28px;color:var(--mute);margin-top:14px}
+      .chips{display:flex;gap:14px;margin-top:32px}
+      .chip{border:1px solid var(--line);border-radius:8px;padding:10px 18px;
+        font-size:20px;font-weight:600;color:var(--ink)}
+      .chip.ghost{color:var(--coral-dark);border-color:#F3C6BC;background:var(--coral-tint)}
+
+      /* ---------- table state ---------- */
+      #stateTable{display:flex;flex-direction:column}
+      .table-title{font-size:32px;margin-bottom:2px}
+      .table-sub{font-size:19px;color:var(--mute);margin-bottom:22px}
+      .trow{display:grid;grid-template-columns:48px 190px 78px 160px 118px 100px minmax(220px,1fr);
+        align-items:center;column-gap:14px;border-bottom:1px solid var(--line);
+        padding:13px 0;opacity:0}
+      .trow.head{color:var(--mute);font-weight:600;font-size:16px;border-bottom:2px solid var(--line);opacity:1}
+      .trow .cell{font-size:20px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .trow .cell.wrap{white-space:normal;overflow:visible;text-overflow:clip;line-height:1.25}
+      .trow .miss{color:var(--coral-dark);font-weight:700}
+      .trow.incomplete{background:var(--coral-tint);border-radius:8px;padding-left:8px}
+      .banner{margin-top:16px;background:var(--coral-tint);border:1px solid #F3C6BC;
+        border-radius:12px;padding:18px 22px;font-size:24px;font-weight:600;color:#8A2E20;
+        display:flex;align-items:center;gap:14px;opacity:0}
+      .banner .dot{width:12px;height:12px;border-radius:50%;background:var(--coral);flex:none}
+
+      /* ---------- chart state ---------- */
+      #stateChart{display:flex;flex-direction:column}
+      .chart-title{font-size:32px;margin-bottom:2px}
+      .chart-sub{font-size:19px;color:var(--mute);margin-bottom:20px}
+      .brow{display:grid;grid-template-columns:340px 1fr 110px;align-items:center;
+        column-gap:18px;height:76px}
+      .brow .lbl{font-size:22px;color:var(--ink);font-weight:600;
+        overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+      .track{height:16px;background:#EDF0F7;border-radius:8px;overflow:hidden}
+      .fill{height:100%;width:100%;border-radius:8px;transform:scaleX(0);transform-origin:left center;
+        background:linear-gradient(90deg,var(--blue),var(--ai))}
+      .brow .val{font-size:24px;font-weight:800;color:var(--ink);text-align:right;
+        font-variant-numeric:tabular-nums}
+
+      /* ---------- report state ---------- */
+      #stateReport{display:flex;flex-direction:column}
+      .report-title{font-size:34px;line-height:1.15}
+      .report-sub{font-size:19px;color:var(--mute);margin-top:6px;margin-bottom:22px}
+      .finding{display:flex;gap:16px;margin-bottom:16px;opacity:0}
+      .finding .n{flex:none;width:36px;height:36px;border-radius:50%;background:var(--ai-tint);
+        color:#5B3BB8;font-weight:800;font-size:18px;display:grid;place-items:center}
+      .finding p{font-size:25px;line-height:1.4}
+      .assume{margin-top:14px;border-left:6px solid var(--amber);background:var(--amber-tint);
+        border-radius:0 12px 12px 0;padding:20px 26px;opacity:0}
+      .assume h3{font-size:26px;margin-bottom:10px}
+      .assume li{font-size:21px;line-height:1.45;margin-left:22px;margin-bottom:5px;color:var(--ink)}
+
+      /* ---------- sidebar chat ---------- */
+      .chat-head{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+      .chat-head .av{margin-left:0;width:36px;height:36px;font-size:14px;background:var(--ai-dark)!important}
+      .chat-head span{font-size:19px;font-weight:700;color:var(--mute)}
+      .bubble{border-radius:14px;padding:15px 20px;margin-bottom:13px;opacity:0}
+      .bubble .who{font-size:15px;font-weight:800;margin-bottom:5px;display:flex;align-items:center;gap:8px}
+      .bubble .who i{width:14px;height:14px;border-radius:50%;display:inline-block}
+      .bubble p{font-size:21px;line-height:1.38;color:var(--ink)}
+      .bubble.jorge{background:#EEF2FF;border:1px solid #D7E0FF}
+      .bubble.jorge .who{color:var(--blue-dark)}
+      .bubble.jorge .who i{background:var(--blue)}
+      .bubble.ia{background:var(--ai-tint);border:1px solid #DCCFF7}
+      .bubble.ia .who{color:#5B3BB8}
+      .bubble.ia .who i{background:var(--ai)}
+      .caret{display:inline-block;width:3px;height:20px;background:var(--blue-dark);vertical-align:-3px;margin-left:2px}
+
+      /* ---------- end card ---------- */
+      #endCard{position:absolute;inset:0;display:flex;flex-direction:column;
+        align-items:center;justify-content:center;opacity:0}
+      #endCard .t{font-size:84px;text-align:center;width:1400px;line-height:1.08}
+      .underline{display:flex;margin-top:30px;height:9px;width:360px;border-radius:5px;overflow:hidden}
+      .underline i{flex:1;display:block}
+      .underline i:first-child{background:var(--blue)}
+      .underline i:last-child{background:var(--ai)}
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-width="1920" data-height="1080" data-duration="82">
+      <div id="scene" class="clip" data-start="0" data-duration="82" data-track-index="1">
+
+        <div class="canvas"></div>
+
+        <div class="bar" id="bar">
+          <div class="doc">Demo: de un problema a un entregable<span>Adoptar IA hoy — tablero compartido, UFRO</span></div>
+          <div class="badge">Datos ficticios</div>
+          <div class="avatars">
+            <div class="av" style="background:var(--blue-dark)">J</div>
+            <div class="av" style="background:var(--ai-dark)">IA</div>
+          </div>
+        </div>
+
+        <!-- ===================== main panel ===================== -->
+        <div class="panel" id="mainPanel">
+
+          <div class="state" id="stateFile">
+            <div class="file-icon">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1Z" stroke="#5B3BB8" stroke-width="1.6"/><path d="M14 2v6h6" stroke="#5B3BB8" stroke-width="1.6"/><path d="M8 13h8M8 17h8M8 9h3" stroke="#5B3BB8" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </div>
+            <div class="file-name t">encuesta_egresados.csv</div>
+            <div class="file-sub">300 respuestas (ficticias)</div>
+            <div class="chips">
+              <div class="chip">300 filas</div>
+              <div class="chip">7 columnas</div>
+              <div class="chip ghost">Encuesta ficticia</div>
+            </div>
+          </div>
+
+          <div class="state" id="stateTable">
+            <div class="table-title t">Vista previa</div>
+            <div class="table-sub">encuesta_egresados.csv · 300 filas · 7 columnas</div>
+
+            <div class="trow head">
+              <div class="cell">Id</div><div class="cell">Carrera</div><div class="cell">Año</div>
+              <div class="cell">Meses 1er empl.</div><div class="cell">En su área</div>
+              <div class="cell">Usa IA</div><div class="cell">Habilidades pedidas</div>
+            </div>
+            <div class="trow r" id="row1">
+              <div class="cell">1</div><div class="cell">Agronomía</div><div class="cell">2024</div>
+              <div class="cell">9,2</div><div class="cell">Sí</div><div class="cell">No</div>
+              <div class="cell wrap">Análisis de datos</div>
+            </div>
+            <div class="trow r" id="row2">
+              <div class="cell">2</div><div class="cell">Ing. Comercial</div><div class="cell">2024</div>
+              <div class="cell">6,4</div><div class="cell">No</div><div class="cell">No</div>
+              <div class="cell wrap">Comunicación efectiva</div>
+            </div>
+            <div class="trow r" id="row3">
+              <div class="cell">4</div><div class="cell">Agronomía</div><div class="cell">2024</div>
+              <div class="cell">6,3</div><div class="cell">Sí</div><div class="cell">Sí</div>
+              <div class="cell wrap">Gestión de proyectos</div>
+            </div>
+            <div class="trow r" id="row4">
+              <div class="cell">5</div><div class="cell">Ing. Comercial</div><div class="cell">2023</div>
+              <div class="cell">2,7</div><div class="cell">Sí</div><div class="cell">Sí</div>
+              <div class="cell wrap">Análisis de datos</div>
+            </div>
+            <div class="trow r" id="row5">
+              <div class="cell">18</div><div class="cell">Kinesiología</div><div class="cell">2024</div>
+              <div class="cell miss">—</div><div class="cell">Sí</div><div class="cell">No</div>
+              <div class="cell wrap">Gestión de proyectos</div>
+            </div>
+
+            <div class="banner" id="banner">
+              <span class="dot"></span>
+              18 filas sin "meses hasta el primer empleo" → excluidas de los promedios
+            </div>
+          </div>
+
+          <div class="state" id="stateChart">
+            <div class="chart-title t">Meses hasta el primer empleo, por carrera</div>
+            <div class="chart-sub">Promedio (ficticio) · excluye 18 respuestas incompletas</div>
+            <div id="bars"></div>
+          </div>
+
+          <div class="state" id="stateReport">
+            <div class="report-title t">Informe: empleabilidad de egresados</div>
+            <div class="report-sub">Borrador generado por IA (ficticio) · para revisión humana</div>
+
+            <div class="finding" id="f1"><div class="n">1</div><p>El tiempo promedio hasta el primer empleo es de <b>5,3 meses</b> (282 respuestas válidas de 300).</p></div>
+            <div class="finding" id="f2"><div class="n">2</div><p>Quienes usan IA en su trabajo encuentran empleo más rápido: <b>4,4 meses</b> vs. <b>6,0 meses</b> en quienes no la usan.</p></div>
+            <div class="finding" id="f3"><div class="n">3</div><p>La habilidad más pedida es <b>"Uso de IA"</b>: aparece en el 46% de las respuestas.</p></div>
+
+            <div class="assume" id="assume">
+              <h3 class="t">Supuestos a validar</h3>
+              <li>Datos ficticios, creados solo para esta demo.</li>
+              <li>18 de 300 respuestas fueron excluidas por no indicar meses hasta el primer empleo.</li>
+              <li>Correlación no implica causalidad: usar IA no garantiza un empleo más rápido.</li>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===================== sidebar ===================== -->
+        <div class="panel" id="sidePanel">
+          <div class="chat-head">
+            <div class="av" style="background:var(--ai)">IA</div>
+            <span>Chat con el agente</span>
+          </div>
+
+          <div class="bubble jorge" id="bJorge">
+            <div class="who"><i></i>Jorge</div>
+            <p id="promptText"></p>
+          </div>
+          <div class="bubble ia" id="bIa1">
+            <div class="who"><i></i>IA</div>
+            <p>Leyendo encuesta_egresados.csv — 300 filas, 7 columnas.</p>
+          </div>
+          <div class="bubble ia" id="bIa2">
+            <div class="who"><i></i>IA</div>
+            <p>Faltan 18 respuestas de "meses hasta el primer empleo". Las excluyo de los promedios.</p>
+          </div>
+          <div class="bubble ia" id="bIa3">
+            <div class="who"><i></i>IA</div>
+            <p>Armando el gráfico: meses hasta el primer empleo por carrera.</p>
+          </div>
+          <div class="bubble ia" id="bIa4">
+            <div class="who"><i></i>IA</div>
+            <p>Listo. Informe de una página con hallazgos y supuestos a validar.</p>
+          </div>
+        </div>
+
+        <!-- ===================== cursors ===================== -->
+        <div class="cur jorge" id="curJorge" style="left:1770px;top:148px">
+          <svg viewBox="0 0 24 24"><path d="M3 2l7 19 2.5-7.5L20 11z" fill="#3D6BFF" stroke="#fff" stroke-width="1.5"/></svg>
+          <b>Jorge</b>
+        </div>
+        <div class="cur ia" id="curIA" style="left:520px;top:480px">
+          <svg viewBox="0 0 24 24"><path d="M3 2l7 19 2.5-7.5L20 11z" fill="#8B5CF6" stroke="#fff" stroke-width="1.5"/></svg>
+          <b>IA</b>
+        </div>
+
+        <!-- ===================== end card ===================== -->
+        <div id="endCard">
+          <div class="t">Tú diriges,<br>la IA ejecuta.</div>
+          <div class="underline"><i></i><i></i></div>
+        </div>
+
+      </div>
+    </div>
+
+    <script>
+      /* Cada fotograma es funcion pura del tiempo de la linea de tiempo;
+         nada de Date.now(), Math.random() sin semilla, ni animation/transition CSS. */
+      const tl = gsap.timeline({ paused: true });
+
+      function cycles(dur, cycle){ return Math.max(0, Math.floor(dur / cycle) - 1); }
+
+      /* ---------- tipeo determinista (igual patron que contraste-prompts) ---------- */
+      function typeInto(id, text, start, dur, prefix){
+        const el = document.getElementById(id);
+        const st = { i: 0 };
+        tl.fromTo(st, { i: 0 }, {
+          i: text.length, duration: dur, ease: 'none',
+          onUpdate: function(){
+            el.innerHTML = (prefix || '') + text.slice(0, Math.round(st.i)) + '<span class="caret"></span>';
+          }
+        }, start);
+      }
+
+      const PROMPT = 'Analiza esta encuesta ficticia a 300 egresados: marca las respuestas incompletas, grafica los meses hasta el primer empleo por carrera y escribe un informe con supuestos a validar.';
+
+      /* ---------- barra + avatares ---------- */
+      tl.fromTo('#bar', { autoAlpha: 0, y: -16 }, { autoAlpha: 1, y: 0, duration: .5, ease: 'power2.out' }, .1);
+      tl.fromTo('.badge', { autoAlpha: 0, scale: .8 }, { autoAlpha: 1, scale: 1, duration: .4, ease: 'back.out(2)' }, .5);
+      tl.fromTo('.av', { autoAlpha: 0, y: -10 }, { autoAlpha: 1, y: 0, duration: .35, ease: 'power2.out', stagger: .08 }, .6);
+
+      /* ============================================================
+         BEAT 1 (0-9s) — tarjeta de archivo
+         ============================================================ */
+      tl.fromTo('#stateFile', { autoAlpha: 1 }, { autoAlpha: 1, duration: .01 }, 0);
+      tl.fromTo('.file-icon', { autoAlpha: 0, scale: .8 }, { autoAlpha: 1, scale: 1, duration: .5, ease: 'back.out(1.8)' }, .5);
+      tl.fromTo('.file-name', { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: .5, ease: 'power3.out' }, .9);
+      tl.fromTo('.file-sub', { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: .45, ease: 'power2.out' }, 1.15);
+      tl.fromTo('.chips .chip', { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: .4, ease: 'power2.out', stagger: .1 }, 1.4);
+
+      tl.fromTo('#curIA', { autoAlpha: 0 }, { autoAlpha: 1, duration: .4 }, 1.0);
+
+      /* ============================================================
+         BEAT 2 (9-21s) — Jorge escribe el prompt
+         ============================================================ */
+      tl.fromTo('#curJorge', { autoAlpha: 0 }, { autoAlpha: 1, duration: .4 }, 8.2);
+      tl.fromTo('#bJorge', { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: .4, ease: 'power2.out' }, 8.8);
+      typeInto('promptText', PROMPT, 9.5, 10.2);
+      tl.set('#promptText', { innerHTML: PROMPT }, 19.9);
+      tl.fromTo('#curJorge', { autoAlpha: 1 }, { autoAlpha: 0, duration: .4, immediateRender: false }, 20.8);
+
+      /* ============================================================
+         BEAT 3 (21-33s) — la IA abre el archivo -> vista previa
+         ============================================================ */
+      tl.fromTo('#stateFile', { autoAlpha: 1 }, { autoAlpha: 0, duration: .25, immediateRender: false }, 21.0);
+      tl.fromTo('#stateTable', { autoAlpha: 0 }, { autoAlpha: 1, duration: .25 }, 21.3);
+      tl.fromTo(['.table-title', '.table-sub'], { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: .4, ease: 'power2.out', stagger: .08 }, 21.6);
+      tl.fromTo('.trow.r', { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: .4, ease: 'power2.out', stagger: .12 }, 21.95);
+
+      tl.fromTo('#curIA', { x: 0, y: 0 }, { x: 0, y: -150, duration: .6, ease: 'power2.inOut', immediateRender: false }, 21.0);
+      tl.fromTo('#bIa1', { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: .4, ease: 'power2.out' }, 21.8);
+
+      /* ============================================================
+         BEAT 4 (33-44s) — detecta filas incompletas
+         ============================================================ */
+      tl.fromTo('#row5', { backgroundColor: 'rgba(255,122,107,0)' },
+        { backgroundColor: '#FFE3DE', duration: .5, immediateRender: false }, 33.0);
+      tl.fromTo('#banner', { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: .5, ease: 'power2.out' }, 33.3);
+      tl.fromTo('#curIA', { x: 0, y: -150 }, { x: 0, y: 240, duration: .6, ease: 'power2.inOut', immediateRender: false }, 33.0);
+      tl.fromTo('#bIa2', { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: .4, ease: 'power2.out' }, 33.4);
+
+      /* ============================================================
+         BEAT 5 (44-58s) — grafico por carrera, barra por barra
+         ============================================================ */
+      const CAREERS = [
+        ['Ingeniería Civil Informática', 3.13, '3,1'],
+        ['Enfermería', 4.63, '4,6'],
+        ['Ingeniería Civil Industrial', 4.94, '4,9'],
+        ['Ingeniería Comercial', 5.20, '5,2'],
+        ['Kinesiología', 5.59, '5,6'],
+        ['Pedagogía en Inglés', 5.93, '5,9'],
+        ['Agronomía', 6.60, '6,6'],
+        ['Derecho', 6.92, '6,9']
+      ];
+      const DOMAIN_MAX = 7.5;
+      const barsHost = document.getElementById('bars');
+      CAREERS.forEach(function(c, i){
+        const row = document.createElement('div');
+        row.className = 'brow';
+        row.innerHTML =
+          '<div class="lbl">' + c[0] + '</div>' +
+          '<div class="track"><div class="fill" id="fill' + i + '"></div></div>' +
+          '<div class="val">' + c[2] + ' meses</div>';
+        barsHost.appendChild(row);
+      });
+
+      tl.fromTo('#stateTable', { autoAlpha: 1 }, { autoAlpha: 0, duration: .25, immediateRender: false }, 44.0);
+      tl.fromTo('#stateChart', { autoAlpha: 0 }, { autoAlpha: 1, duration: .25 }, 44.3);
+      tl.fromTo(['.chart-title', '.chart-sub'], { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: .4, ease: 'power2.out', stagger: .08 }, 44.55);
+
+      CAREERS.forEach(function(c, i){
+        const at = 44.95 + i * 0.5;
+        tl.fromTo('#fill' + i, { scaleX: 0 },
+          { scaleX: c[1] / DOMAIN_MAX, duration: .6, ease: 'power2.out' }, at);
+      });
+
+      tl.fromTo('#curIA', { x: 0, y: 240 }, { x: 40, y: -20, duration: .6, ease: 'power2.inOut', immediateRender: false }, 44.0);
+      tl.fromTo('#bIa3', { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: .4, ease: 'power2.out' }, 44.5);
+
+      /* ============================================================
+         BEAT 6 (58-74s) — informe de una pagina, hold en "Supuestos"
+         ============================================================ */
+      tl.fromTo('#stateChart', { autoAlpha: 1 }, { autoAlpha: 0, duration: .25, immediateRender: false }, 58.0);
+      tl.fromTo('#stateReport', { autoAlpha: 0 }, { autoAlpha: 1, duration: .25 }, 58.3);
+      tl.fromTo(['.report-title', '.report-sub'], { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: .4, ease: 'power2.out', stagger: .08 }, 58.6);
+      tl.fromTo('.finding', { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: .45, ease: 'power2.out', stagger: .5 }, 59.3);
+
+      tl.fromTo('#assume', { autoAlpha: 0, y: 14, scale: .97 },
+        { autoAlpha: 1, y: 0, scale: 1, duration: .6, ease: 'back.out(1.5)' }, 63.2);
+
+      tl.fromTo('#curIA', { x: 40, y: -20 }, { x: 20, y: -180, duration: .6, ease: 'power2.inOut', immediateRender: false }, 58.0);
+      tl.fromTo('#bIa4', { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: .4, ease: 'power2.out' }, 62.0);
+
+      /* Supuestos a validar queda en pantalla de 63.4 a 74 (>=10s de hold). */
+
+      /* ============================================================
+         BEAT 7 (74-82s) — cierre
+         ============================================================ */
+      tl.fromTo(['#bar', '#mainPanel', '#sidePanel', '#curIA', '#curJorge'],
+        { autoAlpha: 1 }, { autoAlpha: 0, duration: .3, immediateRender: false }, 74.0);
+      tl.fromTo('#endCard', { autoAlpha: 0 }, { autoAlpha: 1, duration: .3 }, 74.4);
+      tl.fromTo('#endCard .t', { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: .6, ease: 'power3.out' }, 74.7);
+      tl.fromTo('.underline i', { scaleX: 0 }, { scaleX: 1, duration: .5, ease: 'power2.out', stagger: .1, transformOrigin: 'left center' }, 75.3);
+
+      document.fonts.ready.then(function(){
+        window.__timelines = window.__timelines || {};
+        window.__timelines['main'] = tl;
+        if (window.__hfForceTimelineRebind) window.__hfForceTimelineRebind();
+      });
+    </script>
+  </body>
+</html>

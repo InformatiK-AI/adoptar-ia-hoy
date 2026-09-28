@@ -1,0 +1,2039 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Adoptar IA hoy</title>
+<style>
+/* ================================================================
+   ADOPTAR IA HOY — tablero compartido
+   Semana de la Empleabilidad 2026 · Universidad de La Frontera
+   Autocontenido: sin red, sin CDN, sin fuentes externas.
+   Dirección de arte: G · Tablero compartido (design/style-frames-3.html)
+   ================================================================ */
+
+@font-face{
+  font-family:"Schibsted Grotesk";
+  font-style:normal;
+  font-weight:400 900;
+  font-display:swap;
+  src:url("{{FONT_SCHIBSTED}}") format("woff2");
+}
+@font-face{
+  font-family:"Figtree";
+  font-style:normal;
+  font-weight:400 900;
+  font-display:swap;
+  src:url("{{FONT_FIGTREE}}") format("woff2");
+}
+
+:root{
+  --bg:#F3F5FA;
+  --ink:#161A2E;
+  --mute:#6B7390;
+  --line:#DCE1EC;
+  --coral:#FF7A6B;
+  --coral-soft:#FFE4DF;
+  --blue:#3D6BFF;
+  --blue-soft:#E1E8FF;
+  --amber:#FFB938;
+  --amber-soft:#FFF1D6;
+  --ai:#8B5CF6;
+  --ai-soft:#EDE6FC;
+  --white:#FFFFFF;
+  --shadow:0 1.2em 2.4em -1.4em rgba(22,26,46,.38);
+  --shadow-sm:0 .5em 1em -0.6em rgba(22,26,46,.3);
+}
+body.dark{
+  --bg:#12141F;
+  --ink:#EDEFF7;
+  --mute:#9AA1BE;
+  --line:#2B3049;
+  --white:#1B1F30;
+  --coral-soft:#3A2420;
+  --blue-soft:#1D2540;
+  --amber-soft:#3A2E14;
+  --ai-soft:#2A2140;
+  --shadow:0 1.2em 2.4em -1.4em rgba(0,0,0,.6);
+  --shadow-sm:0 .5em 1em -0.6em rgba(0,0,0,.5);
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;height:100%;background:#0d0e14}
+body{
+  font-family:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  -webkit-font-smoothing:antialiased;
+  color:var(--ink);
+  overflow:hidden;
+}
+body:not(.js) .stagewrap{display:none}
+body:not(.js) .noscript-fallback{display:block;padding:2em;max-width:46em;margin:0 auto;font-size:16px;line-height:1.5;color:#EDEFF7;background:#12141F}
+
+/* ---------------- Escenario 16:9, escalado solo con CSS ---------------- */
+.stagewrap{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#0d0e14}
+.stage{
+  position:relative;
+  width:min(100vw, calc(100vh * 16 / 9));
+  height:min(100vh, calc(100vw * 9 / 16));
+  font-size:min(1.65vw, 2.933vh);
+  background:var(--bg);
+  overflow:hidden;
+  color:var(--ink);
+}
+.stage.fs{width:100vw;height:100vh;font-size:min(1.65vw,2.933vh)}
+
+.canvas{position:absolute;inset:0;background-image:radial-gradient(#C9D0DF 1.1px,transparent 1.3px);background-size:1.5em 1.5em;pointer-events:none}
+body.dark .canvas{background-image:radial-gradient(#2A2E44 1.1px,transparent 1.3px)}
+
+/* ---------------- Barra superior (persistente) ---------------- */
+.bar{
+  position:absolute;left:0;right:0;top:0;height:3.3em;z-index:20;
+  background:var(--white);border-bottom:1px solid var(--line);
+  display:flex;align-items:center;padding:0 1.8em;gap:1em;
+  font-weight:700;font-size:.92em;
+}
+.bar .doc{flex:1;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:opacity .25s ease}
+.bar .avatars{display:flex;padding-left:.5em;flex:none;gap:.42em}
+.av{
+  width:2.05em;height:2.05em;border-radius:50%;display:grid;place-items:center;
+  color:#fff;font-weight:800;font-size:.72em;border:.16em solid var(--white);
+  transition:transform .3s ease, box-shadow .3s ease;
+}
+.av.c{background:var(--coral)}
+.av.j{background:var(--blue)}
+.av.g{background:var(--amber);color:var(--ink)}
+.av.ia{background:var(--ai)}
+.av.active{box-shadow:0 0 0 .15em var(--white),0 0 0 .28em currentColor;transform:scale(1.12)}
+.timer{
+  display:none;align-items:baseline;gap:.5em;font-variant-numeric:tabular-nums;
+  padding:.2em .7em;border-radius:.4em;background:var(--bg);border:1px solid var(--line);
+  margin-right:.4em;cursor:pointer;user-select:none;
+}
+.timer.show{display:flex}
+.timer .clk{font-weight:800;font-size:1.05em}
+.timer .dl{font-weight:700;font-size:.8em}
+.timer .dl.ahead{color:#1D8A5A}
+.timer .dl.behind{color:#D63B3B}
+body.dark .timer .dl.ahead{color:#5FDB9C}
+body.dark .timer .dl.behind{color:#FF8A8A}
+
+/* ---------------- Franja de progreso (persistente) ---------------- */
+.ribbon{position:absolute;left:0;right:0;bottom:0;height:.5em;z-index:20;
+  background:linear-gradient(to right,
+    var(--coral) 0 37.5%,
+    var(--blue) 37.5% 70%,
+    var(--amber) 70% 100%);
+}
+.ribbon .veil{position:absolute;inset:0;left:var(--pos,0%);background:rgba(243,245,250,.62);transition:left .5s ease}
+body.dark .ribbon .veil{background:rgba(18,20,31,.68)}
+
+/* ---------------- Barra de tiempo del público (T, oculta por defecto) ---------------- */
+.timerbar{position:absolute;left:0;right:0;top:3.3em;height:.35em;z-index:19;background:var(--line);display:none}
+.timerbar.show{display:block}
+.timerbar .fill{height:100%;background:var(--ai);width:0%;transition:width .3s linear}
+
+/* ---------------- Contenedor de diapositivas ---------------- */
+.deck{position:absolute;left:0;right:0;top:3.3em;bottom:.5em;overflow:hidden}
+.slide{position:absolute;inset:0;display:none;padding:2.1em 4.2em 2.4em;overflow:hidden}
+.slide.active{display:block}
+.slide[data-speaker="camila"]{--sp:var(--coral);--sp-soft:var(--coral-soft)}
+.slide[data-speaker="jorge"]{--sp:var(--blue);--sp-soft:var(--blue-soft)}
+.slide[data-speaker="gonzalo"]{--sp:var(--amber);--sp-soft:var(--amber-soft)}
+
+/* ---------------- Tipografía ---------------- */
+.t{font-family:"Schibsted Grotesk",sans-serif;font-weight:900;letter-spacing:-.03em;line-height:.98;margin:0}
+h1.t{font-size:3.1em}
+h2.t{font-size:2.3em}
+.kicker{font-weight:700;color:var(--mute);font-size:1em;margin:0 0 .5em}
+.slide p{font-size:1.5em;line-height:1.46;margin:0 0 .55em;max-width:34em}
+.slide .notas{display:none}
+.slide .lede{font-size:1.7em;line-height:1.38;font-weight:700;max-width:26em}
+.slide .small{font-size:1.15em;color:var(--mute)}
+strong{font-weight:800}
+
+/* ---------------- Grilla unificada ----------------
+   Margen izquierdo/derecho ~7%, título siempre en el mismo lugar
+   (left:7%, top:9%, ~2.9em), y el área de contenido usa el resto del
+   escenario hasta ~93% de ancho y ~88% de alto. Un foco por diapositiva. */
+.gt{position:absolute;left:7%;right:7%;top:9%;font-size:2.9em}
+.gbody{position:absolute;left:7%;right:7%;top:26%;bottom:9%}
+
+/* ---------------- Anclas de memoria (footer de Camila) ---------------- */
+.anchors{position:absolute;left:7%;right:4.2em;bottom:.85em;display:flex;gap:1.1em;
+  font-size:.72em;font-weight:700;color:var(--mute);letter-spacing:.01em;flex-wrap:wrap}
+.anchors span{transition:color .25s ease, font-weight .25s ease}
+.anchors span.cur{color:var(--sp);font-weight:800}
+
+/* ---------------- Notas fijadas / sticky notes ---------------- */
+.note{position:absolute;padding:.85em 1.05em;font-weight:700;box-shadow:var(--shadow-sm);
+  font-size:1.12em;border-radius:.15em;line-height:1.28}
+.note small{display:block;font-weight:400;margin-top:.35em;font-size:.72em;opacity:.85}
+.note.coral{background:var(--coral-soft);color:var(--ink)}
+.note.blue{background:var(--blue-soft);color:var(--ink)}
+.note.amber{background:var(--amber-soft);color:var(--ink)}
+.note.ai{background:var(--ai-soft);color:var(--ink)}
+
+/* ---------------- Cursores animados ---------------- */
+.cur{position:absolute;display:flex;align-items:flex-start;gap:.1em;z-index:6;pointer-events:none}
+.cur svg{width:1.5em;height:1.5em;filter:drop-shadow(0 .15em .25em rgba(0,0,0,.25))}
+.cur b{font-size:.68em;color:#fff;padding:.22em .58em;border-radius:.3em;margin-top:1.05em;font-weight:800;white-space:nowrap}
+.cur.m1{animation:cm1 7s ease-in-out infinite}
+.cur.m2{animation:cm2 8s ease-in-out infinite}
+.cur.m3{animation:cm3 6.4s ease-in-out infinite}
+.cur.m4{animation:cm4 5.6s ease-in-out infinite}
+@keyframes cm1{50%{transform:translate(.5em,.3em)}}
+@keyframes cm2{50%{transform:translate(-.45em,.35em)}}
+@keyframes cm3{50%{transform:translate(.4em,-.35em)}}
+@keyframes cm4{30%{transform:translate(-.55em,.2em)}70%{transform:translate(-.25em,-.3em)}}
+.cur.enter{animation:centerIn .6s cubic-bezier(.2,.9,.3,1) both}
+@keyframes centerIn{from{opacity:0;transform:translate(4em,-1.4em) scale(.7)}to{opacity:1;transform:translate(0,0) scale(1)}}
+
+/* ---------------- Documentos / tarjetas ---------------- */
+.doc-card{background:var(--white);border:1px solid var(--line);border-radius:.7em;
+  box-shadow:var(--shadow);padding:1.7em 2em}
+.doc-card .path{color:var(--mute);font-size:.85em;font-weight:700;margin:0 0 .7em}
+.ins{background:linear-gradient(transparent 60%, var(--ai-soft) 60%);color:var(--ai);font-weight:800}
+
+/* ---------------- Comentarios estilo doc ---------------- */
+.cmt{position:absolute;background:var(--white);border:1px solid var(--line);border-radius:.6em;
+  padding:.85em 1.05em;box-shadow:var(--shadow);font-size:1.02em;line-height:1.42}
+.cmt .who{display:flex;align-items:center;gap:.5em;font-weight:800;font-size:.85em;margin-bottom:.4em}
+.cmt .who i{width:1.4em;height:1.4em;border-radius:50%;display:inline-block;flex:none}
+
+/* ---------------- Texto que se escribe solo ---------------- */
+.type{display:inline-block;border-right:.1em solid var(--ai);
+  animation:reveal 2.2s steps(40) .5s both, caret .8s steps(1) infinite;white-space:nowrap;overflow:hidden}
+@keyframes reveal{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0% 0 0)}}
+@keyframes caret{50%{border-color:transparent}}
+/* Variante para texto largo que necesita envolver en varias líneas: mismo
+   efecto de "se escribe solo" pero como cortina que se abre, sin obligar
+   nowrap (eso rompía el ajuste de línea y cortaba el texto fuera del escenario). */
+.type-wrap{display:inline-block;clip-path:inset(0 100% 0 0);
+  animation:reveal 1.7s cubic-bezier(.4,.05,.2,1) .4s forwards}
+/* Variante enganchada a un fragmento (p.ej. G1): no se escribe sola al
+   entrar a la diapositiva, solo cuando el .frag que la envuelve recibe .on. */
+.frag .type-wrap{animation:none}
+.frag.on .type-wrap{animation:reveal 1.7s cubic-bezier(.4,.05,.2,1) .1s forwards}
+
+/* ---------------- Fragmentos (avance por clic / flecha) ---------------- */
+.frag{opacity:0;transform:translateY(.35em);transition:opacity .4s ease, transform .4s ease}
+.frag.on{opacity:1;transform:translateY(0)}
+.slide.active .frag.on ~ .frag.on{}
+
+/* ---------------- Utilidades de layout ---------------- */
+.abs{position:absolute}
+.row{display:flex;gap:1.4em}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.6em}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.2em}
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.1em}
+
+/* ---------------- Retratos / imágenes ---------------- */
+.portrait{position:absolute;border-radius:.7em;object-fit:cover;box-shadow:var(--shadow)}
+
+/* ---------------- Video demo (J5) ---------------- */
+.reel{aspect-ratio:9/16;border-radius:1.1em;overflow:hidden;background:#0B0E19;border:.22em solid var(--ink);
+  box-shadow:0 1.2em 2.4em -1.2em rgba(22,26,46,.45);cursor:pointer}
+.reel video{width:100%;height:100%;object-fit:cover;display:block}
+.reel-sound{position:absolute;left:50%;bottom:1em;transform:translateX(-50%);white-space:nowrap;display:none;
+  background:rgba(11,14,25,.78);color:#fff;font-weight:700;font-size:.8em;padding:.35em .7em;border-radius:.4em}
+.reel-sound.show{display:block}
+.demo-wrap{position:relative;width:62%;margin:0 auto}
+.demo{width:100%;aspect-ratio:16/9;height:auto;border-radius:.6em;border:1px solid var(--line);
+  box-shadow:var(--shadow);display:block;background:#0b0e14;object-fit:cover}
+.demo-fallback{display:none;border:1px dashed var(--line);border-radius:.6em;padding:1.4em 1.6em;font-size:1.02em;
+  color:var(--ink);line-height:1.5;background:var(--white)}
+.demo-fallback.show{display:block}
+/* Relevo a Gonzalo (J8): loop mudo dentro del recuadro punteado; la grilla es el respaldo. */
+.relevo-box{border:.16em dashed var(--blue);border-radius:1.3em;background:var(--blue-soft);overflow:hidden}
+.relevo-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.relevo-fallback{display:none;position:absolute;inset:0;padding:1.3em;grid-template-columns:repeat(2,minmax(0,1fr));
+  grid-template-rows:repeat(4,minmax(0,1fr));gap:.55em;align-content:stretch}
+.relevo-fallback.show{display:grid}
+.demo-fallback .tag{display:inline-block;font-weight:800;color:var(--ai);margin-bottom:.5em;font-size:.85em;
+  text-transform:none}
+.demo-fallback code{display:block;background:var(--bg);border-radius:.4em;padding:.7em .9em;font-size:.85em;
+  margin:.6em 0;white-space:pre-wrap;font-family:ui-monospace,Consolas,monospace}
+
+/* ---------------- Checklist J7 ---------------- */
+.checklist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.5em}
+.checklist li{display:flex;align-items:center;gap:.8em;font-size:1.32em;font-weight:700}
+.checklist .box{flex:none;width:1.15em;height:1.15em;border:.14em solid var(--blue);border-radius:.28em;position:relative;transition-delay:inherit}
+.checklist .box::after{content:"";position:absolute;left:.32em;top:.06em;width:.36em;height:.72em;
+  border:solid #fff;border-width:0 .18em .18em 0;transform:rotate(45deg) scale(0);
+  transition:transform .2s cubic-bezier(.3,1.8,.5,1);transition-delay:inherit}
+.checklist li.on .box{background:var(--blue)}
+.checklist li.on .box::after{transform:rotate(45deg) scale(1)}
+
+/* ---------------- Video de patrón (J4): a diferencia de J5/G5, cubre todo el escenario
+   (el video ya trae su propio título y barra dibujados); el grid de abajo es el respaldo,
+   oculto salvo error de carga. El área de la slide es más ancha que 16:9 (escenario menos
+   barra y cinta), así que contain + fondo del tablero: cover recortaba el título y los cursores. ---------------- */
+.j4-video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;background:#F3F5FA}
+.j4-fallback{display:none}
+.j4-fallback.show{display:block}
+
+/* ---------------- Tarjetas de carrera (J4): encabezado fijo + revelado progresivo ---------------- */
+.jcard{background:var(--white);border:1px solid var(--line);border-radius:.7em;padding:.5em 1.05em;
+  box-shadow:var(--shadow-sm);display:flex;flex-direction:column;justify-content:center;gap:.16em;overflow:hidden}
+.jcard .jhead{font-weight:900;font-size:1.26em;color:var(--sp);padding-bottom:.14em;
+  border-bottom:.1em solid var(--sp-soft);margin-bottom:0;letter-spacing:-.01em}
+.jcard .jrow{font-size:.96em;line-height:1.12}
+.jcard .jrow b{color:var(--ink);font-weight:800}
+.jcard .jcrit{margin-top:.45em;font-size:.9em;font-weight:800;color:var(--sp);padding-top:.22em;border-top:1px solid var(--line)}
+
+/* ---------------- Contenido específico ---------------- */
+/* Dos círculos separados en reposo; al avanzar se superponen lo justo para
+   que la "lente" central quede libre. Las etiquetas de cada círculo viven en
+   su mitad exclusiva (no en el centro del círculo), así nunca chocan con la
+   etiqueta central ni entre sí, incluso superpuestos. */
+.venn{position:relative;width:40em;height:19.5em}
+.venn .c1,.venn .c2{position:absolute;top:1.35em;width:17.5em;height:17.5em;border-radius:50%;
+  transition:transform .8s cubic-bezier(.3,.8,.3,1)}
+.venn .c1{left:0;background:rgba(61,107,255,.4)}
+.venn .c2{left:23em;background:rgba(255,185,56,.48)}
+.venn.on .c1{transform:translateX(6.1em)}
+.venn.on .c2{transform:translateX(-6.1em)}
+.venn .lbl{position:absolute;top:50%;transform:translateY(-50%);font-weight:800;font-size:1.42em;line-height:1.3;color:var(--ink)}
+/* Nota: em en left/width/top de un elemento se resuelve contra el font-size
+   de ESE MISMO elemento, no el del padre. Como .lbl y .mid fijan su propio
+   font-size, sus valores de left/width/top van divididos por ese font-size
+   para que el resultado quede en unidades relativas a .venn. */
+.venn .c1 .lbl{left:.775em;width:6.83em;text-align:left}
+.venn .c2 .lbl{right:.775em;width:6.83em;text-align:right}
+.venn .lbl small{display:block;font-weight:400;font-size:.78em;opacity:.7;margin-top:.3em}
+.venn .mid{position:absolute;left:13.79em;top:5.08em;width:5.08em;text-align:center;font-weight:800;font-size:1.24em;
+  line-height:1.26;color:var(--ink)}
+
+.ticket{width:1.5em;height:1.5em;border-radius:50%;display:inline-block}
+
+/* ---------------- C9: la fórmula, una fila grande y fotografiable ---------------- */
+.fblock{flex:1 1 0;min-width:0;background:var(--white);border:.14em solid var(--line);border-radius:1.1em;
+  padding:1.1em 1em;text-align:center;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;justify-content:center}
+.fblock .ft{font-weight:900;font-size:1.28em;letter-spacing:-.02em;margin-bottom:.28em}
+.fblock .fs{font-size:1.12em;color:var(--mute);font-weight:600;line-height:1.28}
+.fsign{flex:none;font-weight:900;font-size:2.6em;display:flex;align-items:center;color:var(--mute)}
+.fdoor{flex:1.3;background:var(--sp-soft);border:.14em solid var(--sp);border-radius:1.1em 1.1em 3.2em 3.2em;
+  display:flex;align-items:center;justify-content:center;text-align:center;box-shadow:var(--shadow);
+  padding:0 .3em;font-weight:900;font-size:1.5em;letter-spacing:-.02em;color:var(--ink)}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+
+/* ---------------- Overlays: presentación general, ayuda, notas ---------------- */
+.overlay{position:absolute;inset:0;z-index:40;background:rgba(11,14,25,.94);color:#EDEFF7;
+  display:none;overflow:auto;padding:2.2em}
+.overlay.on{display:block}
+.overlay h2{font-family:"Schibsted Grotesk",sans-serif;font-weight:900;font-size:1.4em;margin:0 0 .8em}
+.ogrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(9.5em,1fr));gap:.7em}
+.othumb{background:#1c2033;border:1px solid #333a55;border-radius:.4em;padding:.6em .7em;text-align:left;
+  color:#EDEFF7;font-family:inherit;cursor:pointer;font-size:.85em}
+.othumb:hover{border-color:var(--ai)}
+.othumb.cur{border-color:var(--ai);box-shadow:0 0 0 2px var(--ai) inset}
+.othumb .n{font-weight:800;color:#9AA1BE;font-size:.8em;display:block;margin-bottom:.3em}
+.othumb .tt{display:block;line-height:1.25}
+.keylist{font-size:.95em;line-height:1.9;max-width:32em}
+.keylist b{display:inline-block;min-width:6em;color:var(--ai);font-family:ui-monospace,Consolas,monospace}
+
+/* ---------------- Panel de notas en pantalla (N, respaldo si el popup se bloquea) ---------------- */
+.notespanel{position:absolute;right:0;top:3.3em;bottom:.5em;width:27em;z-index:35;
+  background:var(--white);border-left:1px solid var(--line);box-shadow:-1em 0 2em -1.2em rgba(0,0,0,.4);
+  display:none;flex-direction:column;font-size:.85em}
+.notespanel.show{display:flex}
+.notespanel .npHead{display:flex;align-items:baseline;gap:.6em;padding:1.4em 1.6em .8em;border-bottom:1px solid var(--line);flex:none}
+.notespanel h3{margin:0;font-size:1.05em;color:var(--sp,var(--ai));flex:1;min-width:0}
+.notespanel .npPos{font-size:.85em;color:var(--mute);font-weight:700;white-space:nowrap}
+.notespanel .npScroll{flex:1;overflow:auto;padding:1.2em 1.6em 2em;scroll-behavior:smooth}
+.notespanel .warn{margin:.8em 1.6em 0;font-weight:800;color:#D63B3B;background:var(--coral-soft);
+  border-radius:.4em;padding:.5em .7em;font-size:.95em;flex:none}
+/* ---- clave (idea central + palabras clave), compacta ---- */
+.nClave{font-size:.92em;line-height:1.5;padding:.6em .8em;margin:0 0 1em;background:rgba(107,115,144,.09);
+  border-radius:.5em;color:var(--mute)}
+.nClave b{color:var(--ink)}
+/* ---- pasos: pasado atenuado, ahora resaltado, futuro semi-visible ---- */
+.nPaso{opacity:.7;padding:.6em .8em;margin:0 0 .6em;border-left:.28em solid transparent;
+  border-radius:0 .5em .5em 0;transition:opacity .3s ease, border-color .3s ease, background .3s ease;
+  scroll-margin-top:.8em}
+.nPaso.past{opacity:.38}
+.nPaso.now{opacity:1;background:rgba(0,0,0,.035)}
+.nPaso p{font-size:1.12em;line-height:1.48;margin:0 0 .6em;max-width:none}
+.nPaso p:last-child{margin-bottom:0}
+.nPaso p.esc{font-style:italic;color:var(--mute);border-left:2px solid var(--line);padding-left:.7em}
+.nPaso p.cue{font-weight:800;color:var(--ai);background:var(--ai-soft);
+  border-radius:.4em;padding:.4em .7em;display:inline-block}
+.nAhora{display:inline-block;font-size:.68em;font-weight:800;letter-spacing:.07em;color:#fff;
+  padding:.18em .55em;border-radius:.3em;margin-right:.5em;vertical-align:middle}
+
+/* ---------------- J1: barras de votación ---------------- */
+.voteFill{height:100%;border-radius:.5em;transform-origin:left;
+  transition:transform .8s cubic-bezier(.2,.8,.2,1);transform:scaleX(0)}
+.voteFill.on{transform:scaleX(1)}
+
+/* ---------------- G2: el cargo se tacha al avanzar (no de entrada) ---------------- */
+.g2cargo{opacity:1!important;transform:none!important;position:relative;transition:color .3s ease}
+.g2cargo.on{color:var(--mute)}
+.g2cargo.on::after{content:"";position:absolute;left:-.05em;right:-.05em;top:52%;height:.11em;background:var(--mute)}
+
+/* ---------------- Impresión (nice-to-have) ---------------- */
+@media print{
+  body{overflow:visible;background:#fff}
+  .stagewrap{min-height:0;display:block}
+  .bar,.ribbon,.timerbar,.notespanel,.overlay{display:none!important}
+  .stage{width:100%;height:auto;font-size:20px}
+  .deck{position:static;top:auto;bottom:auto}
+  .slide{position:relative;display:block!important;page-break-after:always;height:100vh;padding:1.2in}
+  .frag{opacity:1!important;transform:none!important}
+}
+</style>
+</head>
+<body>
+<noscript><div class="noscript-fallback">
+  <h1>Adoptar IA hoy</h1>
+  <p>Esta presentación necesita JavaScript para avanzar entre diapositivas. Ábrela en un navegador con JavaScript
+  habilitado (Edge, Chrome, Firefox).</p>
+</div></noscript>
+
+<div class="stagewrap">
+<div class="stage" id="stage">
+  <div class="canvas"></div>
+
+  <header class="bar" id="bar">
+    <div class="timer" id="timer" title="Iniciar / pausar cronómetro (clic) · doble clic para reiniciar">
+      <span class="clk" id="timerClk">0:00</span><span class="dl" id="timerDl"></span>
+    </div>
+    <div class="doc" id="barDoc">Adoptar IA hoy — Nivel 1: Visibilidad, con Camila</div>
+    <div class="avatars" id="barAvatars">
+      <div class="av c" data-av="camila">C</div>
+      <div class="av j" data-av="jorge">J</div>
+      <div class="av g" data-av="gonzalo">G</div>
+      <div class="av ia" data-av="ia">IA</div>
+    </div>
+  </header>
+
+  <div class="timerbar" id="timerbar"><div class="fill" id="timerbarFill"></div></div>
+
+  <main class="deck" id="deck">
+
+    <!-- ============================================================ -->
+    <!-- APERTURA · 00:00 · 0:30 · Camila                              -->
+    <!-- ============================================================ -->
+    <section class="slide" data-speaker="camila" data-min="0" data-title="Apertura">
+      <h1 class="t abs" style="left:7%;top:22%;font-size:4.4em">Adoptar<br>IA hoy</h1>
+      <p class="abs" style="left:7%;top:62%;width:44%;font-size:1.5em;font-weight:600;line-height:1.45">
+        <span class="type-wrap">Cómo ganar ventaja en tu área, tu carrera y tu industria al mismo tiempo.</span>
+      </p>
+
+      <div class="note coral abs" data-overlap-ok style="left:59%;top:20%;width:11em;transform:rotate(-3deg)">Visibilidad<small>Camila</small></div>
+      <div class="note blue abs" data-overlap-ok style="left:75%;top:33%;width:11em;transform:rotate(2deg)">Capacidad<small>Jorge</small></div>
+      <div class="note amber abs" data-overlap-ok style="left:63%;top:50%;width:11em;transform:rotate(-1.5deg)">Valor<small>Gonzalo</small></div>
+
+      <div class="cur m1 abs" style="left:52%;top:32%"><svg viewBox="0 0 24 24"><path d="M3 2l7 19 2.5-7.5L20 11z" fill="#FF7A6B" stroke="#fff" stroke-width="1.5"/></svg><b style="background:#FF7A6B">Camila</b></div>
+      <div class="cur m2 abs" style="left:86%;top:58%"><svg viewBox="0 0 24 24"><path d="M3 2l7 19 2.5-7.5L20 11z" fill="#3D6BFF" stroke="#fff" stroke-width="1.5"/></svg><b style="background:#3D6BFF">Jorge</b></div>
+      <div class="cur m3 abs" style="left:73%;top:76%"><svg viewBox="0 0 24 24"><path d="M3 2l7 19 2.5-7.5L20 11z" fill="#FFB938" stroke="#fff" stroke-width="1.5"/></svg><b style="background:#FFB938;color:#161A2E">Gonzalo</b></div>
+      <div class="cur m4 abs" style="left:23%;top:80%"><svg viewBox="0 0 24 24"><path d="M3 2l7 19 2.5-7.5L20 11z" fill="#8B5CF6" stroke="#fff" stroke-width="1.5"/></svg><b style="background:#8B5CF6">IA</b></div>
+
+      <div class="notas">
+        <div class="paso" data-paso="0">
+          <p>Buenas tardes. Somos Camila, Jorge y Gonzalo, y en los próximos cuarenta minutos les vamos a contar tres partes de una misma historia: cómo hacer que sepan lo que sabes, cómo multiplicarlo con inteligencia artificial y cómo convertirlo en valor para tu carrera. Parto yo, con una confesión.</p>
+          <p class="cue">AVANZAR · siguiente: Yo no quería ser creadora de contenido</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- NIVEL 1 · VISIBILIDAD · Camila · 15:00                        -->
+    <!-- ============================================================ -->
+
+    <!-- C1 · Yo no quería ser creadora de contenido · ORIGEN · 00:30 · 1:00 -->
+    <section class="slide" data-speaker="camila" data-min="30" data-title="Yo no quería ser creadora de contenido" data-anchor="ORIGEN">
+      <img class="portrait" src="{{IMG_CAMILA}}" alt="Retrato de Camila" style="right:7%;top:12%;width:30%;height:76%">
+      <h1 class="t gt" style="width:52%;font-size:2.9em">Yo no quería ser<br>creadora de contenido</h1>
+      <p class="lede abs" style="left:7%;top:58%;width:48%;font-size:1.9em">Pero compartir lo que estaba aprendiendo terminó cambiando mi carrera.</p>
+      <div class="cur m1 abs" style="left:7%;top:47%"><svg viewBox="0 0 24 24"><path d="M3 2l7 19 2.5-7.5L20 11z" fill="#FF7A6B" stroke="#fff" stroke-width="1.5"/></svg><b style="background:#FF7A6B">Camila</b></div>
+      <div class="notas">
+        <div class="clave"><b>Idea:</b> abrir con sorpresa y humanidad: este camino no fue un plan de marca personal. <b>Palabras clave:</b> nunca imaginé dedicarme a redes · no buscaba seguidores ni una marca personal · la historia parte por una necesidad muy simple: aprender Java.</div>
+        <div class="paso" data-paso="0">
+          <p>"Si hace algunos años alguien me hubiera dicho que iba a estar dando charlas, creando contenido sobre inteligencia artificial o participando en este ecosistema, probablemente no le habría creído. Yo no tenía un plan para ser creadora de contenido. Todo empezó por algo mucho más simple: necesitaba aprender Java."</p>
+          <p class="esc">Puente: "Y esa necesidad me llevó a hacer algo que parecía pequeño, pero terminó cambiando todo."</p>
+          <p class="cue">AVANZAR · siguiente: Todo comenzó con Java</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- C2 · Todo comenzó con Java · JAVA · 01:30 · 1:15 -->
+    <section class="slide" data-speaker="camila" data-min="90" data-title="Todo comenzó con Java" data-anchor="JAVA">
+      <h1 class="t abs" style="left:7%;top:22%;font-size:5.4em;color:var(--sp)">JAVA</h1>
+      <p class="lede abs" style="left:7%;top:56%;width:46%">"Necesitaba aprenderlo. Así que empecé a explicármelo."</p>
+      <div class="cur m1 abs" style="left:50%;top:16%"><svg viewBox="0 0 24 24"><path d="M3 2l7 19 2.5-7.5L20 11z" fill="#FF7A6B" stroke="#fff" stroke-width="1.5"/></svg><b style="background:#FF7A6B">Camila</b></div>
+      <div class="reel frag abs" data-f="1" id="reelJava" style="left:64%;top:10%;height:78%" title="Reel: aprendiendo Java en público">
+        <video id="reelJavaVideo" src="media/reel-java.mp4" poster="media/reel-java-poster.jpg" playsinline preload="auto"></video>
+        <div class="reel-sound" id="reelJavaSound">Clic para activar el sonido</div>
+      </div>
+      <div class="notas">
+        <div class="clave"><b>Idea:</b> grabarte nació como técnica de estudio, no como estrategia de redes. <b>Palabras clave:</b> curso de Java en Udemy · me grababa para comprobar si realmente entendía · explicar me ayudaba a aprender · empecé a subir algunas de esas explicaciones.</div>
+        <div class="paso" data-paso="0">
+          <p>"Me habían pedido hacer un curso de Java en Udemy. Yo veía las clases, pero necesitaba comprobar si realmente lo estaba entendiendo. Entonces empecé a grabarme explicando lo que acababa de aprender.</p>
+          <p class="esc">✂ recortable si va atrasada: "Era casi hablar conmigo misma: ¿qué entendí?, ¿cómo funciona?, ¿cómo lo explicaría?".</p>
+          <p>Y algunas de esas explicaciones las empecé a subir a redes."</p>
+        </div>
+        <div class="paso" data-paso="1">
+          <p class="cue">AVANZAR · aparece: reel "aprendiendo Java" (se reproduce con sonido)</p>
+          <p>"Este es uno de esos primeros videos."</p>
+          <p class="esc">(Dejar correr unos 15 a 20 segundos; dura 46. Si el sonido no se escucha, hacer clic sobre el video. Si va atrasada, avanzar: el video se detiene solo al cambiar de slide.)</p>
+          <p class="esc">Puente: "Sin darme cuenta, había empezado a aprender en público."</p>
+          <p class="cue">AVANZAR · siguiente: Aprender en público</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- C3 · Aprender en público · COMPARTIR · 02:45 · 1:15 -->
+    <section class="slide" data-speaker="camila" data-min="165" data-title="Aprender en público" data-anchor="COMPARTIR">
+      <h2 class="t gt">Aprender en público</h2>
+      <div class="abs" style="left:7%;top:34%;width:86%;display:flex;align-items:stretch;gap:1em;font-size:1.9em;font-weight:800">
+        <div class="doc-card" style="flex:1 1 0;min-width:0;padding:.8em .7em;text-align:center;display:flex;align-items:center;justify-content:center">Aprender</div>
+        <div class="frag" data-f="1" style="flex:none;color:var(--sp);font-size:1.3em;display:flex;align-items:center">→</div>
+        <div class="doc-card frag" data-f="1" style="flex:1 1 0;min-width:0;padding:.8em .7em;border-color:var(--sp);text-align:center;display:flex;align-items:center;justify-content:center">Compartir</div>
+        <div class="frag" data-f="2" style="flex:none;color:var(--sp);font-size:1.3em;display:flex;align-items:center">→</div>
+        <div class="doc-card frag" data-f="2" style="flex:1 1 0;min-width:0;padding:.8em .7em;text-align:center;display:flex;align-items:center;justify-content:center">Aprender mejor</div>
+      </div>
+      <p class="lede abs" style="left:7%;top:70%;width:86%;font-size:2em">Explicar en público obliga a ordenar lo que sabes.</p>
+      <div class="notas">
+        <div class="clave"><b>Idea:</b> explicar públicamente obliga a ordenar ideas y acelera el aprendizaje. <b>Palabras clave:</b> explicar te obliga a ordenar lo que sabes · la audiencia empezó a responder y preguntar · otros también estaban aprendiendo conmigo.</div>
+        <div class="paso" data-paso="0">
+          <p>"Cuando uno comparte lo que está aprendiendo pasan dos cosas.</p>
+        </div>
+        <div class="paso" data-paso="1">
+          <p class="cue">AVANZAR · aparece: Compartir</p>
+          <p>Primero, te obliga a ordenar tus propias ideas. Una cosa es creer que entiendes algo y otra es explicárselo a otra persona.</p>
+        </div>
+        <div class="paso" data-paso="2">
+          <p class="cue">AVANZAR · aparece: Aprender mejor</p>
+          <p>Y segundo, aparecen personas al otro lado: algunas están aprendiendo lo mismo, otras saben más y otras hacen preguntas que te obligan a seguir creciendo."</p>
+          <p class="esc">Puente: "Y ahí dejó de sentirse como si estuviera estudiando sola."</p>
+          <p class="cue">AVANZAR · siguiente: De audiencia a comunidad</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- C4 · De audiencia a comunidad · COMUNIDAD · 04:00 · 1:15 -->
+    <section class="slide" data-speaker="camila" data-min="240" data-title="De audiencia a comunidad" data-anchor="COMUNIDAD">
+      <h2 class="t gt">De audiencia a comunidad</h2>
+      <div class="abs" style="left:7%;top:36%;width:49%;font-size:1.45em;font-weight:800;display:flex;gap:.5em;align-items:center;flex-wrap:nowrap;min-width:0">
+        <span style="min-width:0;white-space:nowrap">Compartir</span><span style="color:var(--sp);flex:none">→</span><span class="frag" data-f="1" style="min-width:0;white-space:nowrap">Conversar</span><span class="frag" data-f="2" style="color:var(--sp);flex:none">→</span><span class="frag" data-f="2" style="min-width:0;white-space:nowrap">Conectar</span>
+      </div>
+      <p class="lede frag abs" data-f="3" style="left:7%;top:64%;width:52%;font-size:2em">"Hay más personas interesadas en esto."</p>
+      <img class="portrait" src="{{IMG_COMUNIDAD}}" alt="Foto de la comunidad" style="right:7%;top:14%;width:34%;height:80%">
+      <div class="notas">
+        <div class="clave"><b>Idea:</b> las redes dejaron de ser solo entretenimiento; detrás de las cuentas hay personas con intereses compartidos. <b>Palabras clave:</b> encontré personas con los mismos intereses · comenzó una comunidad antes de que yo la llamara comunidad.</div>
+        <div class="paso" data-paso="0">
+          <p>"Empecé a darme cuenta de que había muchas personas interesadas en programación y tecnología. Hasta ese momento yo también veía las redes principalmente como lugares donde uno consume o publica cosas.</p>
+        </div>
+        <div class="paso" data-paso="1">
+          <p class="cue">AVANZAR · aparece: Conversar</p>
+          <p>Pero empecé a verlas de otra forma:</p>
+          <p class="esc">✂ recortable si va atrasada: la enumeración "estudiantes, profesionales, emprendedores…".</p>
+        </div>
+        <div class="paso" data-paso="2">
+          <p class="cue">AVANZAR · aparece: Conectar</p>
+          <p>detrás de esas pantallas había personas que sabían cosas que yo no sabía."</p>
+        </div>
+        <div class="paso" data-paso="3">
+          <p class="cue">AVANZAR · aparece: "Hay más personas interesadas en esto."</p>
+          <p class="esc">Puente: "Después apareció un tema que volvió a acelerar todo."</p>
+          <p class="cue">AVANZAR · siguiente: Y entonces apareció la IA</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- C5 · Y entonces apareció la IA · IA · 05:15 · 1:30 -->
+    <section class="slide" data-speaker="camila" data-min="315" data-title="Y entonces apareció la IA" data-anchor="IA">
+      <h1 class="t gt" style="font-size:2.9em">Y apareció la IA</h1>
+      <div class="abs" style="left:7%;top:40%;width:88%;display:flex;gap:1.1em;font-weight:800;font-size:1.9em;flex-wrap:wrap;min-width:0">
+        <span class="frag" data-f="1" style="color:var(--sp);min-width:0">Probar</span>
+        <span class="frag" data-f="1" style="flex:none">→</span>
+        <span class="frag" data-f="2" style="color:var(--sp);min-width:0">Aprender</span>
+        <span class="frag" data-f="2" style="flex:none">→</span>
+        <span class="frag" data-f="3" style="color:var(--sp);min-width:0">Explicar</span>
+        <span class="frag" data-f="3">→</span>
+        <span class="frag" data-f="4" style="color:var(--sp)">Compartir</span>
+      </div>
+      <p class="lede abs" style="left:7%;top:66%;width:60%;font-size:2em">"Me obsesioné un poquito."</p>
+      <div class="cur m4 abs" style="left:7%;top:78%"><svg viewBox="0 0 24 24"><path d="M3 2l7 19 2.5-7.5L20 11z" fill="#8B5CF6" stroke="#fff" stroke-width="1.5"/></svg><b style="background:#8B5CF6">IA</b></div>
+      <div class="notas">
+        <div class="clave"><b>Idea:</b> la IA amplió el universo de temas, pero el patrón siguió siendo el mismo: curiosidad + prueba + explicación. <b>Palabras clave:</b> me obsesioné con probar herramientas · salía algo nuevo y quería entenderlo · el patrón seguía igual que con Java · la comunidad creció alrededor de un interés compartido.</div>
+        <div class="paso" data-paso="0">
+          <p>"Cuando conocí la inteligencia artificial me obsesioné un poquito.</p>
+        </div>
+        <div class="paso" data-paso="1">
+          <p class="cue">AVANZAR · aparece: Probar</p>
+          <p>Salía una herramienta nueva y quería probarla.</p>
+        </div>
+        <div class="paso" data-paso="2">
+          <p class="cue">AVANZAR · aparece: Aprender</p>
+          <p>Texto, imagen, video, automatización, nuevos modelos.</p>
+        </div>
+        <div class="paso" data-paso="3">
+          <p class="cue">AVANZAR · aparece: Explicar</p>
+          <p>Y cada cosa interesante que encontraba tenía ganas de compartirla.</p>
+        </div>
+        <div class="paso" data-paso="4">
+          <p class="cue">AVANZAR · aparece: Compartir</p>
+          <p>Pero el patrón seguía siendo exactamente el mismo que con Java: aprender, probar, explicar y compartir."</p>
+          <p class="esc">Puente: "Y al compartir tanto sobre un mismo tema, empezó a pasar algo que yo tampoco estaba buscando."</p>
+          <p class="cue">AVANZAR · siguiente: Construir redes sin "hacer networking"</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- C6 · Construir redes sin estar "haciendo networking" · RED · 06:45 · 1:30 -->
+    <section class="slide" data-speaker="camila" data-min="405" data-title="Construir redes sin “hacer networking”" data-anchor="RED">
+      <h2 class="t gt">Conectar</h2>
+      <svg class="abs" style="left:7%;top:26%;width:62%;height:50%" viewBox="0 0 400 260">
+        <g stroke="var(--line)" stroke-width="2" fill="none">
+          <path class="frag" data-f="1" d="M70 130 C140 90 190 90 230 60" stroke-dasharray="5 5"/>
+          <path class="frag" data-f="2" d="M70 130 C140 150 190 160 230 150" stroke-dasharray="5 5"/>
+          <path class="frag" data-f="3" d="M70 130 C110 170 150 200 230 220" stroke-dasharray="5 5"/>
+        </g>
+        <circle cx="70" cy="130" r="26" fill="var(--sp)"/>
+        <text x="70" y="135" text-anchor="middle" font-size="14" font-weight="800" fill="#161A2E">Camila</text>
+        <circle class="frag" data-f="1" cx="240" cy="55" r="20" fill="var(--ai-soft)" stroke="var(--line)"/>
+        <text class="frag" data-f="1" x="240" y="60" text-anchor="middle" font-size="12" font-weight="700" fill="#161A2E">Persona</text>
+        <circle class="frag" data-f="2" cx="240" cy="150" r="20" fill="var(--ai-soft)" stroke="var(--line)"/>
+        <text class="frag" data-f="2" x="240" y="155" text-anchor="middle" font-size="12" font-weight="700" fill="#161A2E">Empresa</text>
+        <circle class="frag" data-f="3" cx="240" cy="222" r="20" fill="var(--ai-soft)" stroke="var(--line)"/>
+        <text class="frag" data-f="3" x="240" y="227" text-anchor="middle" font-size="11" font-weight="700" fill="#161A2E">Academia</text>
+      </svg>
+      <p class="lede frag abs" data-f="3" style="left:7%;top:80%;width:60%;font-size:1.9em">Muchas de las mejores conexiones no las estaba buscando.</p>
+      <img class="portrait" src="{{IMG_STAND}}" alt="Foto del stand CCHIA" style="right:7%;top:26%;width:28%;height:36%">
+      <div class="notas">
+        <div class="clave"><b>Idea:</b> el networking apareció como consecuencia de compartir intereses de forma sostenida, no como una actividad artificial. <b>Palabras clave:</b> no pensaba "voy a hacer networking" · compartía temas que me interesaban · eso me acercó a profesionales y organizaciones · así conocí a Edison, presidente de CCHIA.</div>
+        <div class="paso" data-paso="0">
+          <p>"Sin darme cuenta, estaba construyendo redes. Yo no pensaba 'voy a hacer networking'. Simplemente compartía cosas que me interesaban.</p>
+        </div>
+        <div class="paso" data-paso="1">
+          <p class="cue">AVANZAR · aparece: conexión con Persona</p>
+          <p>Y cuando uno habla constantemente sobre un tema, empieza a encontrarse con personas que están interesadas en lo mismo.</p>
+        </div>
+        <div class="paso" data-paso="2">
+          <p class="cue">AVANZAR · aparece: conexión con Empresa</p>
+          <p>Entre esas conexiones conocí a Edison, presidente de la Cámara Chilena de Inteligencia Artificial.</p>
+        </div>
+        <div class="paso" data-paso="3">
+          <p class="cue">AVANZAR · aparece: conexión con Academia y la frase "Muchas de las mejores conexiones no las estaba buscando."</p>
+          <p>Empezamos a conversar y después me invitó a formar parte de la Cámara."</p>
+          <p class="esc">Puente: "Esa oportunidad nació de una conexión, y esa conexión nació porque yo estaba mostrando públicamente lo que hacía."</p>
+          <p class="cue">AVANZAR · siguiente: Vicepresidenta de la CCHIA</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- C7 · De crear contenido a ser vicepresidenta de la CCHIA · CCHIA · 08:15 · 2:30 -->
+    <section class="slide" data-speaker="camila" data-min="495" data-title="Vicepresidenta de la CCHIA" data-anchor="CCHIA">
+      <p class="kicker abs" style="left:7%;top:6.5%;font-size:1.15em;line-height:1.2;margin:0">Cámara Chilena de Inteligencia Artificial</p>
+      <h2 class="t abs" style="left:7%;top:16.5%;font-size:2.1em;line-height:1.1">Camila Bañares · Vicepresidenta</h2>
+
+      <img class="portrait" src="{{IMG_CAMILA}}" alt="Retrato de Camila" style="left:7%;top:30%;width:17%;height:58%">
+
+      <svg class="frag abs" data-f="1" style="left:29%;top:27%;width:40%;height:66%" viewBox="0 0 420 420" preserveAspectRatio="xMidYMid meet">
+        <g stroke="var(--line)" stroke-width="2.5" fill="none">
+          <line x1="210" y1="146" x2="210" y2="132"/>
+          <line x1="210" y1="274" x2="210" y2="288"/>
+          <line x1="274" y1="210" x2="288" y2="210"/>
+          <line x1="146" y1="210" x2="132" y2="210"/>
+        </g>
+        <circle cx="210" cy="210" r="64" fill="var(--ai-soft)" stroke="var(--ai)" stroke-width="2.5"/>
+        <text x="210" y="203" text-anchor="middle" font-size="16" font-weight="800" fill="#161A2E">IA responsable</text>
+        <text x="210" y="224" text-anchor="middle" font-size="16" font-weight="800" fill="#161A2E">y ordenada</text>
+        <rect x="145" y="92" width="130" height="40" rx="8" fill="#fff" stroke="var(--line)"/>
+        <text x="210" y="117" text-anchor="middle" font-size="17" font-weight="700" fill="#161A2E">Empresas</text>
+        <rect x="288" y="190" width="130" height="40" rx="8" fill="#fff" stroke="var(--line)"/>
+        <text x="353" y="215" text-anchor="middle" font-size="15" font-weight="700" fill="#161A2E">Sector público</text>
+        <rect x="145" y="288" width="130" height="40" rx="8" fill="#fff" stroke="var(--line)"/>
+        <text x="210" y="313" text-anchor="middle" font-size="17" font-weight="700" fill="#161A2E">Academia</text>
+        <rect x="2" y="190" width="130" height="40" rx="8" fill="#fff" stroke="var(--line)"/>
+        <text x="67" y="215" text-anchor="middle" font-size="16" font-weight="700" fill="#161A2E">Comunidad</text>
+      </svg>
+
+      <img class="abs" src="{{IMG_CCHIA}}" alt="Logo CCHIA" style="right:6%;top:30%;width:24%;object-fit:contain;background:#fff;border-radius:.5em;padding:1.1em;box-shadow:var(--shadow-sm)">
+      <div class="notas">
+        <div class="clave"><b>Idea:</b> usar la CCHIA como prueba de la tesis de la charla: compartir conocimiento construyó una red que abrió una oportunidad de impacto institucional. <b>Palabras clave:</b> hoy soy vicepresidenta de CCHIA · no fue una meta que planifiqué desde Java · la Cámara es una agrupación gremial · conecta empresas, Estado, academia y comunidad · la IA potencia, pero también exige responsabilidad, coordinación y criterios.</div>
+        <div class="paso" data-paso="0">
+          <p>"Hoy soy vicepresidenta de la Cámara Chilena de Inteligencia Artificial. Y para mí lo significativo es cómo llegué hasta acá. Yo no partí pensando 'algún día quiero llegar a la Cámara'. Esto apareció a medida que fui compartiendo conocimiento, conociendo personas y entrando en el ecosistema.</p>
+        </div>
+        <div class="paso" data-paso="1">
+          <p class="cue">AVANZAR · aparece: diagrama "IA responsable y ordenada" con los cuatro sectores</p>
+          <p>La Cámara es una agrupación gremial que busca contribuir al desarrollo de la inteligencia artificial en Chile, conectando empresas, instituciones públicas y privadas, academia, profesionales y comunidad.</p>
+          <p class="esc">✂ versión corta si va atrasada: "La Cámara conecta empresas, Estado, academia y comunidad."</p>
+          <p>La IA tiene un potencial enorme, pero también tiene riesgos. Por eso necesitamos una adopción no solo rápida, sino responsable y ordenada."</p>
+          <p class="esc">Puente: "Yo no pude planificar este camino. Lo que sí pude hacer fue mostrar lo que estaba aprendiendo y conectar con personas."</p>
+          <p class="esc">Nota de diseño: esta lámina debe sentirse institucional, no corporativa. Dar espacio al logo, no tapar con texto.</p>
+          <p class="cue">AVANZAR · siguiente: Lo que casi nadie nos enseña</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- C8 · Lo que casi nadie nos enseña · FORMACIÓN · 10:45 · 1:30 -->
+    <section class="slide" data-speaker="camila" data-min="645" data-title="Lo que casi nadie nos enseña" data-anchor="FORMACIÓN">
+      <h2 class="t abs" style="left:7%;top:8%;font-size:1.85em">Formación + presencia profesional</h2>
+      <div class="grid2 abs" style="left:7%;top:26%;width:88%">
+        <div class="doc-card">
+          <p class="kicker">Formación tradicional</p>
+          <p style="font-size:1.2em;font-weight:700;margin:0">Conocimiento<br>Experiencia<br>Título</p>
+        </div>
+        <div class="doc-card" style="border-color:var(--sp)">
+          <p class="kicker" style="color:var(--sp)">Presencia profesional</p>
+          <p style="font-size:1.2em;font-weight:700;margin:0">Visibilidad<br>Comunicación<br>Redes · Colaboración</p>
+        </div>
+      </div>
+      <div class="lede frag abs" data-f="1" style="left:7%;top:74%;width:88%;text-align:center;background:var(--sp-soft);
+        padding:.6em 1em;border-radius:.4em;font-size:1.3em">Necesitamos las dos.</div>
+      <div class="notas">
+        <div class="clave"><b>Idea:</b> no enfrentar conocimiento versus redes; hoy ambos se complementan. <b>Palabras clave:</b> la formación técnica sigue siendo fundamental · hablamos poco de comunicar lo que sabemos · la presencia digital puede ser parte de la carrera · no hace falta tener miles de seguidores.</div>
+        <div class="paso" data-paso="0">
+          <p>"Cuando estudiamos ponemos muchísimo foco en desarrollar conocimiento técnico, y tiene que ser así. Pero hablamos bastante menos de cómo se entera el resto del mundo de lo que sabemos hacer.</p>
+        </div>
+        <div class="paso" data-paso="1">
+          <p class="cue">AVANZAR · aparece: "Necesitamos las dos."</p>
+          <p>La presencia profesional y las redes no reemplazan el conocimiento, lo complementan. Y esto no significa tener cien mil seguidores: una buena red profesional puede empezar con diez personas correctas."</p>
+          <p class="esc">Puente: "Si tuviera que resumir todo este recorrido, lo haría en tres elementos."</p>
+          <p class="cue">AVANZAR · siguiente: La fórmula</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- C9 · La fórmula · FÓRMULA · 12:15 · 1:30 -->
+    <section class="slide" data-speaker="camila" data-min="735" data-title="La fórmula" data-anchor="FÓRMULA">
+      <h2 class="t gt">La fórmula</h2>
+      <div class="abs" style="left:5%;top:40%;width:90%;display:flex;align-items:stretch;gap:.9em">
+        <div class="fblock" style="border-color:var(--sp)">
+          <div class="ft" style="color:var(--sp)">Conocimiento</div>
+          <div class="fs">Lo que sabes</div>
+        </div>
+        <div class="fsign frag" data-f="1">+</div>
+        <div class="fblock frag" data-f="1" style="border-color:var(--sp)">
+          <div class="ft" style="color:var(--sp)">Visibilidad</div>
+          <div class="fs">Que sepan lo que haces</div>
+        </div>
+        <div class="fsign frag" data-f="2">+</div>
+        <div class="fblock frag" data-f="2" style="border-color:var(--sp)">
+          <div class="ft" style="color:var(--sp)">Redes</div>
+          <div class="fs">Las personas con las que construyes relaciones</div>
+        </div>
+        <div class="fsign frag" data-f="3">=</div>
+        <div class="fdoor frag" data-f="3">Oportunidades</div>
+      </div>
+      <div class="notas">
+        <div class="clave"><b>Idea:</b> entregar una fórmula fácil de recordar que sintetice toda la historia. <b>Palabras clave:</b> primero aprendí · después mostré ese aprendizaje · eso me permitió conocer personas · las personas abrieron posibilidades inesperadas · las redes no reemplazan el mérito, hacen visible el trabajo.</div>
+        <div class="paso" data-paso="0">
+          <p>"Si miran mi recorrido, estas tres cosas siempre estuvieron juntas. Primero tuve que aprender.</p>
+        </div>
+        <div class="paso" data-paso="1">
+          <p class="cue">AVANZAR · aparece: + Visibilidad</p>
+          <p>Después empecé a mostrar ese aprendizaje.</p>
+        </div>
+        <div class="paso" data-paso="2">
+          <p class="cue">AVANZAR · aparece: + Redes</p>
+          <p>Eso hizo que conociera personas. Y esas personas fueron abriendo posibilidades que yo nunca había imaginado.</p>
+        </div>
+        <div class="paso" data-paso="3">
+          <p class="cue">AVANZAR · aparece: = Oportunidades</p>
+          <p>Las redes sociales no reemplazan estudiar ni trabajar bien, pero pueden hacer algo extraordinario: hacer visible ese trabajo."</p>
+          <p class="esc">Puente: "Y por eso quiero cerrar con algo muy simple que cualquiera puede hacer."</p>
+          <p class="cue">AVANZAR · siguiente: Tu turno: empieza con una cosa</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- C10 · Tu turno: empieza con una cosa · ACCIÓN · 13:45 · 1:15 -->
+    <section class="slide" data-speaker="camila" data-min="825" data-title="Tu turno: empieza con una cosa" data-anchor="ACCIÓN">
+      <h1 class="t abs" style="left:7%;top:16%;width:70%;font-size:2.5em">¿Qué aprendiste esta semana?</h1>
+      <div class="t frag abs" data-f="1" style="left:7%;top:44%;font-size:3.6em;color:var(--sp)">Compártelo.</div>
+      <p class="lede frag abs" data-f="1" style="left:7%;top:70%;width:60%">Nunca sabes quién puede estar al otro lado.</p>
+      <div class="notas">
+        <div class="clave"><b>Idea:</b> cerrar desplazando el foco desde Camila hacia la audiencia y dejar una acción concreta. <b>Palabras clave:</b> no tienen que convertirse en creadores · compartan una cosa que aprendieron · puede ser un proyecto, reflexión, solución o error · nunca sabes quién está al otro lado.</div>
+        <div class="paso" data-paso="0">
+          <p>"No quiero terminar diciéndoles que todos tienen que convertirse en creadores de contenido. Quiero dejarles algo más simple: piensen en una cosa que aprendieron esta semana y compártanla.</p>
+        </div>
+        <div class="paso" data-paso="1">
+          <p class="cue">AVANZAR · aparece: "Compártelo." y "Nunca sabes quién puede estar al otro lado."</p>
+          <p>Puede ser un proyecto, una reflexión, una solución o incluso un error del que aprendieron."</p>
+          <p><b>Frase de salida (decir completa):</b> "A veces una carrera no cambia solamente por lo que aprendemos; también cambia por las personas que encontramos mientras aprendemos. Y si las redes multiplican las personas con las que conectamos, ahora Jorge les va a mostrar cómo la IA puede multiplicar también lo que somos capaces de hacer."</p>
+          <p class="cue">AVANZAR al decir "Jorge" · siguiente: Levanten la mano</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- NIVEL 2 · CAPACIDAD · Jorge · 13:00                           -->
+    <!-- ============================================================ -->
+
+    <!-- J1 · Levanten la mano · 15:00 · 1:00 -->
+    <section class="slide" data-speaker="jorge" data-min="900" data-title="Levanten la mano">
+      <h2 class="t gt">Levanten la mano</h2>
+      <div class="cur enter abs" style="left:83%;top:9%"><svg viewBox="0 0 24 24"><path d="M3 2l7 19 2.5-7.5L20 11z" fill="#3D6BFF" stroke="#fff" stroke-width="1.5"/></svg><b style="background:#3D6BFF">Jorge</b></div>
+      <div class="doc-card abs" style="left:7%;top:28%;width:86%;bottom:9%;display:flex;flex-direction:column;justify-content:center;gap:2.4em;padding:2.4em 3em">
+        <div>
+          <div style="font-weight:800;font-size:2.1em;margin-bottom:.5em">¿Usaste IA esta semana?</div>
+          <div style="height:1.5em;background:var(--line);border-radius:.8em;overflow:hidden">
+            <div class="frag voteFill" data-f="1" style="width:88%;background:var(--blue)"></div>
+          </div>
+        </div>
+        <div>
+          <div style="font-weight:800;font-size:2.1em;margin-bottom:.5em">¿Para algo más que escribir un texto?</div>
+          <div style="height:1.5em;background:var(--line);border-radius:.8em;overflow:hidden">
+            <div class="frag voteFill" data-f="2" style="width:22%;background:var(--amber)"></div>
+          </div>
+        </div>
+      </div>
+      <div class="notas">
+        <div class="paso" data-paso="0">
+          <p>Gracias, Camila. Hagamos algo rápido. Levanten la mano quienes usaron inteligencia artificial esta semana.</p>
+          <p class="esc">(Pausa. Mirar la sala.)</p>
+        </div>
+        <div class="paso" data-paso="1">
+          <p class="cue">AVANZAR · aparece: barra de "¿Usaste IA esta semana?"</p>
+          <p>Casi todos. Ahora mantengan la mano arriba solo si la usaron para algo distinto a escribir o corregir un texto.</p>
+          <p class="esc">(Pausa. Van a bajar muchas manos.)</p>
+        </div>
+        <div class="paso" data-paso="2">
+          <p class="cue">AVANZAR · aparece: barra de "¿Para algo más que escribir un texto?"</p>
+          <p>¿Vieron lo que pasó? Ahí está exactamente la oportunidad de la que quiero hablarles. Casi todos tenemos acceso a la IA. Muy pocos la están usando para multiplicar lo que saben hacer.</p>
+          <p class="cue">AVANZAR · siguiente: No es un chat</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- J2 · No es un chat · 16:00 · 1:00 -->
+    <section class="slide" data-speaker="jorge" data-min="960" data-title="No es un chat">
+      <h2 class="t gt">No es un chat</h2>
+      <div class="doc-card abs" style="left:38%;top:19%;width:24%;text-align:center;font-weight:700;font-size:1.45em;padding:.6em 1em">💬<br>Chat</div>
+      <div class="cur abs" style="left:65%;top:20%"><svg viewBox="0 0 24 24"><path d="M3 2l7 19 2.5-7.5L20 11z" fill="#8B5CF6" stroke="#fff" stroke-width="1.5"/></svg><b style="background:#8B5CF6">IA</b></div>
+      <div class="grid4 abs" style="left:7%;top:52%;width:86%;bottom:7%;gap:1em">
+        <div class="note blue frag" data-f="1" style="position:static;transition-delay:0s;font-size:1.45em;display:flex;align-items:center;justify-content:center;text-align:center">Investigar</div>
+        <div class="note blue frag" data-f="1" style="position:static;transition-delay:.06s;font-size:1.45em;display:flex;align-items:center;justify-content:center;text-align:center">Analizar datos</div>
+        <div class="note blue frag" data-f="1" style="position:static;transition-delay:.12s;font-size:1.45em;display:flex;align-items:center;justify-content:center;text-align:center">Automatizar</div>
+        <div class="note blue frag" data-f="1" style="position:static;transition-delay:.18s;font-size:1.45em;display:flex;align-items:center;justify-content:center;text-align:center">Programar</div>
+        <div class="note blue frag" data-f="2" style="position:static;transition-delay:0s;font-size:1.45em;display:flex;align-items:center;justify-content:center;text-align:center">Redactar informes</div>
+        <div class="note blue frag" data-f="2" style="position:static;transition-delay:.06s;font-size:1.45em;display:flex;align-items:center;justify-content:center;text-align:center">Documentar</div>
+        <div class="note blue frag" data-f="2" style="position:static;transition-delay:.12s;font-size:1.45em;display:flex;align-items:center;justify-content:center;text-align:center">Aprender más rápido</div>
+        <div class="note blue frag" data-f="2" style="position:static;transition-delay:.18s;font-size:1.45em;display:flex;align-items:center;justify-content:center;text-align:center">Apoyar decisiones</div>
+      </div>
+      <div class="notas">
+        <div class="paso" data-paso="0">
+          <p>La mayoría conoce la IA como un chat: le preguntas algo y te responde un texto. Eso es como tener un auto y usarlo solo para escuchar la radio.</p>
+        </div>
+        <div class="paso" data-paso="1">
+          <p class="cue">AVANZAR · aparece: Investigar, Analizar datos, Automatizar, Programar</p>
+          <p>Hoy la IA puede investigar, analizar datos, automatizar tareas repetitivas y programar.</p>
+        </div>
+        <div class="paso" data-paso="2">
+          <p class="cue">AVANZAR · aparece: Redactar informes, Documentar, Aprender más rápido, Apoyar decisiones</p>
+          <p>También puede redactar informes, documentar procesos, ayudarte a aprender en días algo que antes te tomaba meses, y apoyar decisiones. No es un buscador más inteligente. Es un compañero de trabajo que no se cansa… pero que necesita que alguien le diga qué hacer.</p>
+          <p class="cue">AVANZAR · siguiente: La ecuación</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- J3 · La ecuación · 17:00 · 1:30 -->
+    <section class="slide" data-speaker="jorge" data-min="1020" data-title="La ecuación">
+      <div class="doc-card abs" data-align="card" style="left:7%;top:16%;width:56%">
+        <p class="path">Documento: tu carrera</p>
+        <h2 class="t" style="font-size:2.5em">Lo que sabes <span class="ins frag" data-f="1">× IA</span></h2>
+        <p style="margin-top:.8em;font-size:1.2em">Tus ramos, tus prácticas y tus proyectos siguen siendo la base. La IA multiplica lo que ya existe.</p>
+      </div>
+      <div class="cmt frag abs" data-f="2" style="left:64%;top:18%;width:30%">
+        <div class="who"><i style="background:var(--blue)"></i>Jorge</div>
+        La IA no sustituye tu conocimiento profesional. <b>Lo amplifica.</b>
+      </div>
+      <div class="cmt frag abs" data-f="3" style="left:64%;top:50%;width:30%">
+        <div class="who"><i style="background:var(--ai)"></i>IA</div>
+        Nota: si lo que sabes es cero, cero por IA sigue siendo cero.
+      </div>
+      <div class="notas">
+        <div class="paso" data-paso="0">
+          <p>Esta es la idea más importante de mi parte. Si quieren, anótenla: lo que sabes, multiplicado por IA.</p>
+        </div>
+        <div class="paso" data-paso="1">
+          <p class="cue">AVANZAR · aparece: × IA</p>
+          <p>Multiplicado, no sumado. Si sabes mucho de suelos, de enfermería, de contabilidad o de estructuras, la IA multiplica ese conocimiento.</p>
+        </div>
+        <div class="paso" data-paso="2">
+          <p class="cue">AVANZAR · aparece: comentario de Jorge</p>
+          <p>"La IA no sustituye tu conocimiento profesional. Lo amplifica."</p>
+        </div>
+        <div class="paso" data-paso="3">
+          <p class="cue">AVANZAR · aparece: comentario de la IA</p>
+          <p>Pero tiene una trampa matemática: cero por IA sigue siendo cero. Si no entiendes lo que estás haciendo, la IA solo te ayuda a equivocarte más rápido… y con mejor redacción.</p>
+          <p class="esc">(Pausa.)</p>
+          <p>Por eso lo que están estudiando hoy importa más que nunca, no menos.</p>
+          <p class="cue">AVANZAR · siguiente: Cuatro carreras, un mismo patrón</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- J4 · Cuatro carreras, un mismo patrón · 18:30 · 3:00 -->
+    <section class="slide" data-speaker="jorge" data-min="1110" data-title="Cuatro carreras, un mismo patrón" id="slideJ4">
+      <video class="j4-video" id="j4Video" src="media/j4-patron.mp4" muted playsinline preload="auto"{{J4_POSTER_ATTR}}></video>
+      <div class="j4-fallback" id="j4Fallback">
+        <h2 class="t gt" style="font-size:2.1em">Cuatro carreras, un mismo patrón</h2>
+        <div class="grid2 abs" style="left:7%;top:22%;width:86%;height:68%;gap:.6em;grid-template-rows:minmax(0,1fr) minmax(0,1fr);align-items:stretch">
+          <div class="jcard">
+            <div class="jhead">Agronomía</div>
+            <div class="jrow frag" data-f="1"><b>Antes:</b> clima y rendimiento en planillas sueltas: una semana ordenando.</div>
+            <div class="jrow frag" data-f="2"><b>Con IA:</b> une las planillas y arma el gráfico en minutos.</div>
+            <div class="jcrit frag" data-f="3">Tu criterio: ¿tiene sentido agronómico?</div>
+          </div>
+          <div class="jcard">
+            <div class="jhead">Ingeniería</div>
+            <div class="jrow frag" data-f="4"><b>Antes:</b> el informe de producción se arma a mano cada lunes.</div>
+            <div class="jrow frag" data-f="5"><b>Con IA:</b> programa la automatización: el informe se genera solo.</div>
+            <div class="jcrit frag" data-f="6">Tu criterio: qué indicadores importan.</div>
+          </div>
+          <div class="jcard">
+            <div class="jhead">Salud</div>
+            <div class="jrow frag" data-f="7"><b>Antes:</b> semanas resumiendo estudios para una tesis o protocolo.</div>
+            <div class="jrow frag" data-f="8"><b>Con IA:</b> encuentra y compara estudios, citando la fuente.</div>
+            <div class="jcrit frag" data-f="9">Tu criterio: leer las fuentes y verificar.</div>
+          </div>
+          <div class="jcard">
+            <div class="jhead">Negocios y Derecho</div>
+            <div class="jrow frag" data-f="10"><b>Antes:</b> bases de licitación de 80 páginas, línea por línea.</div>
+            <div class="jrow frag" data-f="11"><b>Con IA:</b> cruza las bases con los requisitos y marca qué falta.</div>
+            <div class="jcrit frag" data-f="12">Tu criterio: decidir si conviene postular.</div>
+          </div>
+        </div>
+        <div class="lede frag abs" data-f="13" style="left:7%;top:93%;width:86%;text-align:center;background:var(--sp-soft);
+          padding:.26em 1em;border-radius:.5em;font-size:1.1em">La IA hace el trabajo pesado. Tú pones el criterio.</div>
+      </div>
+      <div class="notas">
+        <div class="paso" data-paso="0">
+          <p>Vamos a lo concreto. Cuatro carreras que existen en esta universidad.</p>
+          <p class="esc">(Contar cada caso en unos 35 segundos: antes, con IA, tu criterio.)</p>
+        </div>
+        <div class="paso" data-paso="1">
+          <p class="cue">AVANZAR · aparece: Agronomía — tres planillas sueltas (clima, rendimiento, suelo)</p>
+          <p>Agronomía: antes, tres temporadas de datos de clima, rendimiento y suelo sueltas en planillas distintas. Una semana ordenándolas.</p>
+        </div>
+        <div class="paso" data-paso="2">
+          <p class="cue">AVANZAR · aparece: la IA une las planillas y traza el gráfico de variables</p>
+          <p>Con IA: se unen las planillas, se busca qué variables se relacionan con el rendimiento y se arma el gráfico.</p>
+        </div>
+        <div class="paso" data-paso="3">
+          <p class="cue">AVANZAR · aparece: Tu criterio — ¿tiene sentido agronómico?</p>
+          <p>Tu criterio: decidir si esa relación tiene sentido agronómico.</p>
+        </div>
+        <div class="paso" data-paso="4">
+          <p class="cue">AVANZAR · aparece: Ingeniería — el informe de producción armado a mano cada lunes</p>
+          <p>Ingeniería: antes, el informe de producción que alguien arma a mano cada lunes.</p>
+        </div>
+        <div class="paso" data-paso="5">
+          <p class="cue">AVANZAR · aparece: la IA programa la automatización y el informe se genera solo</p>
+          <p>Con IA: te ayuda a programar la automatización, aunque no seas desarrollador, y el informe se genera solo cada lunes.</p>
+        </div>
+        <div class="paso" data-paso="6">
+          <p class="cue">AVANZAR · aparece: Tu criterio — qué indicadores importan</p>
+          <p>Tu criterio: definir qué indicadores importan.</p>
+        </div>
+        <div class="paso" data-paso="7">
+          <p class="cue">AVANZAR · aparece: Salud — cinco estudios sueltos (A a E)</p>
+          <p>Salud: antes, semanas buscando y resumiendo estudios para una tesis o un protocolo.</p>
+        </div>
+        <div class="paso" data-paso="8">
+          <p class="cue">AVANZAR · aparece: la IA resume y compara los estudios, citando cada fuente</p>
+          <p>Con IA: encuentra, resume y compara los estudios, citando de dónde sale cada afirmación.</p>
+        </div>
+        <div class="paso" data-paso="9">
+          <p class="cue">AVANZAR · aparece: Tu criterio — leer las fuentes y verificar</p>
+          <p>Tu criterio: leer las fuentes clave y verificar, porque en salud un error no es una mala nota.</p>
+        </div>
+        <div class="paso" data-paso="10">
+          <p class="cue">AVANZAR · aparece: Negocios y Derecho — bases de licitación de 80 páginas</p>
+          <p>Negocios y Derecho: antes, bases de licitación de ochenta páginas leídas línea por línea.</p>
+        </div>
+        <div class="paso" data-paso="11">
+          <p class="cue">AVANZAR · aparece: la IA cruza las bases contra los requisitos y marca qué falta</p>
+          <p>Con IA: cruza las bases contra una lista de requisitos y marca qué falta.</p>
+        </div>
+        <div class="paso" data-paso="12">
+          <p class="cue">AVANZAR · aparece: Tu criterio — ¿conviene postular?</p>
+          <p>Tu criterio: decidir si conviene postular.</p>
+        </div>
+        <div class="paso" data-paso="13">
+          <p class="cue">AVANZAR · aparece: el patrón — "La IA hace el trabajo pesado" / "Tú pones el criterio"</p>
+          <p>¿Notan el patrón? En los cuatro casos la IA hace el trabajo pesado y tú pones el criterio. Ese criterio es lo que el mercado laboral va a pagar.</p>
+          <p class="esc">✂ recortable si va atrasado: "Y ese criterio no lo tiene la IA: lo tienes tú, porque estudiaste para esto."</p>
+          <p class="cue">AVANZAR · siguiente: Demo: de un problema a un entregable</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- J5 · Demo: de un problema a un entregable · 21:30 · 2:30 -->
+    <section class="slide" data-speaker="jorge" data-min="1290" data-title="Demo: de un problema a un entregable" id="slideDemo">
+      <h2 class="t abs" style="left:7%;top:4%;font-size:1.7em;text-align:center;right:7%">De un problema a un entregable</h2>
+      <div class="demo-wrap abs" style="position:absolute;left:0;right:0;margin:0 auto;top:15%;width:69%">
+        <video class="demo" id="demoVideo" src="media/demo-ia.mp4" muted playsinline preload="auto"{{DEMO_POSTER_ATTR}}>
+        </video>
+        <div class="demo-fallback" id="demoFallback">
+          <span class="tag">Video no disponible — respaldo</span>
+          <p style="margin:0 0 .4em">Encuesta ficticia a 300 egresados sobre empleabilidad. Prompt entregado al agente:</p>
+          <code>Analiza encuesta_egresados.csv como lo haría un analista: revisa columnas y datos
+incompletos, grafica meses hasta el primer empleo por carrera, y redacta un
+informe de una página con 3 hallazgos y una sección "Supuestos a validar".</code>
+        </div>
+        <div class="abs" data-overlap-ok style="right:.7em;bottom:.7em;background:rgba(11,14,25,.72);color:#fff;font-weight:700;
+          font-size:.85em;padding:.35em .7em;border-radius:.4em">Datos ficticios</div>
+      </div>
+      <span class="frag" data-f="1" style="display:none" aria-hidden="true"></span>
+      <div class="notas">
+        <div class="paso" data-paso="0">
+          <p>Ahora veámoslo en acción. Preparé una encuesta <b>ficticia</b> a trescientos egresados sobre empleabilidad: carrera, tiempo hasta el primer empleo, si trabajan en su área y qué habilidades les pidieron. Le voy a pedir a un agente de IA que la analice como lo haría un analista.</p>
+          <p class="esc">El video está en cero, pausado. Opción en vivo: demo-en-vivo/LEEME.md</p>
+        </div>
+        <div class="paso" data-paso="1">
+          <p class="cue">AVANZAR · aparece: el video se reproduce</p>
+          <p class="esc">(Play. Narrar encima, siguiendo el video.)</p>
+          <p>Primero lee el archivo y me cuenta qué columnas tiene… Aquí detecta que hay respuestas incompletas y me dice cómo las va a tratar… Ahora arma el gráfico de meses hasta el primer empleo por carrera… Y aquí redacta un informe de una página con tres hallazgos.</p>
+          <p>Esto a una persona le toma una tarde. Aquí fueron segundos.</p>
+          <p class="esc">(Cuando aparece "Supuestos a validar" al final del informe:)</p>
+          <p>Pero miren la última sección: 'Supuestos a validar'. La IA me dice qué no sabe. Y quien decide si este informe es correcto… sigo siendo yo.</p>
+          <p class="cue">AVANZAR · siguiente: Tú diriges, la IA ejecuta</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- J6 · Tú diriges, la IA ejecuta · 24:00 · 1:30 -->
+    <section class="slide" data-speaker="jorge" data-min="1440" data-title="Tú diriges, la IA ejecuta">
+      <h2 class="t gt">Tú diriges, la IA ejecuta</h2>
+      <div class="abs" style="left:7%;top:32%;width:86%;bottom:14%;display:flex;gap:1.3em;align-items:stretch">
+        <div class="note blue frag" data-f="1" style="position:static;flex:1;transform:rotate(-1.5deg);font-size:1.55em;display:flex;flex-direction:column;justify-content:center">1. Pregunta bien<small style="font-size:.62em;margin-top:.5em">Contexto, objetivo y para quién es.</small></div>
+        <div class="note blue frag" data-f="2" style="position:static;flex:1;transform:rotate(1.2deg);font-size:1.55em;display:flex;flex-direction:column;justify-content:center">2. Verifica siempre<small style="font-size:.62em;margin-top:.5em">Sonar seguro no es tener razón.</small></div>
+        <div class="note blue frag" data-f="3" style="position:static;flex:1;transform:rotate(-1deg);font-size:1.55em;display:flex;flex-direction:column;justify-content:center">3. Firmas tú<small style="font-size:.62em;margin-top:.5em">Tu nombre va en el entregable, no el de la IA.</small></div>
+      </div>
+      <div class="cur abs" style="left:83%;top:9%"><svg viewBox="0 0 24 24"><path d="M3 2l7 19 2.5-7.5L20 11z" fill="#3D6BFF" stroke="#fff" stroke-width="1.5"/></svg><b style="background:#3D6BFF">Jorge</b></div>
+      <div class="notas">
+        <div class="paso" data-paso="0">
+          <p>Para que esto funcione hay tres reglas que no se negocian.</p>
+        </div>
+        <div class="paso" data-paso="1">
+          <p class="cue">AVANZAR · aparece: 1. Pregunta bien</p>
+          <p>Una: pregunta bien. La calidad de la respuesta depende del contexto que le das: qué necesitas, para qué y para quién. Una pregunta vaga recibe una respuesta vaga.</p>
+        </div>
+        <div class="paso" data-paso="2">
+          <p class="cue">AVANZAR · aparece: 2. Verifica siempre</p>
+          <p>Dos: verifica siempre. La IA puede sonar completamente segura y estar equivocada. Tu formación es justo lo que te permite detectarlo.</p>
+        </div>
+        <div class="paso" data-paso="3">
+          <p class="cue">AVANZAR · aparece: 3. Firmas tú</p>
+          <p>Tres: firmas tú. Cuando entregas un informe, tu nombre va arriba, no el de la IA. La responsabilidad no se delega.</p>
+          <p>Nosotros dirigimos. La IA ejecuta.</p>
+          <p class="cue">AVANZAR · siguiente: El reto de los 7 días</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- J7 · El reto de los 7 días · 25:30 · 1:30 -->
+    <section class="slide" data-speaker="jorge" data-min="1530" data-title="El reto de los 7 días">
+      <h2 class="t abs" style="left:7%;top:8%;font-size:1.7em">1 tarea repetitiva · 1 herramienta · 7 días</h2>
+      <ul class="checklist abs" style="left:7%;top:30%;width:70%">
+        <li class="frag" data-f="1" style="transition-delay:0s"><span class="box"></span>Lunes — elige la tarea repetitiva</li>
+        <li class="frag" data-f="1" style="transition-delay:.08s"><span class="box"></span>Martes — úsala de nuevo</li>
+        <li class="frag" data-f="1" style="transition-delay:.16s"><span class="box"></span>Miércoles — úsala de nuevo</li>
+        <li class="frag" data-f="1" style="transition-delay:.24s"><span class="box"></span>Jueves — úsala de nuevo</li>
+        <li class="frag" data-f="1" style="transition-delay:.32s"><span class="box"></span>Viernes — úsala de nuevo</li>
+        <li class="frag" data-f="1" style="transition-delay:.4s"><span class="box"></span>Sábado — úsala de nuevo</li>
+        <li class="frag" data-f="1" style="transition-delay:.48s"><span class="box"></span>Domingo — cuenta lo que aprendiste</li>
+      </ul>
+      <div class="notas">
+        <div class="paso" data-paso="0">
+          <p>No quiero que se vayan con una idea, sino con un plan. Les propongo un reto de siete días.</p>
+          <p>Elijan una tarea repetitiva que hagan cada semana: resumir apuntes, ordenar datos, preparar una presentación, revisar un informe. Una sola.</p>
+          <p>Elijan una herramienta, la que tengan a mano.</p>
+        </div>
+        <div class="paso" data-paso="1">
+          <p class="cue">AVANZAR · aparece: las 7 casillas en cascada</p>
+          <p>Y durante siete días úsenla todos los días para esa tarea. Al séptimo día van a saber más de IA aplicada que la mayoría de la gente que solo lee noticias sobre IA.</p>
+          <p>Y, como les dijo Camila: cuéntenlo.</p>
+          <p class="esc">✂ recortable si va atrasado: "Lo que aprendan en esos siete días es su primera publicación."</p>
+          <p class="cue">AVANZAR · siguiente: Relevo a Gonzalo</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- J8 · Relevo a Gonzalo · 27:00 · 1:00 -->
+    <section class="slide" data-speaker="jorge" data-min="1620" data-title="Relevo a Gonzalo" id="slideRelevo">
+      <h2 class="t gt">¿Dónde aplicarlas?</h2>
+      <div class="abs relevo-box" style="left:5%;top:20%;width:68%;bottom:9%">
+        <video class="relevo-video" id="relevoVideo" src="media/relevo-capacidades.mp4" muted loop playsinline preload="auto"{{RELEVO_POSTER_ATTR}}></video>
+        <div class="relevo-fallback" id="relevoFallback">
+          <div class="note blue" style="position:static;font-size:1.22em;text-align:center;display:flex;align-items:center;justify-content:center;min-height:2.6em;overflow-wrap:break-word;word-break:break-word">Investigar</div>
+          <div class="note blue" style="position:static;font-size:1.22em;text-align:center;display:flex;align-items:center;justify-content:center;min-height:2.6em;overflow-wrap:break-word;word-break:break-word">Analizar datos</div>
+          <div class="note blue" style="position:static;font-size:1.22em;text-align:center;display:flex;align-items:center;justify-content:center;min-height:2.6em;overflow-wrap:break-word;word-break:break-word">Automatizar</div>
+          <div class="note blue" style="position:static;font-size:1.22em;text-align:center;display:flex;align-items:center;justify-content:center;min-height:2.6em;overflow-wrap:break-word;word-break:break-word">Programar</div>
+          <div class="note blue" style="position:static;font-size:1.22em;text-align:center;display:flex;align-items:center;justify-content:center;min-height:2.6em;overflow-wrap:break-word;word-break:break-word">Redactar</div>
+          <div class="note blue" style="position:static;font-size:1.22em;text-align:center;display:flex;align-items:center;justify-content:center;min-height:2.6em;overflow-wrap:break-word;word-break:break-word">Documentar</div>
+          <div class="note blue" style="position:static;font-size:1.22em;text-align:center;display:flex;align-items:center;justify-content:center;min-height:2.6em;overflow-wrap:break-word;word-break:break-word">Aprender rápido</div>
+          <div class="note blue" style="position:static;font-size:1.22em;text-align:center;display:flex;align-items:center;justify-content:center;min-height:2.6em;overflow-wrap:break-word;word-break:break-word">Apoyar decisiones</div>
+        </div>
+      </div>
+      <div class="abs" style="right:11%;top:30%;font-size:8em;font-weight:900;color:var(--ai);
+        font-family:'Schibsted Grotesk',sans-serif;line-height:1">?</div>
+      <div class="cur enter abs" style="right:8%;top:72%"><svg viewBox="0 0 24 24"><path d="M3 2l7 19 2.5-7.5L20 11z" fill="#FFB938" stroke="#fff" stroke-width="1.5"/></svg><b style="background:#FFB938;color:#161A2E">Gonzalo</b></div>
+      <div class="notas">
+        <div class="paso" data-paso="0">
+          <p>Ahora, tener herramientas más potentes no garantiza automáticamente una mejor carrera. Un martillo más grande no te convierte en arquitecto.</p>
+          <p>También tenemos que saber dónde aplicar esas capacidades para generar valor. Y de eso sabe mucho Gonzalo, que lleva más de quince años resolviendo problemas reales en una empresa de nuestra región.</p>
+          <p class="cue">AVANZAR al decir "Gonzalo" · siguiente: La pregunta</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- NIVEL 3 · VALOR · Gonzalo · 12:00                             -->
+    <!-- ============================================================ -->
+
+    <!-- G1 · La pregunta · 28:00 · 1:00 -->
+    <section class="slide" data-speaker="gonzalo" data-min="1680" data-title="La pregunta">
+      <div class="cur enter abs" style="left:74%;top:10%"><svg viewBox="0 0 24 24"><path d="M3 2l7 19 2.5-7.5L20 11z" fill="#FFB938" stroke="#fff" stroke-width="1.5"/></svg><b style="background:#FFB938;color:#161A2E">Gonzalo</b></div>
+      <h1 class="t frag abs" data-f="1" style="left:5%;top:36%;width:90%;font-size:2em;line-height:1.15;text-align:center">
+        <span class="type-wrap" style="font-size:1em">¿Qué problema eres capaz de resolver hoy que antes no podías resolver?</span>
+      </h1>
+      <div class="notas">
+        <div class="paso" data-paso="0">
+          <p>Gracias, Jorge. Camila les mostró cómo hacer visible lo que saben. Jorge, cómo multiplicarlo. Yo quiero hacerles una sola pregunta, y me gustaría que la piensen de verdad.</p>
+        </div>
+        <div class="paso" data-paso="1">
+          <p class="cue">AVANZAR · aparece: la pregunta, escrita letra por letra</p>
+          <p>¿Qué problema eres capaz de resolver hoy que antes no podías resolver?</p>
+          <p class="esc">(Pausa larga. Cinco segundos de silencio.)</p>
+          <p>Esa respuesta, y no su título, es lo que las empresas van a contratar.</p>
+          <p class="cue">AVANZAR · siguiente: El cargo no es la carrera</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- G2 · El cargo no es la carrera · 29:00 · 1:30 -->
+    <section class="slide" data-speaker="gonzalo" data-min="1740" data-title="El cargo no es la carrera">
+      <div class="doc-card abs" style="left:14%;top:28%;width:72%;padding:2.6em 3em;text-align:center">
+        <p class="path" style="text-align:left;font-size:1.1em">Perfil</p>
+        <div class="g2cargo t frag" data-f="1" style="font-size:2.1em">Cargo: Administrador de Sistemas</div>
+        <div class="ins t frag" data-f="2" style="font-size:2.7em;line-height:1.22;padding:.12em 0;margin-top:.4em">Problemas que resuelvo</div>
+        <p style="margin-top:1.4em;font-size:1.5em;color:var(--mute);max-width:none">Ingeniero Civil Industrial · +15 años en Aguas Araucanía</p>
+      </div>
+      <div class="notas">
+        <div class="paso" data-paso="0">
+          <p>Soy ingeniero civil industrial y llevo más de quince años trabajando como administrador de sistemas en Aguas Araucanía.</p>
+          <p>Si miran solo el cargo, podrían pensar que mi trabajo es mantener servidores funcionando.</p>
+        </div>
+        <div class="paso" data-paso="1">
+          <p class="cue">AVANZAR · aparece: el cargo tachado</p>
+          <p class="esc">[PERSONALIZAR: anécdota concreta, de 30 a 40 segundos, de un momento en que entendiste que tu trabajo era resolver un problema del negocio y no solo uno técnico.]</p>
+        </div>
+        <div class="paso" data-paso="2">
+          <p class="cue">AVANZAR · aparece: "Problemas que resuelvo"</p>
+          <p>Ahí aprendí algo que les quiero regalar: el cargo describe lo que haces. La carrera la construye el problema que resuelves.</p>
+          <p class="cue">AVANZAR · siguiente: Detrás de cada ticket</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- G3 · Detrás de cada ticket · 30:30 · 2:00 -->
+    <section class="slide" data-speaker="gonzalo" data-min="1830" data-title="Detrás de cada ticket">
+      <h2 class="t gt">Detrás de cada ticket</h2>
+      <div class="abs" style="left:5%;top:40%;width:90%;display:flex;align-items:stretch;gap:.6em">
+        <div class="fblock frag" data-f="1" style="border-color:var(--sp)">
+          <div class="ft">Ticket</div>
+          <div class="fs">"El sistema está lento."</div>
+        </div>
+        <div class="fsign frag" data-f="2" style="font-size:1.7em">→</div>
+        <div class="fblock frag" data-f="2" style="border-color:var(--sp)">
+          <div class="ft">Proceso</div>
+          <div class="fs">La facturación se atrasa.</div>
+        </div>
+        <div class="fsign frag" data-f="3" style="font-size:1.7em">→</div>
+        <div class="fblock frag" data-f="3" style="border-color:var(--sp)">
+          <div class="ft">Cliente</div>
+          <div class="fs">Una familia recibe tarde su boleta.</div>
+        </div>
+        <div class="fsign frag" data-f="4" style="font-size:1.7em">→</div>
+        <div class="fblock frag" data-f="4" style="background:var(--sp-soft);border-color:var(--sp)">
+          <div class="ft">Región</div>
+          <div class="fs">Un servicio básico: el agua.</div>
+        </div>
+      </div>
+      <div class="notas">
+        <div class="paso" data-paso="0">
+          <p>En una empresa sanitaria, un ticket que dice "el sistema está lento" nunca es solo técnico.</p>
+          <p class="esc">(Una capa por avance.)</p>
+        </div>
+        <div class="paso" data-paso="1">
+          <p class="cue">AVANZAR · aparece: Ticket</p>
+          <p>Detrás del ticket hay un proceso que se atrasa.</p>
+        </div>
+        <div class="paso" data-paso="2">
+          <p class="cue">AVANZAR · aparece: Proceso</p>
+          <p>Detrás del proceso hay un cliente.</p>
+        </div>
+        <div class="paso" data-paso="3">
+          <p class="cue">AVANZAR · aparece: Cliente</p>
+          <p>Y detrás del cliente hay una familia de la región que depende de un servicio básico: el agua.</p>
+        </div>
+        <div class="paso" data-paso="4">
+          <p class="cue">AVANZAR · aparece: Región</p>
+          <p>Cuando empiezas a mirar así, dejas de ser la persona que arregla cosas y pasas a ser la persona que entiende el negocio. Y a esa persona la buscan, la escuchan y la promueven.</p>
+          <p class="esc">[VALIDAR con Gonzalo: que el ejemplo sea representativo de su realidad; ajustar las cuatro capas si hace falta.]</p>
+          <p class="cue">AVANZAR · siguiente: Tres preguntas para encontrar oportunidades</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- G4 · Tres preguntas para encontrar oportunidades · 32:30 · 2:00 -->
+    <section class="slide" data-speaker="gonzalo" data-min="1950" data-title="Tres preguntas para encontrar oportunidades">
+      <h2 class="t gt" style="font-size:2.3em">Tres preguntas para encontrar oportunidades</h2>
+      <svg class="frag abs" data-f="4" style="left:3%;top:30%;width:94%;height:34%" viewBox="0 0 1000 280" preserveAspectRatio="none">
+        <ellipse cx="500" cy="140" rx="485" ry="130" fill="none" stroke="var(--ai)" stroke-width="4" stroke-dasharray="11 9"/>
+      </svg>
+      <div class="abs" style="left:7%;top:36%;width:86%;display:flex;gap:1.2em">
+        <div class="note amber frag" data-f="1" style="position:static;flex:1;transform:rotate(-1.3deg);font-size:1.45em;display:flex;flex-direction:column;justify-content:center">¿Qué se repite?<small style="font-size:.62em;margin-top:.4em">Lo que alguien hace a mano todas las semanas.</small></div>
+        <div class="note amber frag" data-f="2" style="position:static;flex:1;transform:rotate(1deg);font-size:1.45em;display:flex;flex-direction:column;justify-content:center">¿Qué cuesta caro?<small style="font-size:.62em;margin-top:.4em">En tiempo, en dinero o en errores.</small></div>
+        <div class="note amber frag" data-f="3" style="position:static;flex:1;transform:rotate(-1deg);font-size:1.45em;display:flex;flex-direction:column;justify-content:center">¿Qué nadie mide?<small style="font-size:.62em;margin-top:.4em">Lo que "siempre ha sido así".</small></div>
+      </div>
+      <p class="lede frag abs" data-f="4" style="left:7%;top:72%;width:86%;text-align:center;color:var(--ai);font-size:2em">Aquí la IA es más fuerte.</p>
+      <div class="notas">
+        <div class="paso" data-paso="0">
+          <p>¿Cómo se encuentra un problema que valga la pena? Con tres preguntas que funcionan en cualquier industria: en un hospital, en un fundo, en una municipalidad o en una startup.</p>
+        </div>
+        <div class="paso" data-paso="1">
+          <p class="cue">AVANZAR · aparece: ¿Qué se repite?</p>
+          <p>Primera: ¿qué se repite? Lo que alguien hace a mano todas las semanas.</p>
+        </div>
+        <div class="paso" data-paso="2">
+          <p class="cue">AVANZAR · aparece: ¿Qué cuesta caro?</p>
+          <p>Segunda: ¿qué cuesta caro? En tiempo, en dinero o en errores.</p>
+        </div>
+        <div class="paso" data-paso="3">
+          <p class="cue">AVANZAR · aparece: ¿Qué nadie mide?</p>
+          <p>Tercera, mi favorita: ¿qué nadie mide? Porque lo que nadie mide es lo que "siempre ha sido así"… hasta que alguien lo mide.</p>
+        </div>
+        <div class="paso" data-paso="4">
+          <p class="cue">AVANZAR · aparece: el óvalo y "Aquí la IA es más fuerte."</p>
+          <p>Y fíjense: estas tres son justo el tipo de problema donde la IA que les mostró Jorge es más fuerte.</p>
+          <p class="cue">AVANZAR · siguiente: Cuando el que sabe no está</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- G5 · Cuando el que sabe no está · 34:30 · 2:30 -->
+    <section class="slide" data-speaker="gonzalo" data-min="2070" data-title="Cuando el que sabe no está" id="slideRag">
+      <h2 class="t abs" style="left:7%;top:4%;font-size:1.7em;text-align:center;right:7%">Cuando el que sabe no está</h2>
+      <div class="demo-wrap abs" style="position:absolute;left:0;right:0;margin:0 auto;top:15%;width:69%">
+        <video class="demo" id="ragVideo" src="media/rag-gonzalo.mp4" playsinline preload="auto"{{RAG_POSTER_ATTR}}>
+        </video>
+        <div class="demo-fallback" id="ragFallback" style="font-size:.8em">
+          <span class="tag">Video no disponible — respaldo</span>
+          <p style="margin:0 0 .4em"><b>Consulta:</b> "Los pagos del fin de semana no aparecen en el CRM y a clientes que ya pagaron les llegó la orden de corte. ¿Cómo se resolvió antes?"</p>
+          <p style="margin:0 0 .4em"><b>Respuesta:</b> Causa probable: token de SGC_WS_PAGOS vencido genera errores 401 en la cola Q.PAGOS.SGC.CRM, dejando pagos sin reflejar y clientes ya pagados con orden de corte indebida. Se renovó el token, se reprocesó la cola y se contactó a los clientes afectados [TK-2024-0105][TK-2025-0112][TK-2026-0108].</p>
+          <p style="margin:0;font-size:.85em;color:var(--mute)">Tickets recuperados: TK-2026-0108 (similitud 0,80) · TK-2024-0105 (0,78) · TK-2025-0112 (0,72) · TK-2024-0118 (0,71)</p>
+        </div>
+        <div class="abs" data-overlap-ok style="right:.7em;bottom:.7em;background:rgba(11,14,25,.72);color:#fff;font-weight:700;
+          font-size:.85em;padding:.35em .7em;border-radius:.4em">Datos ficticios</div>
+      </div>
+      <span class="frag" data-f="1" style="display:none" aria-hidden="true"></span>
+      <div class="notas">
+        <div class="paso" data-paso="0">
+          <p>Les muestro un problema típico de mi trabajo, recreado con datos ficticios. Miren.</p>
+          <p class="esc">El video está en cero, pausado. Se reproduce con un avance, con sonido (música y diseño sonoro); tú narras encima.</p>
+        </div>
+        <div class="paso" data-paso="1">
+          <p class="cue">AVANZAR · aparece: se reproduce el video (2 min, con música; tú narras encima, sin apuro)</p>
+          <p class="esc">0:00–0:24 · «El que sabe no está»</p>
+          <p>Lunes, ocho de la mañana. Yo, de vacaciones. Entra un ticket urgente: a clientes que ya pagaron les llegó la orden de corte. Es dejar a una familia sin agua. Cuando el experto no está, solo el 23 % de los tickets se resuelve a tiempo.</p>
+          <p class="esc">0:24–0:56 · Cómo aprende</p>
+          <p>Pero el equipo tiene algo: 40 tickets resueltos, documentados en Obsidian. Cada ticket se corta en fragmentos, uno por sección. Cada fragmento se convierte en un embedding: 384 números que representan su significado. Y todos quedan en una base de datos vectorial, donde lo que se parece queda cerca.</p>
+          <p class="esc">0:56–1:28 · La pregunta</p>
+          <p>Paula, del equipo, pregunta como le preguntaría a un colega. Su pregunta también se vuelve números, cae en el mapa y encuentra los fragmentos más cercanos: cuatro casos parecidos. Recién ahí la IA redacta, citando sus fuentes. Eso es RAG: primero recuperar, después generar.</p>
+          <p class="esc">1:28–1:48 · El flujo</p>
+          <p>Y la respuesta se convierte en un flujo de trabajo: cinco pasos, cada uno respaldado por el ticket que lo documenta. Paula lo resuelve sin llamarme a la playa.</p>
+          <p class="esc">1:48–2:00 · Silencio. Deja que la pregunta de G1 se lea en pantalla.</p>
+          <p class="esc">(Cuando el video termina, cierre de ~15 s:)</p>
+          <p>Esa es mi respuesta a la pregunta del inicio: hoy puedo lograr que el conocimiento no se vaya de vacaciones con la persona. Y fíjense: la IA no inventó nada; encontró lo que el equipo ya había documentado. Documentar bien también es una habilidad que se contrata.</p>
+          <p class="esc">Si preguntan: RAG local en este computador — fragmentos con langchain-text-splitters, embeddings multilingües con fastembed (384 dimensiones), base vectorial Chroma; la respuesta la redacta Claude solo con los fragmentos recuperados. Todo lo que aparece en pantalla salió de correrlo sobre el vault real (datos ficticios). Detalle en demo-rag/LEEME.md.</p>
+          <p class="cue">AVANZAR · siguiente: Técnico + negocio = estratégico</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- G6 · Técnico + negocio = estratégico · 37:00 · 1:00 -->
+    <section class="slide" data-speaker="gonzalo" data-min="2220" data-title="Técnico + negocio = estratégico">
+      <h2 class="t gt">Técnico + negocio = estratégico</h2>
+      <div class="venn frag abs" data-overlap-ok data-f="1" style="left:16%;top:26%">
+        <div class="c1"><span class="lbl">Sabe cómo<small>(técnico)</small></span></div>
+        <div class="c2"><span class="lbl">Sabe por qué<small>(negocio)</small></span></div>
+        <div class="mid frag" data-f="2">Sabe qué hacer primero</div>
+      </div>
+      <div class="notas">
+        <div class="paso" data-paso="0">
+          <p>El profesional técnico sabe cómo. El profesional de negocio sabe por qué.</p>
+        </div>
+        <div class="paso" data-paso="1">
+          <p class="cue">AVANZAR · aparece: los círculos se superponen</p>
+          <p>El estratégico sabe las dos cosas,</p>
+        </div>
+        <div class="paso" data-paso="2">
+          <p class="cue">AVANZAR · aparece: "Sabe qué hacer primero"</p>
+          <p>y por eso sabe qué hacer primero. Esa intersección no se estudia en un ramo. Se construye mirando problemas reales. Y pueden empezar a construirla desde su práctica profesional, haciendo una sola pregunta más de las que les piden.</p>
+          <p class="cue">AVANZAR · siguiente: El ciclo completo</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- G7 · El ciclo completo · 38:00 · 1:30 -->
+    <section class="slide" data-speaker="gonzalo" data-min="2280" data-title="El ciclo completo">
+      <h2 class="t gt" style="text-align:center;font-size:2em">El ciclo completo</h2>
+      <svg class="abs" style="left:9%;top:28%;width:82%;height:44%" viewBox="0 0 700 380">
+        <defs>
+          <marker id="cycArrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+            <path d="M0,0 L9,4.5 L0,9 Z" fill="var(--mute)"/>
+          </marker>
+        </defs>
+        <g fill="none" stroke="var(--mute)" stroke-width="2.5" stroke-dasharray="7 6">
+          <path d="M395 75 Q 540 190 575 300" marker-end="url(#cycArrow)"/>
+          <path d="M505 335 Q 350 368 195 335" marker-end="url(#cycArrow)"/>
+          <path d="M125 300 Q 160 190 305 75" marker-end="url(#cycArrow)"/>
+        </g>
+      </svg>
+      <div class="note coral frag abs" data-f="1" style="left:36%;top:20%;width:16em">Visibilidad<small>Muestra lo que sabes. — Camila</small></div>
+      <div class="note blue frag abs" data-f="2" style="left:64%;top:59%;width:16em">Capacidad<small>Multiplícalo con IA. — Jorge</small></div>
+      <div class="note amber frag abs" data-f="3" style="left:7%;top:59%;width:16em">Valor<small>Resuelve un problema real. — Gonzalo</small></div>
+      <div class="cur m1 frag abs" data-f="1" style="left:67%;top:16%"><svg viewBox="0 0 24 24"><path d="M3 2l7 19 2.5-7.5L20 11z" fill="#FF7A6B" stroke="#fff" stroke-width="1.5"/></svg></div>
+      <div class="cur m2 frag abs" data-f="2" style="left:90%;top:66%"><svg viewBox="0 0 24 24"><path d="M3 2l7 19 2.5-7.5L20 11z" fill="#3D6BFF" stroke="#fff" stroke-width="1.5"/></svg></div>
+      <div class="cur m3 frag abs" data-f="3" style="left:4%;top:81%"><svg viewBox="0 0 24 24"><path d="M3 2l7 19 2.5-7.5L20 11z" fill="#FFB938" stroke="#fff" stroke-width="1.5"/></svg></div>
+      <div class="lede frag abs" data-f="4" style="left:12%;top:88%;width:76%;text-align:center;font-weight:800;font-size:1.5em">
+        Adoptar IA hoy es decidir qué profesional quieres ser.
+      </div>
+      <div class="notas">
+        <div class="paso" data-paso="0">
+          <p>Si juntamos todo:</p>
+        </div>
+        <div class="paso" data-paso="1">
+          <p class="cue">AVANZAR · aparece: nota Visibilidad</p>
+          <p>Camila nos dijo "haz que sepan lo que sabes".</p>
+        </div>
+        <div class="paso" data-paso="2">
+          <p class="cue">AVANZAR · aparece: nota Capacidad</p>
+          <p>Jorge nos dijo "multiplica lo que sabes con IA".</p>
+        </div>
+        <div class="paso" data-paso="3">
+          <p class="cue">AVANZAR · aparece: nota Valor</p>
+          <p>Y yo les digo: "usa eso para resolver un problema real".</p>
+        </div>
+        <div class="paso" data-paso="4">
+          <p class="cue">AVANZAR · aparece: "Adoptar IA hoy es decidir qué profesional quieres ser."</p>
+          <p>Esta semana: aprende algo, amplifícalo con IA, resuelve un problema con eso… y compártelo. Ese es el ciclo completo.</p>
+          <p>Adoptar IA hoy no es aprender una herramienta. Es decidir qué tipo de profesional quieren ser.</p>
+          <p class="cue">AVANZAR · siguiente: Gracias y preguntas</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- G8 · Gracias y preguntas · 39:30 · 0:30 -->
+    <section class="slide" data-speaker="gonzalo" data-min="2370" data-title="Gracias y preguntas">
+      <h1 class="t gt">¿Preguntas?</h1>
+      <div class="grid3 abs" style="left:7%;top:36%;width:86%">
+        <div class="doc-card" style="border-color:var(--coral);text-align:center">
+          <div class="av c" style="margin:0 auto .5em;width:2.6em;height:2.6em;font-size:1em">C</div>
+          <p style="font-weight:800;margin:0">Camila</p>
+          <p class="small" style="margin:.2em 0 0">[PERSONALIZAR]</p>
+        </div>
+        <div class="doc-card" style="border-color:var(--blue);text-align:center">
+          <div class="av j" style="margin:0 auto .5em;width:2.6em;height:2.6em;font-size:1em">J</div>
+          <p style="font-weight:800;margin:0">Jorge</p>
+          <p class="small" style="margin:.2em 0 0">[PERSONALIZAR]</p>
+        </div>
+        <div class="doc-card" style="border-color:var(--amber);text-align:center">
+          <div class="av g" style="margin:0 auto .5em;width:2.6em;height:2.6em;font-size:1em">G</div>
+          <p style="font-weight:800;margin:0">Gonzalo</p>
+          <p class="small" style="margin:.2em 0 0">[PERSONALIZAR]</p>
+        </div>
+      </div>
+      <div class="notas">
+        <div class="paso" data-paso="0">
+          <p>Muchas gracias. Ahora sí: preguntas para Camila, para Jorge o para mí.</p>
+          <p class="esc">[PERSONALIZAR: LinkedIn o red de cada relator, en las tarjetas de contacto.]</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="ribbon" id="ribbon"></footer>
+
+  <!-- Panel de notas en pantalla (respaldo si el popup de presentador se bloquea) -->
+  <aside class="notespanel" id="notespanel">
+    <div class="npHead">
+      <h3 id="npTitle"></h3>
+      <div class="npPos" id="npPos"></div>
+    </div>
+    <div class="warn" id="npWarn" hidden></div>
+    <div class="npScroll" id="npScroll"></div>
+  </aside>
+
+  <!-- Vista general (O) -->
+  <div class="overlay" id="overview">
+    <h2>Vista general</h2>
+    <div class="ogrid" id="ogrid"></div>
+  </div>
+
+  <!-- Ayuda (?) -->
+  <div class="overlay" id="help">
+    <h2>Atajos de teclado</h2>
+    <div class="keylist">
+      <p><b>→ / Espacio / Enter / PgDn</b> avanzar</p>
+      <p><b>← / PgUp</b> retroceder</p>
+      <p><b>Home / End</b> primera / última diapositiva</p>
+      <p><b>O</b> vista general</p>
+      <p><b>N</b> panel de notas</p>
+      <p><b>P</b> ventana de presentador</p>
+      <p><b>T</b> barra de tiempo (público)</p>
+      <p><b>L</b> tema claro / oscuro</p>
+      <p><b>F</b> pantalla completa</p>
+      <p><b>?</b> esta ayuda</p>
+      <p><b>Esc</b> cerrar superposición</p>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var body = document.body;
+  body.classList.add("js");
+
+  var stage = document.getElementById("stage");
+  var deck = document.getElementById("deck");
+  var slides = Array.prototype.slice.call(deck.querySelectorAll(".slide"));
+  var TOTAL_SEC = 2400;
+
+  var i = 0;
+  var step = 0;
+  var t0 = null; /* Date.now() al primer avance; null = cronómetro detenido */
+
+  var SPEAKER_LABEL = {
+    camila: "Adoptar IA hoy — Nivel 1: Visibilidad, con Camila",
+    jorge: "Adoptar IA hoy — Nivel 2: Capacidad, con Jorge",
+    gonzalo: "Adoptar IA hoy — Nivel 3: Valor, con Gonzalo"
+  };
+  var SPEAKER_NAME = { camila: "Camila", jorge: "Jorge", gonzalo: "Gonzalo" };
+  var SPEAKER_COLOR = { camila: "#FF7A6B", jorge: "#3D6BFF", gonzalo: "#FFB938" };
+  var SPEAKER_INK = { camila: "#fff", jorge: "#fff", gonzalo: "#161A2E" };
+  var BLOCK_START = { jorge: 900, gonzalo: 1680 };
+
+  /* ---------- HTML de clave + pasos, compartido entre el panel en pantalla
+     y la ventana de presentador. El paso actual se resalta (barra + AHORA
+     en el color del relator), el pasado se atenua, el futuro queda a medio
+     camino. ---------- */
+  function pasoBlockHTML(notas, curStep, color, ink){
+    if (!notas) return '<p class="esc">(Sin guion para esta diapositiva.)</p>';
+    var clave = notas.querySelector(".clave");
+    var pasos = Array.prototype.slice.call(notas.querySelectorAll(":scope > .paso"));
+    var html = "";
+    if (clave) html += '<div class="nClave">' + clave.innerHTML + '</div>';
+    pasos.forEach(function(p){
+      var k = parseInt(p.getAttribute("data-paso"), 10);
+      var cls = k === curStep ? "now" : (k < curStep ? "past" : "future");
+      var style = k === curStep ? ' style="border-left-color:' + color + '"' : "";
+      var ahora = k === curStep ? '<span class="nAhora" style="background:' + color + ';color:' + ink + '">AHORA</span>' : "";
+      html += '<div class="nPaso ' + cls + '" data-k="' + k + '"' + style + '>' + ahora + p.innerHTML + '</div>';
+    });
+    return html || '<p class="esc">(Sin guion para esta diapositiva.)</p>';
+  }
+
+  /* ---------- Fragmentos: agrupados por data-f, si no cada uno es su propio paso ---------- */
+  function frags(s){
+    var auto = 0;
+    return Array.prototype.slice.call(s.querySelectorAll(".frag")).map(function(el){
+      return { el: el, g: el.dataset.f ? +el.dataset.f : ++auto };
+    });
+  }
+  function maxStep(s){
+    return frags(s).reduce(function(m, x){ return Math.max(m, x.g); }, 0);
+  }
+
+  function next(){
+    if (step < maxStep(slides[i])) { step++; paint(); syncHash(); }
+    else if (i < slides.length - 1) { show(i + 1, false); }
+  }
+  function prev(){
+    if (step > 0) { step--; paint(); syncHash(); }
+    else if (i > 0) { show(i - 1, true); }
+  }
+  function show(n, atEnd){
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    step = atEnd ? maxStep(slides[i]) : 0;
+    paint();
+    syncHash();
+  }
+
+  var demoVideo = document.getElementById("demoVideo");
+  var demoFallback = document.getElementById("demoFallback");
+  var demoSlide = document.getElementById("slideDemo");
+  var demoOk = true;
+  if (demoVideo){
+    demoVideo.addEventListener("loadeddata", function(){ demoOk = true; demoFallback.classList.remove("show"); });
+    demoVideo.addEventListener("error", function(){
+      demoOk = false;
+      demoFallback.classList.add("show");
+      demoVideo.style.display = "none";
+    });
+  }
+
+  /* Video de patrón (J4): 14 pasos (0..13) sobre un único mp4, seek-driven por el
+     contrato de segmentos compartido con el render (P=4s, loop renderizado 2x para que
+     un timeupdate tardío nunca se note). Ver videos/j4-patron/segments.json /
+     odd/tasks/j4-hyperframes.md. */
+  var J4_P = 4;
+  var J4_SEGMENTS = [
+    { start: 0,   loopStart: 3,   end: 11  },
+    { start: 11,  loopStart: 16,  end: 24  },
+    { start: 24,  loopStart: 29,  end: 37  },
+    { start: 37,  loopStart: 42,  end: 50  },
+    { start: 50,  loopStart: 55,  end: 63  },
+    { start: 63,  loopStart: 68,  end: 76  },
+    { start: 76,  loopStart: 81,  end: 89  },
+    { start: 89,  loopStart: 94,  end: 102 },
+    { start: 102, loopStart: 107, end: 115 },
+    { start: 115, loopStart: 120, end: 128 },
+    { start: 128, loopStart: 133, end: 141 },
+    { start: 141, loopStart: 146, end: 154 },
+    { start: 154, loopStart: 159, end: 167 },
+    { start: 167, loopStart: 174, end: 182 }
+  ];
+  var j4Video = document.getElementById("j4Video");
+  var j4Fallback = document.getElementById("j4Fallback");
+  var j4Slide = document.getElementById("slideJ4");
+  var j4Ok = true;
+  var j4PrevStep = null; /* último paso pintado mientras J4 estaba activa; null = recién se entra */
+  function j4WrapIfNeeded(){
+    var seg = J4_SEGMENTS[step];
+    if (!seg || slides[i] !== j4Slide) return;
+    if (j4Video.currentTime >= seg.loopStart + J4_P) j4Video.currentTime -= J4_P;
+  }
+  if (j4Video){
+    j4Video.addEventListener("loadeddata", function(){ j4Ok = true; j4Fallback.classList.remove("show"); });
+    j4Video.addEventListener("error", function(){
+      j4Ok = false;
+      j4Fallback.classList.add("show");
+      j4Video.style.display = "none";
+    });
+    j4Video.addEventListener("timeupdate", j4WrapIfNeeded);
+    j4Video.addEventListener("ended", function(){
+      j4WrapIfNeeded();
+      if (slides[i] === j4Slide){ var pr = j4Video.play(); if (pr && pr.catch) pr.catch(function(){}); }
+    });
+    if (j4Video.requestVideoFrameCallback){
+      (function j4RVFC(){ j4WrapIfNeeded(); j4Video.requestVideoFrameCallback(j4RVFC); })();
+    }
+  }
+
+  /* Video de RAG (G5): mismo patrón que demoVideo, pero con sonido (música + SFX). */
+  var ragVideo = document.getElementById("ragVideo");
+  var ragFallback = document.getElementById("ragFallback");
+  var ragSlide = document.getElementById("slideRag");
+  var ragOk = true;
+  if (ragVideo){
+    ragVideo.addEventListener("loadeddata", function(){ ragOk = true; ragFallback.classList.remove("show"); });
+    ragVideo.addEventListener("error", function(){
+      ragOk = false;
+      ragFallback.classList.add("show");
+      ragVideo.style.display = "none";
+    });
+  }
+
+  /* Loop de capacidades (J8): mismo patrón que demoVideo; si el video no carga,
+     queda la grilla de ocho notas como respaldo. */
+  var relevoVideo = document.getElementById("relevoVideo");
+  var relevoFallback = document.getElementById("relevoFallback");
+  var relevoSlide = document.getElementById("slideRelevo");
+  var relevoOk = true;
+  function relevoFail(){
+    relevoOk = false;
+    relevoFallback.classList.add("show");
+    relevoVideo.style.display = "none";
+  }
+  if (relevoVideo){
+    relevoVideo.addEventListener("loadeddata", function(){ relevoOk = true; relevoFallback.classList.remove("show"); });
+    relevoVideo.addEventListener("error", relevoFail);
+    if (relevoVideo.error) relevoFail();
+  }
+  /* Arranca solo al entrar (mudo, en loop, sin avance extra); al salir se
+     detiene y vuelve a cero. Chrome pausa el video mudo si la ventana está en
+     segundo plano; al volver a ser visible se reintenta. */
+  function paintRelevo(sl){
+    if (!relevoVideo || !relevoOk) return;
+    try{
+      if (sl === relevoSlide){
+        if (relevoVideo.paused){ var pr = relevoVideo.play(); if (pr && pr.catch) pr.catch(function(){}); }
+      } else if (!relevoVideo.paused || relevoVideo.currentTime > 0){
+        relevoVideo.pause();
+        relevoVideo.currentTime = 0;
+      }
+    } catch(e){}
+  }
+  document.addEventListener("visibilitychange", function(){
+    if (!document.hidden) paintRelevo(slides[i]);
+  });
+
+  /* Reel de Camila (C2): aparece con el primer avance y se reproduce con sonido.
+     Si el navegador bloquea el audio (p. ej. el avance vino desde la ventana del
+     presentador), arranca en silencio y un clic sobre el reel activa el sonido. */
+  var reelBox = document.getElementById("reelJava");
+  var reelVideo = document.getElementById("reelJavaVideo");
+  var reelSound = document.getElementById("reelJavaSound");
+  var reelSlide = reelBox ? reelBox.closest(".slide") : null;
+  if (reelBox){
+    reelBox.addEventListener("click", function(e){
+      e.stopPropagation();
+      reelVideo.muted = false;
+      reelSound.classList.remove("show");
+      if (reelVideo.paused){ var pr = reelVideo.play(); if (pr && pr.catch) pr.catch(function(){}); }
+    });
+  }
+  function paintReel(sl){
+    if (!reelVideo) return;
+    try{
+      if (sl === reelSlide && step >= 1){
+        if (reelVideo.paused && !reelVideo.ended){
+          reelVideo.muted = false;
+          var pr = reelVideo.play();
+          if (pr && pr.catch) pr.catch(function(){
+            reelVideo.muted = true;
+            reelSound.classList.add("show");
+            var again = reelVideo.play(); if (again && again.catch) again.catch(function(){});
+          });
+        }
+      } else {
+        reelVideo.pause();
+        reelVideo.currentTime = 0;
+        reelSound.classList.remove("show");
+      }
+    } catch(e){}
+  }
+
+  function paint(){
+    slides.forEach(function(s, k){ s.classList.toggle("active", k === i); });
+    var sl = slides[i];
+    frags(sl).forEach(function(x){ x.el.classList.toggle("on", x.g <= step); });
+
+    /* Barra superior: texto + avatar activo, según el relator de la diapositiva actual */
+    var spk = sl.dataset.speaker;
+    var barDoc = document.getElementById("barDoc");
+    if (spk && barDoc.textContent !== SPEAKER_LABEL[spk]) barDoc.textContent = SPEAKER_LABEL[spk];
+    Array.prototype.slice.call(document.querySelectorAll(".av")).forEach(function(av){
+      av.classList.toggle("active", av.dataset.av === spk);
+    });
+
+    /* Franja de progreso: posición según data-min de la diapositiva actual */
+    var min = +(sl.dataset.min || 0);
+    document.getElementById("ribbon").style.setProperty("--pos", (min / TOTAL_SEC * 100) + "%");
+
+    /* Video de la demo (J5): al entrar se pone en cero y queda pausado;
+       recién se reproduce con el primer avance/clic dentro de la diapositiva
+       (fragmento oculto data-f=1). Al salir, se detiene. */
+    if (demoVideo && demoOk){
+      try{
+        if (sl === demoSlide){
+          if (step === 0){ demoVideo.pause(); demoVideo.currentTime = 0; }
+          else {
+            var pr = demoVideo.play(); if (pr && pr.catch) pr.catch(function(){});
+          }
+        } else {
+          demoVideo.pause();
+        }
+      } catch(e){}
+    }
+
+    /* Video de RAG (G5): al entrar se pone en cero y queda pausado;
+       con el primer avance se reproduce con sonido (música + SFX), sin mute.
+       Si el navegador bloquea el audio, arranca silenciado como respaldo.
+       Al salir de la diapositiva (en cualquier dirección), se detiene y
+       vuelve a cero. */
+    if (ragVideo && ragOk){
+      try{
+        if (sl === ragSlide){
+          if (step === 0){ ragVideo.pause(); ragVideo.currentTime = 0; }
+          else if (ragVideo.paused && !ragVideo.ended){
+            ragVideo.muted = false;
+            ragVideo.volume = 1;
+            var pr2 = ragVideo.play();
+            if (pr2 && pr2.catch) pr2.catch(function(){
+              ragVideo.muted = true;
+              var again = ragVideo.play(); if (again && again.catch) again.catch(function(){});
+            });
+          }
+        } else {
+          ragVideo.pause();
+          ragVideo.currentTime = 0;
+        }
+      } catch(e){}
+    }
+
+    /* Video de patrón (J4): avance simple (step === prevStep+1) o entrada al paso 0
+       desde la diapositiva anterior -> reproduce el build desde start[step]. Cualquier
+       otra llegada (retroceso, salto, entrada en un paso posterior, repintado en el
+       mismo paso) -> reproduce desde loopStart[step]; si el paso no cambió y el video
+       ya se está reproduciendo dentro de su tramo, no se vuelve a buscar. */
+    if (j4Video && j4Ok){
+      try{
+        if (sl === j4Slide){
+          var j4Seg = J4_SEGMENTS[step];
+          if (j4Seg){
+            var j4Forward = j4PrevStep !== null && step === j4PrevStep + 1;
+            var j4EnterAtZero = j4PrevStep === null && step === 0;
+            if (j4Forward || j4EnterAtZero){
+              j4Video.currentTime = j4Seg.start;
+              var pr = j4Video.play(); if (pr && pr.catch) pr.catch(function(){});
+            } else if (step !== j4PrevStep){
+              j4Video.currentTime = j4Seg.loopStart;
+              var pr2 = j4Video.play(); if (pr2 && pr2.catch) pr2.catch(function(){});
+            } else if (j4Video.paused){
+              var pr3 = j4Video.play(); if (pr3 && pr3.catch) pr3.catch(function(){});
+            }
+          }
+          j4PrevStep = step;
+        } else {
+          j4Video.pause();
+          j4PrevStep = null;
+        }
+      } catch(e){}
+    }
+
+    paintRelevo(sl);
+    paintReel(sl);
+
+    paintTimer();
+    paintTimerbar();
+    paintNotesPanel();
+    paintPresenter();
+    paintOverviewCursor();
+  }
+
+  /* ---------- Cronómetro (patrón running/base/mark) ---------- */
+  var running = false, base = 0, mark = 0;
+  function elapsedMs(){ return running ? base + (Date.now() - mark) : base; }
+  function elapsedSec(){ return t0 === null ? 0 : elapsedMs() / 1000; }
+  function mmss(sec){
+    var neg = sec < 0; sec = Math.abs(Math.round(sec));
+    return (neg ? "-" : "") + Math.floor(sec / 60) + ":" + ("0" + (sec % 60)).slice(-2);
+  }
+  function ensureStarted(){
+    if (t0 === null){ t0 = Date.now(); running = true; mark = Date.now(); base = 0; }
+  }
+  function toggleClock(){
+    if (t0 === null){ ensureStarted(); return; }
+    if (running){ base = elapsedMs(); running = false; }
+    else { mark = Date.now(); running = true; }
+  }
+  function resetClock(){ t0 = null; running = false; base = 0; mark = 0; paintTimer(); }
+
+  var timerEl = document.getElementById("timer");
+  var timerClk = document.getElementById("timerClk");
+  var timerDl = document.getElementById("timerDl");
+  function paintTimer(){
+    var sec = elapsedSec();
+    timerClk.textContent = mmss(sec);
+    var target = +(slides[i].dataset.min || 0);
+    if (t0 === null){ timerDl.textContent = ""; return; }
+    var d = sec - target;
+    timerDl.textContent = (Math.abs(d) < 20 ? "en hora" : (d > 0 ? mmss(d) + " atrasado" : mmss(-d) + " adelantado"));
+    timerDl.className = "dl " + (d <= 20 ? "ahead" : "behind");
+  }
+  timerEl.addEventListener("click", function(){ toggleClock(); paintTimer(); });
+  timerEl.addEventListener("dblclick", function(){ resetClock(); });
+  setInterval(function(){ if (t0 !== null) { paintTimer(); paintPresenter(); paintTimerbar(); } }, 500);
+
+  /* ---------- Barra de tiempo del público (T) ---------- */
+  var timerbarShown = false;
+  var timerbarEl = document.getElementById("timerbar");
+  var timerbarFill = document.getElementById("timerbarFill");
+  function paintTimerbar(){
+    if (!timerbarShown) return;
+    var pct = Math.max(0, Math.min(100, elapsedSec() / TOTAL_SEC * 100));
+    timerbarFill.style.width = pct + "%";
+  }
+  function toggleTimerbar(){
+    timerbarShown = !timerbarShown;
+    timerbarEl.classList.toggle("show", timerbarShown);
+    paintTimerbar();
+  }
+
+  /* ---------- Panel de notas en pantalla (N) ---------- */
+  var npShown = false;
+  var notespanel = document.getElementById("notespanel");
+  function toggleNotesPanel(force){
+    npShown = typeof force === "boolean" ? force : !npShown;
+    notespanel.classList.toggle("show", npShown);
+    if (npShown) paintNotesPanel();
+  }
+  var npLastKey = null, npLastI = -1;
+  function paintNotesPanel(){
+    if (!npShown) return;
+    var sl = slides[i];
+    var m = maxStep(sl);
+    document.getElementById("npTitle").textContent = sl.dataset.title || "";
+    document.getElementById("npPos").textContent = (i + 1) + "/" + slides.length + (m ? " · avance " + step + " de " + m : "");
+    var warnEl = document.getElementById("npWarn");
+    var w = relevoWarning();
+    if (w){ warnEl.textContent = w; warnEl.hidden = false; } else { warnEl.hidden = true; }
+
+    var key = i + ":" + step;
+    if (key !== npLastKey){
+      var slideChanged = npLastI !== i;
+      var spk = sl.dataset.speaker;
+      var color = SPEAKER_COLOR[spk] || "#8B5CF6", ink = SPEAKER_INK[spk] || "#fff";
+      var scroller = document.getElementById("npScroll");
+      scroller.innerHTML = pasoBlockHTML(sl.querySelector(".notas"), step, color, ink);
+      if (slideChanged) scroller.scrollTop = 0;
+      else {
+        var nowEl = scroller.querySelector(".nPaso.now");
+        if (nowEl) nowEl.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+      npLastKey = key; npLastI = i;
+    }
+  }
+
+  /* ---------- Aviso de relevo: dentro de 30s del inicio del siguiente bloque ---------- */
+  function relevoWarning(){
+    if (t0 === null) return "";
+    var sec = elapsedSec();
+    var boundaries = [
+      { at: BLOCK_START.jorge, who: "Jorge" },
+      { at: BLOCK_START.gonzalo, who: "Gonzalo" }
+    ];
+    for (var k = 0; k < boundaries.length; k++){
+      var d = boundaries[k].at - sec;
+      if (d > 0 && d <= 30) return "RELEVO → " + boundaries[k].who + " en " + mmss(d);
+    }
+    return "";
+  }
+
+  /* ---------- Ventana de presentador (P) ---------- */
+  var pWin = null;
+
+  function presenterHTML(){
+    return [
+      '<!doctype html><meta charset="utf-8"><title>Presentador — Adoptar IA hoy</title><style>',
+      '*{box-sizing:border-box}',
+      'html,body{height:100%}',
+      'body{margin:0;background:#0B0E14;color:#EDEFF7;',
+      '     font-family:"Segoe UI",system-ui,sans-serif;display:flex;flex-direction:column;overflow:hidden}',
+      '.top{flex:none;display:flex;align-items:baseline;gap:18px;border-bottom:1px solid #2B3049;padding:20px 26px 12px}',
+      '#clk{font-size:46px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1}',
+      '#dlt{font-size:18px;font-weight:700}',
+      '.ahead{color:#5FDB9C}.behind{color:#FF8A8A}',
+      '#pos{margin-left:auto;font-size:14px;color:#9AA1BE;letter-spacing:.04em;font-weight:700}',
+      '#blk{flex:none;padding:8px 26px 0;font-size:13px;color:#9AA1BE}',
+      '#spk{flex:none;margin:10px 26px 0;display:inline-block;font-weight:800;padding:.15em .6em;border-radius:.3em;width:fit-content}',
+      'h2{flex:none;font-size:22px;margin:8px 26px 0;letter-spacing:-.01em}',
+      '#relevo{flex:none;margin:10px 26px 0;font-size:16px;font-weight:800;color:#0B0E14;background:#FFD166;',
+      '        display:none;padding:.5em .8em;border-radius:.4em;width:fit-content}',
+      '#relevo.on{display:block}',
+      '#cue{flex:1;min-height:0;overflow:auto;padding:14px 26px 20px;scroll-behavior:smooth}',
+      '#cue p{font-size:18px;line-height:1.48;margin:0 0 10px}',
+      '#cue p.esc{font-size:15px;color:#9AA1BE;font-style:italic;border-left:3px solid #2B3049;padding-left:12px}',
+      '#cue p.cue{font-size:14px;font-weight:800;color:#0B0E14;background:#8B5CF6;',
+      '           display:inline-block;padding:5px 12px;border-radius:5px}',
+      '.nClave{font-size:14px;line-height:1.5;padding:.6em .8em;margin:0 0 14px;background:rgba(255,255,255,.06);',
+      '        border-radius:.5em;color:#9AA1BE}',
+      '.nClave b{color:#EDEFF7}',
+      '.nPaso{opacity:.7;padding:.6em .8em;margin:0 0 10px;border-left:.28em solid transparent;',
+      '       border-radius:0 .5em .5em 0;transition:opacity .3s ease;scroll-margin-top:10px}',
+      '.nPaso.past{opacity:.38}',
+      '.nPaso.now{opacity:1;background:rgba(255,255,255,.05)}',
+      '.nAhora{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.07em;',
+      '        padding:.18em .55em;border-radius:.3em;margin-right:8px;vertical-align:middle}',
+      '#nxt{flex:none;padding:10px 26px;font-size:14px;color:#9AA1BE;border-top:1px solid #2B3049}',
+      '</style>',
+      '<div class="top"><span id="clk">0:00</span><span id="dlt"></span><span id="pos"></span></div>',
+      '<div id="blk"></div><div id="spk"></div><h2 id="ttl"></h2>',
+      '<div id="relevo"></div><div id="cue"></div><div id="nxt"></div>'
+    ].join("");
+  }
+
+  function blockLabel(sl){
+    var spk = sl.dataset.speaker;
+    var start = spk === "jorge" ? 900 : (spk === "gonzalo" ? 1680 : 0);
+    var budget = spk === "jorge" ? 780 : (spk === "gonzalo" ? 720 : 900);
+    return { start: start, budget: budget, name: SPEAKER_NAME[spk] || "" };
+  }
+
+  var pwLastKey = null, pwLastI = -1;
+  function paintPresenter(){
+    if (!pWin || pWin.closed) return;
+    var d = pWin.document, sl = slides[i];
+    var min = parseInt(sl.dataset.min, 10);
+    function set(id, v){ var e = d.getElementById(id); if (e) e.textContent = v; }
+    var sec = elapsedSec();
+    set("clk", mmss(sec));
+    var ms = maxStep(sl);
+    set("pos", (i + 1) + "/" + slides.length + (ms ? "   ·   avance " + step + " de " + ms : ""));
+    set("ttl", sl.dataset.title || "");
+    var spk = sl.dataset.speaker;
+    var color = SPEAKER_COLOR[spk] || "#8B5CF6", ink = SPEAKER_INK[spk] || "#fff";
+    var spkEl = d.getElementById("spk");
+    if (spkEl){
+      spkEl.textContent = SPEAKER_NAME[spk] || "";
+      spkEl.style.background = color;
+      spkEl.style.color = ink;
+    }
+    var bl = blockLabel(sl);
+    var withinBlock = sec - bl.start;
+    var blockDelta = withinBlock - (min - bl.start >= 0 ? (min - bl.start) : 0);
+    set("blk", "Bloque " + bl.name + " · objetivo " + mmss(bl.budget) + " · delta de bloque " +
+      (t0 === null ? "—" : mmss(Math.max(0, withinBlock) - Math.max(0, min - bl.start))));
+
+    var n = d.getElementById("cue");
+    var key = i + ":" + step;
+    if (n && key !== pwLastKey){
+      var slideChanged = pwLastI !== i;
+      n.innerHTML = pasoBlockHTML(sl.querySelector(".notas"), step, color, ink);
+      if (slideChanged) { try { pWin.scrollTo(0, 0); } catch (e) {} }
+      else {
+        var nowEl = n.querySelector(".nPaso.now");
+        if (nowEl && nowEl.scrollIntoView) nowEl.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+      pwLastKey = key; pwLastI = i;
+    }
+    var dltEl = d.getElementById("dlt");
+    if (isNaN(min) || t0 === null){ dltEl.textContent = ""; }
+    else {
+      var delta = sec - min;
+      dltEl.textContent = Math.abs(delta) < 20 ? "en hora" : (delta > 0 ? mmss(delta) + " atrasado" : mmss(-delta) + " adelantado");
+      dltEl.className = delta <= 20 ? "ahead" : "behind";
+    }
+    var relEl = d.getElementById("relevo");
+    var w = relevoWarning();
+    if (relEl){ relEl.textContent = w; relEl.classList.toggle("on", !!w); }
+
+    var sig = slides[i + 1];
+    set("nxt", sig ? "Sigue: " + (sig.dataset.title || "") : "Última diapositiva.");
+  }
+
+  function togglePresenter(){
+    if (pWin && !pWin.closed) { pWin.close(); pWin = null; return; }
+    pWin = window.open("", "presentador", "width=900,height=760");
+    if (!pWin) { toggleNotesPanel(true); return; }
+    pWin.document.write(presenterHTML());
+    pWin.document.close();
+    pWin.document.addEventListener("keydown", function(e){
+      if (e.key === "ArrowRight" || e.key === " " || e.key === "Enter") { ensureStarted(); next(); e.preventDefault(); }
+      else if (e.key === "ArrowLeft") { prev(); e.preventDefault(); }
+    });
+    pwLastKey = null; pwLastI = -1;
+    paintPresenter();
+  }
+  window.addEventListener("beforeunload", function(){ if (pWin && !pWin.closed) pWin.close(); });
+
+  /* ---------- Vista general (O) ---------- */
+  var ovOverview = document.getElementById("overview");
+  var ovHelp = document.getElementById("help");
+  var ogrid = document.getElementById("ogrid");
+  slides.forEach(function(s, k){
+    var b = document.createElement("button");
+    b.className = "othumb";
+    var spk = s.dataset.speaker;
+    b.innerHTML = '<span class="n">' + (k + 1) + " · " + (SPEAKER_NAME[spk] || "") + '</span><span class="tt"></span>';
+    b.querySelector(".tt").textContent = s.dataset.title || "";
+    b.addEventListener("click", function(){ closeOverlays(); show(k, false); });
+    ogrid.appendChild(b);
+  });
+  function paintOverviewCursor(){
+    Array.prototype.slice.call(ogrid.children).forEach(function(b, k){ b.classList.toggle("cur", k === i); });
+  }
+  function closeOverlays(){ ovOverview.classList.remove("on"); ovHelp.classList.remove("on"); }
+  function toggleOverlay(ov){
+    var on = ov.classList.contains("on");
+    closeOverlays();
+    if (!on) ov.classList.add("on");
+  }
+
+  /* ---------- Tema claro / oscuro (L) ---------- */
+  function toggleTheme(){ body.classList.toggle("dark"); }
+
+  /* ---------- Pantalla completa (F) ---------- */
+  function toggleFullscreen(){
+    if (document.fullscreenElement) document.exitFullscreen();
+    else if (stage.requestFullscreen) stage.requestFullscreen();
+  }
+
+  /* ---------- Hash: #N.k = diapositiva N en el paso k (formato que se
+     escribe al navegar). Al abrir también se aceptan #N (paso 0) y #N*
+     (último paso), y el sufijo ! abre el panel de notas en pantalla, p.ej.
+     #15.2! — pensado para poder capturar pantallazos de un paso puntual. ---------- */
+  function syncHash(){
+    var h = "#" + (i + 1) + "." + step;
+    if (location.hash !== h) history.replaceState(null, "", h);
+  }
+  function openFromHash(){
+    var h = (location.hash || "").slice(1);
+    var bang = /!$/.test(h);
+    if (bang) h = h.slice(0, -1);
+    var star = /\*$/.test(h);
+    if (star) h = h.slice(0, -1);
+    var dot = h.indexOf(".");
+    var n, k = null;
+    if (dot >= 0) { n = parseInt(h.slice(0, dot), 10); k = parseInt(h.slice(dot + 1), 10); }
+    else { n = parseInt(h, 10); }
+    if (isNaN(n)) { show(0, false); }
+    else if (k !== null && !isNaN(k)) {
+      i = Math.max(0, Math.min(slides.length - 1, n - 1));
+      step = Math.max(0, Math.min(maxStep(slides[i]), k));
+      paint();
+    }
+    else { show(n - 1, star); }
+    if (bang) toggleNotesPanel(true);
+  }
+
+  /* ---------- Teclado ---------- */
+  function isField(el){ return el && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName)); }
+  document.addEventListener("keydown", function(e){
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    if (isField(e.target)) { if (e.key === "Escape") e.target.blur(); return; }
+
+    if (e.key === "Escape") {
+      if (ovOverview.classList.contains("on") || ovHelp.classList.contains("on")) { closeOverlays(); e.preventDefault(); }
+      return;
+    }
+
+    switch (e.key) {
+      case "ArrowRight": case "PageDown": case " ": case "Enter":
+        e.preventDefault(); ensureStarted(); next(); break;
+      case "ArrowLeft": case "PageUp": case "Backspace":
+        e.preventDefault(); prev(); break;
+      case "Home": e.preventDefault(); show(0, false); break;
+      case "End": e.preventDefault(); show(slides.length - 1, true); break;
+      case "o": case "O": e.preventDefault(); toggleOverlay(ovOverview); break;
+      case "n": case "N": e.preventDefault(); toggleNotesPanel(); break;
+      case "p": case "P": e.preventDefault(); ensureStarted(); togglePresenter(); break;
+      case "t": case "T": e.preventDefault(); toggleTimerbar(); break;
+      case "l": case "L": e.preventDefault(); toggleTheme(); break;
+      case "f": case "F": e.preventDefault(); toggleFullscreen(); break;
+      case "?": e.preventDefault(); toggleOverlay(ovHelp); break;
+    }
+  });
+
+  /* ---------- Avance por clic (sin robarle el clic a botones/enlaces) ---------- */
+  document.addEventListener("click", function(e){
+    if (e.target.closest("button, a, .overlay, .notespanel, .bar")) return;
+    ensureStarted(); next();
+  });
+
+  window.addEventListener("hashchange", openFromHash);
+
+  /* ---------- Arranque ---------- */
+  openFromHash();
+  body.classList.add("ready");
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <title>Cuando el que sabe no está</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script src="data.js"></script>
+    <style>
+      @font-face{font-family:"Schibsted Grotesk";font-style:normal;font-weight:400 900;
+        src:url("assets/fonts/SchibstedGrotesk-latin.woff2") format("woff2");}
+      @font-face{font-family:"Figtree";font-style:normal;font-weight:400 900;
+        src:url("assets/fonts/Figtree-latin.woff2") format("woff2");}
+      *{margin:0;padding:0;box-sizing:border-box}
+      html,body{width:1920px;height:1080px;overflow:hidden}
+      body{font-family:"Figtree",system-ui,sans-serif;color:#161A2E}
+
+      :root{
+        --bg:#F3F5FA; --ink:#161A2E; --mute:#565D76; --line:#DCE1EC;
+        --blue:#3D6BFF; --ai:#8B5CF6; --coral:#FF7A6B; --amber:#FFB938;
+        --coral-tint:#FFE3DE; --ai-tint:#EDE7FC; --amber-tint:#FFF3D9; --blue-tint:#E6ECFF;
+        /* darker variants only for text on white/tints (>= 4.5:1) */
+        --blue-dark:#2F56E6; --ai-dark:#5A2FC0; --coral-dark:#BC3C2B; --amber-dark:#8A5A00;
+      }
+
+      #root{position:relative;width:1920px;height:1080px;overflow:hidden;background:var(--bg)}
+      .clip{position:absolute;inset:0}
+      .t{font-family:"Schibsted Grotesk",sans-serif;font-weight:900;letter-spacing:-.02em}
+      .canvas{position:absolute;inset:0;background-image:radial-gradient(#C9D0DF 2px,transparent 2.4px);background-size:34px 34px}
+      .abs{position:absolute}
+      .hide{opacity:0;visibility:hidden}
+
+      /* ---------- top bar ---------- */
+      .bar{position:absolute;left:0;right:0;top:0;height:96px;background:#fff;border-bottom:1px solid var(--line);
+        display:flex;align-items:center;padding:0 56px;gap:24px;z-index:20}
+      .bar .doc{flex:1;font-weight:700;font-size:32px}
+      .badge{background:var(--coral-tint);color:var(--coral-dark);font-weight:800;font-size:32px;padding:8px 20px;border-radius:10px}
+      .avatars{display:flex}
+      .av{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:22px;
+        margin-left:-12px;border:3px solid #fff}
+
+      .panel{position:absolute;background:#fff;border:1px solid var(--line);border-radius:22px;
+        box-shadow:0 24px 48px -28px rgba(22,26,46,.35)}
+
+      /* ---------- cursors ---------- */
+      .cur{position:absolute;display:flex;align-items:flex-start;gap:4px;z-index:40}
+      .cur svg{width:40px;height:40px;filter:drop-shadow(0 2px 4px rgba(22,26,46,.25))}
+      .cur b{font-size:32px;font-weight:800;padding:4px 14px;border-radius:8px;margin-top:26px;white-space:nowrap}
+      .cur.gonzalo b{background:var(--amber);color:var(--ink)}
+      .cur.ia b{background:var(--ai-dark);color:#fff}
+      .cur.team b{background:var(--ink);color:#fff}
+
+      /* ---------- beat 1 ---------- */
+      #s1h{left:96px;top:148px}
+      #s1h .when{font-size:40px;color:var(--mute);font-weight:700}
+      #s1h .t{font-size:76px;line-height:1.05;margin-top:6px}
+      #gcard{left:96px;top:380px;width:820px;height:340px;padding:44px;display:flex;gap:36px;align-items:center}
+      #gav{flex:none;width:150px;height:150px;border-radius:50%;background:var(--amber);display:grid;place-items:center;font-size:72px}
+      #gcard .name{font-size:52px}
+      #gcard .role{font-size:36px;color:var(--mute);margin-top:4px}
+      .status{position:relative;height:96px;margin-top:18px}
+      .status span{position:absolute;left:0;top:0;font-size:36px;font-weight:700;display:flex;align-items:center;gap:12px;white-space:nowrap}
+      .status i{width:18px;height:18px;border-radius:50%;display:inline-block}
+      #tk{left:960px;top:390px;width:864px;padding:40px 44px;border-top:10px solid var(--coral)}
+      #tk .lab{font-size:34px;font-weight:800;color:var(--coral-dark)}
+      #tk .t{font-size:52px;line-height:1.08;margin-top:12px}
+      #tk p{font-size:38px;line-height:1.3;margin-top:16px}
+      .call{left:960px;width:864px;padding:22px 32px;display:flex;align-items:center;gap:18px;font-size:36px;font-weight:700}
+      .call i{width:20px;height:20px;border-radius:50%;background:var(--coral);flex:none}
+      #call1{top:790px} #call2{top:900px}
+      #sla{left:210px;top:250px;width:1500px;height:720px;padding:64px 80px}
+      #sla .t.h{font-size:64px}
+      #sla .sub{font-size:36px;color:var(--mute);margin-top:8px}
+      .srow{display:grid;grid-template-columns:560px 1fr 190px;align-items:center;column-gap:32px;margin-top:64px}
+      .srow .lbl{font-size:40px;font-weight:700}
+      .srow .trk{height:34px;background:#EDF0F7;border-radius:17px;overflow:hidden}
+      .srow .fill{height:100%;width:100%;border-radius:17px;transform:scaleX(0);transform-origin:left center}
+      .srow .val{font-size:88px;text-align:right}
+      #sla .src{position:absolute;left:80px;bottom:56px;font-size:32px;color:var(--mute)}
+
+      /* ---------- beat 2 ---------- */
+      #stepper{left:96px;top:124px;display:flex;align-items:center;gap:22px;font-size:40px;font-weight:800;color:#6F7690}
+      #stepper .st{position:relative;padding-bottom:10px}
+      #stepper .st u{position:absolute;left:0;right:0;bottom:0;height:7px;border-radius:4px;background:var(--ai);transform:scaleX(0);transform-origin:left center}
+      #stepper .ar{font-weight:400}
+      #tiles{left:72px;top:232px;width:1776px;display:grid;grid-template-columns:repeat(7,240px);gap:16px}
+      .tile{height:92px;background:#fff;border:1px solid var(--line);border-left:8px solid #C9D0DF;border-radius:14px;display:flex;
+        align-items:center;justify-content:center;font-size:32px;font-weight:600;letter-spacing:-.01em;white-space:nowrap}
+      #tilesCap{left:96px;top:910px;font-size:44px}
+      #doc{left:96px;top:232px;width:900px;height:800px;padding:36px 40px;overflow:hidden}
+      #doc .id{font-size:44px}
+      #doc .ttl{font-size:32px;color:var(--mute);line-height:1.25;margin-top:6px;margin-bottom:22px}
+      .frag{height:46px;border-radius:10px;background:var(--ai-tint);margin-bottom:8px;display:flex;align-items:center;
+        justify-content:space-between;padding:0 18px;font-size:32px;font-weight:700;white-space:nowrap}
+      .frag em{font-style:normal;font-weight:600;color:var(--ai-dark)}
+      #fragCap{left:1080px;top:300px;width:760px}
+      #fragCap .t{font-size:64px;line-height:1.06}
+      #fragCap p{font-size:40px;color:var(--mute);margin-top:22px;line-height:1.3}
+      #vec{left:1060px;top:260px;width:780px;padding:40px 44px}
+      #vec .k{font-size:34px;font-weight:800;color:var(--ai-dark)}
+      #vec .nums{display:grid;grid-template-columns:1fr 1fr;gap:10px 36px;margin-top:24px;font-size:52px;font-weight:800;
+        font-variant-numeric:tabular-nums}
+      #vec .more{font-size:36px;color:var(--mute);margin-top:22px}
+      #vec .t.cap{font-size:48px;line-height:1.1;margin-top:30px}
+      #map{left:96px;top:236px;width:1728px;height:790px;transform-origin:0 0;overflow:hidden}
+      .dot{position:absolute;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%}
+      #lines{position:absolute;left:0;top:0;width:1728px;height:790px;overflow:visible}
+      #qdot{position:absolute;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:var(--ai);
+        border:6px solid #fff;box-shadow:0 0 0 8px rgba(139,92,246,.35)}
+      #mapCap{position:absolute;right:44px;top:36px;text-align:right}
+      #mapCap .t{font-size:52px}
+      #mapCap p{font-size:34px;color:var(--mute);margin-top:6px}
+      #legend{position:absolute;left:44px;bottom:30px;display:flex;gap:32px;font-size:32px;font-weight:700}
+      #legend span{display:flex;align-items:center;gap:10px}
+      #legend i{width:20px;height:20px;border-radius:50%;display:inline-block}
+
+      /* ---------- beat 3 ---------- */
+      #chat{left:96px;top:124px;width:860px;height:916px;padding:30px 34px;overflow:hidden}
+      .bubble{border-radius:16px;padding:20px 26px;margin-bottom:22px}
+      .bubble .who{font-size:32px;font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+      .bubble .who i{width:16px;height:16px;border-radius:50%;display:inline-block}
+      .bubble.team{background:#EEF0F6;border:1px solid var(--line)}
+      .bubble.team .who i{background:var(--ink)}
+      #qText{font-size:38px;line-height:1.32;min-height:150px}
+      .bubble.ia{background:var(--ai-tint);border:1px solid #DCCFF7}
+      .bubble.ia .who{color:var(--ai-dark)}
+      .bubble.ia .who i{background:var(--ai)}
+      #aText{font-size:35px;line-height:1.36}
+      .chipc{display:inline-block;background:var(--ai-dark);color:#fff;font-weight:800;font-size:32px;border-radius:8px;
+        padding:0 10px;margin:4px 6px 0 0;line-height:1.35}
+      .caret{display:inline-block;width:4px;height:36px;background:var(--ink);vertical-align:-6px;margin-left:3px}
+      #cards{left:1000px;top:528px;width:824px}
+      .card{height:108px;padding:12px 24px;margin-bottom:12px;background:#fff;border:1px solid var(--line);border-left:8px solid var(--ai);
+        border-radius:14px}
+      .card .top{display:flex;justify-content:space-between;font-size:32px;font-weight:800}
+      .card .top b{color:var(--ai-dark)}
+      .card .ttl{font-size:32px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+      .card .top span{font-variant-numeric:tabular-nums}
+
+      /* ---------- beat 4 ---------- */
+      #s4h{left:96px;top:140px}
+      #s4h .t{font-size:72px}
+      #s4h p{font-size:40px;color:var(--mute);margin-top:8px}
+      #flow{left:96px;top:370px;width:1728px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:22px}
+      .step{position:relative;height:490px;padding:30px 28px;display:flex;flex-direction:column}
+      .step .n{flex:none;width:64px;height:64px;border-radius:50%;background:var(--ai-tint);color:var(--ai-dark);font-weight:900;
+        font-size:34px;display:grid;place-items:center}
+      .step .p{font-size:44px;line-height:1.08;margin-top:22px}
+      .step .d{font-size:34px;line-height:1.28;margin-top:14px;color:#2B3048;overflow-wrap:break-word}
+      .step .src{margin-top:auto;align-self:flex-start;font-size:32px;font-weight:800;color:var(--ai-dark);
+        background:var(--ai-tint);border-radius:8px;padding:4px 12px}
+      .step .ck{position:absolute;right:26px;top:30px;width:60px;height:60px;border-radius:14px;border:4px solid var(--line);
+        display:grid;place-items:center}
+      .step .ck svg{width:40px;height:40px;opacity:0}
+      #s4foot{left:96px;top:916px;font-size:48px}
+
+      /* ---------- beat 5 ---------- */
+      #endCard{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+      #endQ{font-size:84px;text-align:center;width:1500px;line-height:1.1;min-height:280px}
+      #endA{font-size:48px;color:var(--mute);margin-top:34px;text-align:center}
+      .underline{display:flex;margin-top:34px;height:10px;width:380px;border-radius:5px;overflow:hidden}
+      .underline i{flex:1;display:block;transform:scaleX(0);transform-origin:left center}
+      .underline i:first-child{background:var(--amber)}
+      .underline i:last-child{background:var(--ai)}
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-width="1920" data-height="1080" data-duration="120">
+      <div id="scene" class="clip" data-start="0" data-duration="120" data-track-index="1">
+        <div class="canvas"></div>
+
+        <div class="bar" id="bar">
+          <div class="doc">Soporte TI · base de conocimiento del equipo</div>
+          <div class="badge">Datos ficticios</div>
+          <div class="avatars">
+            <div class="av" id="avG" style="background:var(--amber);color:var(--ink)">G</div>
+            <div class="av" style="background:var(--ink);color:#fff">P</div>
+            <div class="av" style="background:var(--ai-dark);color:#fff">IA</div>
+          </div>
+        </div>
+
+        <!-- ============ beat 1 ============ -->
+        <div class="abs hide" id="s1h"><div class="when">Lunes, 08:47</div><div class="t">El que sabe resolverlo no está.</div></div>
+        <div class="panel hide" id="gcard">
+          <div id="gav" class="t">G</div>
+          <div>
+            <div class="name t">Gonzalo Reyes</div>
+            <div class="role">Administrador de sistemas</div>
+            <div class="status">
+              <span id="stOn"><i style="background:var(--blue)"></i>Disponible</span>
+              <span id="stOff" class="hide" style="display:block"><span style="position:static"><i style="background:var(--amber)"></i>De vacaciones</span><span style="position:static;font-weight:600;color:var(--mute);margin-top:4px">vuelve el 14 de febrero</span></span>
+            </div>
+          </div>
+        </div>
+        <div class="panel hide" id="tk">
+          <div class="lab">Ticket nuevo · prioridad alta</div>
+          <div class="t">Los pagos del fin de semana no aparecen en el CRM</div>
+          <p>A clientes que ya pagaron les llegó la orden de corte.</p>
+        </div>
+        <div class="panel call hide" id="call1"><i></i>Llamada entrante · cliente de Temuco</div>
+        <div class="panel call hide" id="call2"><i></i>Llamada entrante · cliente de Villarrica</div>
+        <div class="panel hide" id="sla">
+          <div class="t h">Tickets que cumplen su SLA</div>
+          <div class="sub">Tiempo comprometido de respuesta, según quién está disponible</div>
+          <div class="srow"><div class="lbl">Con el experto disponible</div><div class="trk"><div class="fill" id="slaOn" style="background:var(--blue)"></div></div><div class="val t" style="color:var(--blue-dark)"><span id="slaOnV">0</span>%</div></div>
+          <div class="srow"><div class="lbl">Con el experto de vacaciones</div><div class="trk"><div class="fill" id="slaOff" style="background:var(--coral)"></div></div><div class="val t" style="color:var(--coral-dark)"><span id="slaOffV">0</span>%</div></div>
+          <div class="src">Fuente: métricas del vault · 40 tickets</div>
+        </div>
+
+        <!-- ============ beat 2 ============ -->
+        <div class="abs hide" id="stepper">
+          <div class="st" id="st0">Notas de Obsidian<u></u></div><div class="ar">→</div>
+          <div class="st" id="st1">Fragmentos<u></u></div><div class="ar">→</div>
+          <div class="st" id="st2">Embeddings<u></u></div><div class="ar">→</div>
+          <div class="st" id="st3">Base de datos vectorial<u></u></div>
+        </div>
+        <div class="abs" id="tiles"></div>
+        <div class="abs t hide" id="tilesCap"></div>
+        <div class="panel hide" id="doc">
+          <div class="id t" id="docId"></div>
+          <div class="ttl" id="docTtl"></div>
+          <div id="frags"></div>
+        </div>
+        <div class="abs hide" id="fragCap"><div class="t">Cada sección del ticket es un fragmento.</div><p id="fragCapP"></p></div>
+        <div class="panel hide" id="vec">
+          <div class="k" id="vecK"></div>
+          <div class="nums" id="vecNums"></div>
+          <div class="more" id="vecMore"></div>
+          <div class="t cap">Un embedding: el significado del fragmento, convertido en números.</div>
+        </div>
+        <div class="panel hide" id="map">
+          <div id="dots"></div>
+          <svg id="lines" viewBox="0 0 1728 790"></svg>
+          <div id="qdot" class="hide"></div>
+          <div id="mapCap"><div class="t" id="mapCapT"></div><p>Chroma, en este computador · proyección 2D de los vectores reales</p></div>
+          <div id="legend"></div>
+        </div>
+
+        <!-- ============ beat 3 ============ -->
+        <div class="panel hide" id="chat">
+          <div class="bubble team" id="bQ"><div class="who"><i></i>Paula · Soporte TI</div><div id="qText"></div></div>
+          <div class="bubble ia hide" id="bA"><div class="who"><i></i>IA · respuesta con fuentes</div><div id="aText"></div></div>
+        </div>
+        <div class="abs" id="cards"></div>
+
+        <!-- ============ beat 4 ============ -->
+        <div class="abs hide" id="s4h"><div class="t">De la respuesta a un flujo de trabajo</div><p>Cada paso cita el ticket que lo documenta.</p></div>
+        <div class="abs" id="flow"></div>
+        <div class="abs t hide" id="s4foot">Listo para ejecutar, sin esperar al experto.</div>
+
+        <!-- ============ beat 5 ============ -->
+        <div id="endCard" class="hide">
+          <div class="t" id="endQ"></div>
+          <div id="endA" class="hide">Hoy: resolver el caso aunque el experto no esté.</div>
+          <div class="underline"><i></i><i></i></div>
+        </div>
+
+        <!-- ============ cursors ============ -->
+        <div class="cur gonzalo hide" id="curG" style="left:760px;top:600px">
+          <svg viewBox="0 0 24 24"><path d="M3 2l7 19 2.5-7.5L20 11z" fill="#FFB938" stroke="#fff" stroke-width="1.5"/></svg><b>Gonzalo</b>
+        </div>
+        <div class="cur ia hide" id="curIA" data-layout-allow-overlap style="left:820px;top:560px">
+          <svg viewBox="0 0 24 24"><path d="M3 2l7 19 2.5-7.5L20 11z" fill="#8B5CF6" stroke="#fff" stroke-width="1.5"/></svg><b>IA</b>
+        </div>
+        <div class="cur team hide" id="curP" data-layout-allow-overlap style="left:620px;top:470px">
+          <svg viewBox="0 0 24 24"><path d="M3 2l7 19 2.5-7.5L20 11z" fill="#161A2E" stroke="#fff" stroke-width="1.5"/></svg><b>Paula</b>
+        </div>
+      </div>
+
+      <audio id="soundtrack" src="assets/audio/soundtrack.wav" data-start="0" data-duration="120" data-track-index="10" data-volume="1"></audio>
+    </div>
+
+    <script>
+      /* Every frame is a pure function of timeline time: no Date.now(), no unseeded random, no CSS animation. */
+      const D = window.RAG, IX = D.indice, Q = D.consulta;
+      const tl = gsap.timeline({ paused: true });
+      const $ = function(id){ return document.getElementById(id); };
+      const nf = function(v, d){ return v.toFixed(d).replace('.', ',').replace('-', '−'); };
+      function show(sel, at, extra){ tl.fromTo(sel, Object.assign({ autoAlpha: 0, y: 14 }, extra && extra.from),
+        Object.assign({ autoAlpha: 1, y: 0, duration: .5, ease: 'power3.out' }, extra && extra.to), at); }
+      function hide(sel, at){ tl.to(sel, { autoAlpha: 0, duration: .35, ease: 'power2.in' }, at); }
+      function typeInto(el, text, start, dur){
+        const st = { i: 0 };
+        tl.fromTo(st, { i: 0 }, { i: text.length, duration: dur, ease: 'none', onUpdate: function(){
+          el.innerHTML = text.slice(0, Math.round(st.i)) + '<span class="caret"></span>'; } }, start);
+        tl.set(el, { innerHTML: text }, start + dur + .4);
+      }
+      const SYS = { 'CRM': ['CRM', 'var(--blue)'], 'EAM': ['EAM', 'var(--coral)'],
+        'Integracion-CRM-SGC': ['Integración CRM–SGC', 'var(--ink)'], 'SINS': ['SINS', 'var(--amber)'] };
+
+      /* ---------- bar ---------- */
+      show('#bar', .1, { from: { y: -16 } });
+
+      /* ================= BEAT 1 (0-24) — the expert is away ================= */
+      show('#s1h', .5);
+      show('#gcard', 1.0);
+      show('#curG', 1.3, { from: { x: -40, y: 20 } });
+      tl.to('#curG', { x: 30, y: -10, duration: 1.2, ease: 'sine.inOut' }, 1.8);
+      hide('#stOn', 4.4);
+      tl.fromTo('#stOff', { autoAlpha: 0, x: 12 }, { autoAlpha: 1, x: 0, duration: .45, ease: 'power2.out' }, 4.6);
+      tl.to('#gav', { backgroundColor: '#DCE1EC', duration: .6 }, 4.5);
+      tl.to('#avG', { backgroundColor: '#DCE1EC', duration: .6 }, 4.5);
+      tl.to('#curG', { x: 420, y: 380, autoAlpha: 0, duration: 1.4, ease: 'power2.in' }, 5.0);
+      show('#tk', 7.0, { from: { y: -40, scale: .96 }, to: { scale: 1, ease: 'back.out(1.6)' } });
+      show('#call1', 10.5, { from: { x: 40, y: 0 }, to: { x: 0 } });
+      show('#call2', 12.0, { from: { x: 40, y: 0 }, to: { x: 0 } });
+      hide(['#s1h', '#gcard', '#tk', '#call1', '#call2'], 15.0);
+      show('#sla', 15.5, { from: { scale: .97 }, to: { scale: 1 } });
+      tl.fromTo('#slaOn', { scaleX: 0 }, { scaleX: .81, duration: 1.1, ease: 'power2.out' }, 16.3);
+      tl.fromTo('#slaOff', { scaleX: 0 }, { scaleX: .23, duration: 1.1, ease: 'power2.out' }, 17.6);
+      const c1 = { v: 0 }, c2 = { v: 0 };
+      tl.fromTo(c1, { v: 0 }, { v: 81, duration: 1.1, ease: 'power2.out', onUpdate: function(){ $('slaOnV').textContent = Math.round(c1.v); } }, 16.3);
+      tl.fromTo(c2, { v: 0 }, { v: 23, duration: 1.1, ease: 'power2.out', onUpdate: function(){ $('slaOffV').textContent = Math.round(c2.v); } }, 17.6);
+      hide('#sla', 23.6);
+
+      /* ================= BEAT 2 (24-56) — how the team memory is built ================= */
+      function stepOn(i, at){
+        tl.to('#st' + i, { color: '#161A2E', duration: .3 }, at);
+        tl.fromTo('#st' + i + ' u', { scaleX: 0 }, { scaleX: 1, duration: .5, ease: 'power2.out' }, at);
+        if (i > 0){ tl.to('#st' + (i - 1), { color: '#6F7690', duration: .3 }, at);
+          tl.to('#st' + (i - 1) + ' u', { scaleX: 0, duration: .3 }, at); }
+      }
+      show('#stepper', 24.1);
+      stepOn(0, 24.3);
+      IX.notas_lista.forEach(function(n){
+        const d = document.createElement('div'); d.className = 'tile' + (n === IX.ejemplo_nota ? ' ex' : '');
+        d.textContent = n; $('tiles').appendChild(d);
+      });
+      $('tilesCap').textContent = IX.notas + ' tickets resueltos, guardados como notas en Obsidian';
+      tl.fromTo('#tiles .tile', { autoAlpha: 0, scale: .9 }, { autoAlpha: 1, scale: 1, duration: .35, ease: 'back.out(1.6)',
+        stagger: { each: .06, from: 'start' } }, 24.5);
+      show('#tilesCap', 27.2);
+      tl.to('#tiles .tile.ex', { backgroundColor: '#EDE7FC', borderColor: '#8B5CF6', duration: .4 }, 30.0);
+            hide(['#tiles .tile:not(.ex)', '#tilesCap'], 31.0);
+      hide('#tiles .tile.ex', 31.6);
+
+      $('docId').textContent = IX.ejemplo_nota;
+      $('docTtl').textContent = Q.tickets.concat([]).filter(function(t){ return t.ticket === IX.ejemplo_nota; }).map(function(t){ return t.titulo; })[0] || '';
+      IX.ejemplo_fragmentos.forEach(function(f){
+        const d = document.createElement('div'); d.className = 'frag';
+        d.innerHTML = '<span>' + f.seccion.replace(/\s*\(.*\)$/, '') + '</span><em>' + f.chars + ' caracteres</em>';
+        $('frags').appendChild(d);
+      });
+      $('fragCapP').textContent = 'Los ' + IX.notas + ' tickets quedan en ' + IX.fragmentos + ' fragmentos.';
+      stepOn(1, 31.6);
+      show('#doc', 31.7, { from: { x: -30, y: 0 }, to: { x: 0 } });
+      tl.fromTo('#frags .frag', { autoAlpha: 0, x: -24 }, { autoAlpha: 1, x: 0, duration: .3, ease: 'power2.out', stagger: .3 }, 32.3);
+      show('#fragCap', 35.0);
+
+      stepOn(2, 39.6);
+      hide('#fragCap', 39.4);
+      tl.to('#frags .frag:not(:first-child)', { opacity: .35, duration: .4 }, 39.6);
+      tl.to('#frags .frag:first-child', { backgroundColor: '#8B5CF6', color: '#fff', duration: .4 }, 39.6);
+      tl.to('#frags .frag:first-child em', { color: '#fff', duration: .4 }, 39.6);
+      $('vecK').textContent = 'Fragmento 1 · ' + IX.ejemplo_fragmentos[0].seccion.replace(/\s*\(.*\)$/, '');
+      IX.ejemplo_vector.forEach(function(v){ const s = document.createElement('div'); s.textContent = nf(v, 3); $('vecNums').appendChild(s); });
+      $('vecMore').textContent = '… y ' + (IX.dimensiones - IX.ejemplo_vector.length) + ' números más (' + IX.dimensiones + ' en total)';
+      show('#vec', 39.9, { from: { x: 30, y: 0 }, to: { x: 0 } });
+      tl.fromTo('#vecNums div', { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: .25, stagger: .25 }, 40.5);
+
+      stepOn(3, 47.0);
+      hide(['#doc', '#vec'], 46.8);
+      const MW = 1728, MH = 790, PX = 90, PT = 150, PB = 110;
+      const mx = function(x){ return PX + x * (MW - 2 * PX); };
+      const my = function(y){ return PT + y * (MH - PT - PB); };
+      const hitIds = Q.fragmentos.map(function(f){ return f.id; });
+      Q.mapa.puntos.forEach(function(p, i){
+        const d = document.createElement('div'); d.className = 'dot' + (hitIds.indexOf(p.id) >= 0 ? ' hit' : '');
+        d.style.left = mx(p.x) + 'px'; d.style.top = my(p.y) + 'px'; d.style.background = SYS[p.sistema][1];
+        d.dataset.i = i; $('dots').appendChild(d);
+      });
+      Object.keys(SYS).forEach(function(k){
+        const s = document.createElement('span'); s.innerHTML = '<i style="background:' + SYS[k][1] + '"></i>' + SYS[k][0];
+        $('legend').appendChild(s);
+      });
+      $('mapCapT').textContent = IX.fragmentos + ' fragmentos · ' + IX.dimensiones + ' dimensiones';
+      show('#map', 47.2, { from: { y: 0 } });
+      tl.fromTo('#dots .dot', { autoAlpha: 0, scale: 0, x: function(i, el){ return MW * .5 - parseFloat(el.style.left); },
+        y: function(i, el){ return MH * .55 - parseFloat(el.style.top); } },
+        { autoAlpha: 1, scale: 1, x: 0, y: 0, duration: .9, ease: 'power3.out', stagger: .014 }, 47.6);
+      tl.fromTo(['#mapCap', '#legend'], { autoAlpha: 0 }, { autoAlpha: 1, duration: .5 }, 50.5);
+
+      /* ================= BEAT 3 (56-88) — the question ================= */
+      hide(['#stepper', '#mapCap', '#legend'], 55.4);
+      const S = 824 / 1728;
+      tl.to('#map', { x: 1000 - 96, y: 124 - 236, scale: S, duration: 1.0, ease: 'power3.inOut' }, 55.8);
+      show('#chat', 56.3, { from: { x: -30, y: 0 }, to: { x: 0 } });
+      show('#curP', 56.4, { from: { y: 20 } });
+      typeInto($('qText'), Q.consulta, 57.0, 7.0);
+      tl.to('#curP', { autoAlpha: 0, duration: .3 }, 65.0);
+
+      const qx = mx(Q.mapa.consulta.x), qy = my(Q.mapa.consulta.y);
+      $('qdot').style.left = qx + 'px'; $('qdot').style.top = qy + 'px';
+      show('#curIA', 65.2, { from: { y: 20 } });
+      tl.to('#curIA', { x: 1000 + qx * S + 10 - 820, y: 124 + qy * S + 10 - 560, duration: 1.0, ease: 'power2.inOut' }, 65.5);
+      tl.fromTo('#qdot', { autoAlpha: 0, scale: 2.4 }, { autoAlpha: 1, scale: 1, duration: .5, ease: 'back.out(2)' }, 66.2);
+      tl.to('#dots .dot:not(.hit)', { opacity: .28, duration: .5 }, 66.6);
+      const pts = {}; Q.mapa.puntos.forEach(function(p){ pts[p.id] = p; });
+      Q.fragmentos.forEach(function(f, i){
+        const p = pts[f.id]; const x2 = mx(p.x), y2 = my(p.y);
+        const len = Math.hypot(x2 - qx, y2 - qy);
+        const ln = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        ln.setAttribute('x1', qx); ln.setAttribute('y1', qy); ln.setAttribute('x2', x2); ln.setAttribute('y2', y2);
+        ln.setAttribute('stroke', '#8B5CF6'); ln.setAttribute('stroke-width', '7'); ln.setAttribute('stroke-linecap', 'round');
+        ln.setAttribute('stroke-dasharray', len); ln.setAttribute('stroke-dashoffset', len);
+        $('lines').appendChild(ln);
+        tl.to(ln, { attr: { 'stroke-dashoffset': 0 }, duration: .45, ease: 'power2.out' }, 66.8 + i * .3);
+      });
+      tl.to('#dots .dot.hit', { scale: 1.9, backgroundColor: '#8B5CF6', duration: .4, stagger: .3 }, 67.0);
+
+      Q.tickets.forEach(function(t){
+        const c = document.createElement('div'); c.className = 'card';
+        c.innerHTML = '<div class="top"><b>' + t.ticket + '</b><span>similitud ' + nf(t.similitud, 2) + '</span></div>' +
+          '<div class="ttl" data-layout-allow-overflow>' + t.titulo + '</div>';
+        $('cards').appendChild(c);
+      });
+      tl.fromTo('#cards .card', { autoAlpha: 0, x: 30 }, { autoAlpha: 1, x: 0, duration: .4, ease: 'power2.out', stagger: .6 }, 70.5);
+      tl.to('#curIA', { x: 80, y: 0, duration: .9, ease: 'power2.inOut' }, 76.0);
+
+      const words = [];
+      Q.respuesta.replace(/\]\[/g, '] [').split(/\s+/).forEach(function(w){
+        const m = w.match(/^\[(TK-\d{4}-\d{4})\]([.,;]?)$/);
+        words.push(m ? '<span class="w chipc">' + m[1] + '</span>' : '<span class="w">' + w + ' </span>');
+      });
+      $('aText').innerHTML = words.join('');
+      show('#bA', 77.0);
+      tl.fromTo('#aText .w', { autoAlpha: 0 }, { autoAlpha: 1, duration: .15, stagger: 5.0 / words.length }, 77.3);
+      tl.to('#curIA', { autoAlpha: 0, duration: .3 }, 83.0);
+
+      /* ================= BEAT 4 (88-108) — from answer to workflow ================= */
+      hide(['#chat', '#cards', '#map'], 87.6);
+      show('#s4h', 88.2);
+      Q.flujo.forEach(function(s, i){
+        const d = document.createElement('div'); d.className = 'panel step';
+        d.style.position = 'relative';
+        d.innerHTML = '<div class="n">' + (i + 1) + '</div><div class="ck"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>' +
+          '<div class="p t">' + s.paso + '</div><div class="d">' + s.detalle.replace(/([A-Za-z]{2,}[._])/g, '$1​') + '</div><div class="src">' + s.fuente + '</div>';
+        $('flow').appendChild(d);
+      });
+      tl.fromTo('#flow .step', { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: .5, ease: 'power3.out', stagger: 1.0 }, 89.0);
+      tl.set('#curP', { x: -260 + 272 - 360, y: 430 - 470 }, 95.4);
+      tl.set('#curP b', { autoAlpha: 0 }, 95.4);  /* arrow only while ticking: the label would cover step titles */
+      tl.fromTo('#curP', { autoAlpha: 0 }, { autoAlpha: 1, duration: .3, immediateRender: false }, 95.5);
+      document.querySelectorAll('#flow .step').forEach(function(el, i){
+        const at = 96.3 + i * 1.2, ck = el.querySelector('.ck');
+        tl.to('#curP', { x: -260 + 272 - 360 + i * 350, y: 430 - 470, duration: .6, ease: 'power2.inOut' }, at - .7);
+        tl.to(ck, { backgroundColor: '#8B5CF6', borderColor: '#8B5CF6', duration: .2 }, at);
+        tl.to(ck.querySelector('svg'), { opacity: 1, duration: .2 }, at);
+      });
+      tl.to('#curP', { autoAlpha: 0, duration: .3 }, 101.8);
+      show('#s4foot', 102.5);
+
+      /* ================= BEAT 5 (108-120) — back to G1 ================= */
+      hide(['#s4h', '#flow', '#s4foot', '#bar'], 107.6);
+      tl.fromTo('#endCard', { autoAlpha: 0 }, { autoAlpha: 1, duration: .3 }, 108.1);
+      typeInto($('endQ'), '¿Qué problema eres capaz de resolver hoy que antes no podías resolver?', 108.4, 4.0);
+      tl.fromTo('#endA', { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: .6, ease: 'power3.out' }, 113.5);
+      tl.fromTo('.underline i', { scaleX: 0 }, { scaleX: 1, duration: .5, ease: 'power2.out', stagger: .12 }, 114.0);
+      tl.set('#curG', { x: 420, y: 200 }, 113.9);
+      tl.fromTo('#curG', { autoAlpha: 0 }, { autoAlpha: 1, duration: .4, immediateRender: false }, 114.1);
+      tl.set('#curIA', { x: -180, y: 240 }, 113.9);
+      tl.fromTo('#curIA', { autoAlpha: 0 }, { autoAlpha: 1, duration: .4, immediateRender: false }, 114.3);
+      tl.to({}, { duration: .1 }, 119.9);
+
+      document.fonts.ready.then(function(){
+        window.__timelines = window.__timelines || {};
+        window.__timelines['main'] = tl;
+        if (window.__hfForceTimelineRebind) window.__hfForceTimelineRebind();
+      });
+    </script>
+  </body>
+</html>

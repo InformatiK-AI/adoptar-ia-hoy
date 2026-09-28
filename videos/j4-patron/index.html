@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <title>Cuatro carreras, un mismo patrón</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face{font-family:"Schibsted Grotesk";font-style:normal;font-weight:400 900;
+        src:url("assets/fonts/SchibstedGrotesk-latin.woff2") format("woff2");}
+      @font-face{font-family:"Figtree";font-style:normal;font-weight:400 900;
+        src:url("assets/fonts/Figtree-latin.woff2") format("woff2");}
+      *{margin:0;padding:0;box-sizing:border-box}
+      html,body{width:1920px;height:1080px;overflow:hidden}
+      body{font-family:"Figtree",system-ui,sans-serif;color:#161A2E}
+
+      :root{
+        --bg:#F3F5FA; --ink:#161A2E; --mute:#6B7390; --line:#DCE1EC;
+        --blue:#3D6BFF; --ai:#8B5CF6;
+        --blue-tint:#E6ECFF; --ai-tint:#EDE7FC; --gray-tint:#EAEDF4;
+        --blue-dark:#2F56E6; --ai-dark:#5A2FC0;
+      }
+
+      #root{position:relative;width:1920px;height:1080px;overflow:hidden;background:var(--bg)}
+      .clip{position:absolute;inset:0}
+      .t{font-family:"Schibsted Grotesk",sans-serif;font-weight:900;letter-spacing:-.02em}
+      .canvas{position:absolute;inset:0;background-image:radial-gradient(#C9D0DF 2px,transparent 2.4px);background-size:34px 34px}
+      .abs{position:absolute}
+      .reveal{opacity:0}
+
+      /* ---------- top bar ---------- */
+      .bar{position:absolute;left:0;right:0;top:0;height:100px;background:#fff;border-bottom:1px solid var(--line);
+        display:flex;align-items:center;padding:0 56px;gap:24px;z-index:30}
+      .bar .doc{flex:1;font-size:40px;font-weight:900;font-family:"Schibsted Grotesk",sans-serif;letter-spacing:-.01em}
+      .bar .doc span{color:var(--mute);font-weight:600;font-size:32px;font-family:"Figtree",sans-serif;margin-left:6px}
+      .badge{background:var(--gray-tint);color:var(--ink);font-weight:800;font-size:32px;padding:10px 22px;border-radius:10px}
+      .avatars{display:flex}
+      .av{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:32px;
+        margin-left:-14px;border:3px solid #fff;color:#fff}
+
+      /* ---------- generic surfaces ---------- */
+      .card{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 18px 40px -24px rgba(22,26,46,.35)}
+      .note{padding:22px 24px;border-radius:8px;font-weight:800;font-size:34px;line-height:1.14;box-shadow:0 14px 28px -16px rgba(22,26,46,.3)}
+      .note small{display:block;font-weight:600;font-size:32px;color:var(--mute);margin-top:10px;line-height:1.2}
+      .cmt{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px 28px;box-shadow:0 16px 32px -20px rgba(22,26,46,.35)}
+      .cmt .who{display:flex;align-items:center;gap:12px;font-weight:800;font-size:32px;margin-bottom:12px}
+      .cmt .who i{width:20px;height:20px;border-radius:50%;display:inline-block}
+      .cmt p{font-size:38px;line-height:1.32}
+      .cmt p.small{font-size:32px;color:var(--mute);margin-top:14px;line-height:1.3}
+      .cmt.crit p{font-size:40px}
+      .tag{display:inline-block;font-weight:800;font-size:32px;padding:8px 18px;border-radius:9px}
+      .caret{display:inline-block;width:6px;height:34px;background:currentColor;vertical-align:-6px;margin-left:4px;opacity:0}
+      .cmt.crit .caret,.cmt .caret{color:var(--ink)}
+
+      /* ---------- cursors ---------- */
+      .cur{position:absolute;display:flex;align-items:flex-start;gap:4px;z-index:60}
+      .cur svg{width:44px;height:44px;filter:drop-shadow(0 2px 4px rgba(22,26,46,.25))}
+      .cur b{font-size:32px;font-weight:800;padding:5px 16px;border-radius:8px;margin-top:28px;white-space:nowrap;color:#fff}
+      .cur.jorge b{background:var(--blue)}
+      .cur.ia b{background:var(--ai-dark)}
+
+      /* ---------- rail ---------- */
+      #rail{position:absolute;left:134px;top:0;width:280px}
+      .chip{position:absolute;left:0;width:280px;height:110px;overflow:hidden}
+      .chip .lbl{position:absolute;left:20px;right:20px;top:14px;font-weight:800;font-size:32px;line-height:1.08}
+      .chip .stripes{position:absolute;left:18px;right:18px;bottom:14px;display:flex;gap:8px;height:10px}
+      .chip .stripes div{flex:1;border-radius:5px;opacity:0}
+      .chip .stripes .g{background:#C7CEDE}
+      .chip .stripes .v{background:var(--ai)}
+      .chip .stripes .b{background:var(--blue)}
+
+      #travelChip{position:absolute;left:134px;top:200px;width:260px;padding:14px 20px;background:#fff;
+        border:1px solid var(--line);border-radius:12px;font-weight:800;font-size:34px;box-shadow:0 16px 30px -18px rgba(22,26,46,.4);
+        opacity:0;z-index:50}
+
+      /* ---------- case name + workspace headers ---------- */
+      .caseHead{position:absolute;top:106px;width:1330px;font-size:56px;color:var(--ink);
+        font-family:"Schibsted Grotesk",sans-serif;font-weight:900;letter-spacing:-.02em}
+      .slothdr{position:absolute;top:182px;font-weight:800;font-size:34px;font-family:"Schibsted Grotesk",sans-serif}
+      #hdrAntes{left:454px;color:var(--mute)}
+      #hdrConIA{left:899px;color:var(--ai-dark)}
+      #hdrCrit{left:1344px;color:var(--blue-dark)}
+
+      /* ---------- case wrap ---------- */
+      .wrap{position:absolute;left:454px;top:230px;width:1330px;height:750px;transform-origin:0% 50%}
+      .wrap[data-collapsing]{overflow:visible}
+      .wrap .col-antes{position:absolute;left:0;top:0;width:410px}
+      .wrap .col-conia{position:absolute;left:445px;top:0;width:410px}
+      .wrap .col-crit{position:absolute;left:890px;top:0;width:440px}
+
+      /* sheet card (case0 antes) */
+      .sheet{position:absolute;width:350px;padding:16px 20px;border-radius:14px}
+      .sheet .h{font-size:32px;font-weight:800;padding-bottom:10px;border-bottom:2px solid var(--line);margin-bottom:10px}
+      .sheet .row{height:12px;border-radius:6px;background:var(--line);margin-top:10px}
+
+      /* merged table (case0 conia) */
+      .mtable{padding:22px 24px}
+      .mtable .tags{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px}
+      .mtable .tags span{background:var(--ai-tint);color:var(--ai-dark);font-weight:800;font-size:32px;padding:6px 14px;border-radius:8px}
+      .mtable .row{height:14px;border-radius:7px;background:var(--gray-tint);margin-top:12px;width:92%}
+
+      /* toggle (case1 conia) */
+      .toggle{display:flex;align-items:center;gap:16px;font-weight:700;font-size:32px}
+      .toggle .track{width:96px;height:48px;border-radius:24px;background:var(--line);position:relative;flex:none}
+      .toggle .thumb{position:absolute;left:4px;top:4px;width:40px;height:40px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(22,26,46,.3)}
+
+      /* code card (case1 conia) */
+      .code{padding:20px 24px;font-family:ui-monospace,Consolas,monospace;font-size:32px;line-height:1.5;color:var(--ink)}
+      .code div{opacity:0}
+
+      /* week strip (case1 antes) */
+      .week{display:flex;gap:8px}
+      .week i{width:48px;height:48px;border-radius:10px;background:var(--gray-tint);display:grid;place-items:center;
+        font-weight:800;font-size:32px;font-style:normal;color:var(--mute)}
+      .week i.on{background:var(--blue-tint);color:var(--blue-dark);border:2px solid var(--blue)}
+
+      /* study cards (case2 antes) */
+      .study{position:absolute;width:360px;padding:14px 20px;border-radius:12px}
+      .study .h{font-size:32px;font-weight:800}
+      .study .row{height:10px;border-radius:5px;background:var(--line);margin-top:8px;width:70%}
+
+      /* citation chips (case2 conia) */
+      .cite{display:inline-flex;gap:10px;margin-top:16px}
+      .cite span{background:var(--ai-tint);color:var(--ai-dark);font-weight:800;font-size:32px;padding:6px 14px;border-radius:8px}
+
+      /* source rows (case2 crit) */
+      .srcrow{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;margin-bottom:14px}
+      .srcrow span{font-weight:700;font-size:34px}
+
+      /* document lines (case3 antes) */
+      .doc{padding:24px 26px}
+      .doc .h{font-size:32px;font-weight:800;margin-bottom:14px}
+      .doc .ln{height:9px;border-radius:5px;background:var(--line);margin-top:12px}
+
+      /* requirement checklist (case3 conia) */
+      .req{display:flex;align-items:center;gap:14px;padding:12px 0;font-weight:700;font-size:33px}
+      .req .box{flex:none;width:40px;height:40px;border-radius:9px;border:3px solid var(--line);position:relative;display:grid;place-items:center}
+      .req .box svg{width:26px;height:26px}
+      .req.missing{color:var(--mute)}
+      .req.missing .box{border-style:dashed}
+      .req .miss{margin-left:auto;font-weight:800;font-size:32px;color:var(--mute);background:var(--gray-tint);padding:5px 14px;border-radius:8px;opacity:0}
+
+      /* checkboxes (case1 crit) */
+      .ind{display:flex;align-items:center;gap:16px;padding:14px 0;font-weight:700;font-size:34px}
+      .ind .box{flex:none;width:44px;height:44px;border-radius:10px;border:3px solid var(--blue);display:grid;place-items:center}
+      .ind .box svg{width:28px;height:28px}
+
+      /* buttons (case3 crit) */
+      .btnrow{display:flex;gap:26px;margin-top:26px}
+      .pillbtn{padding:16px 44px;border-radius:14px;border:3px solid var(--line);font-weight:800;font-size:36px;background:#fff}
+
+      /* step 13 mini row chips */
+      .mini{position:absolute;width:340px;padding:22px 24px;border-radius:14px;font-weight:800;font-size:34px;line-height:1.2;
+        background:#fff;box-shadow:0 16px 30px -18px rgba(22,26,46,.35);opacity:0}
+      .mini.out{border-top:8px solid var(--ai);color:var(--ai-dark)}
+      .mini.crit{border-top:8px solid var(--blue);color:var(--blue-dark)}
+      #headAI{color:var(--ai-dark)}
+      #headJ{color:var(--blue-dark)}
+      .heading{position:absolute;left:134px;width:1652px;text-align:center;font-size:64px;line-height:1.1;
+        font-family:"Schibsted Grotesk",sans-serif;font-weight:900;letter-spacing:-.02em}
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="j4" data-start="0" data-width="1920" data-height="1080" data-duration="182" data-fps="30">
+      <div id="scene" class="clip" data-start="0" data-duration="182" data-track-index="1">
+        <div class="canvas"></div>
+
+        <div class="bar">
+          <div class="doc">Cuatro carreras, un mismo patrón<span>— tablero compartido</span></div>
+          <div class="badge">Escenarios ilustrativos</div>
+          <div class="avatars">
+            <div class="av" style="background:var(--blue)">J</div>
+            <div class="av" style="background:var(--ai)">IA</div>
+          </div>
+        </div>
+
+        <!-- ============ rail ============ -->
+        <div id="rail">
+          <div class="chip card" id="chip0" style="top:200px">
+            <div class="lbl">Agronomía</div>
+            <div class="stripes"><div class="g"></div><div class="v"></div><div class="b"></div></div>
+          </div>
+          <div class="chip card" id="chip1" style="top:332px">
+            <div class="lbl">Ingeniería</div>
+            <div class="stripes"><div class="g"></div><div class="v"></div><div class="b"></div></div>
+          </div>
+          <div class="chip card" id="chip2" style="top:464px">
+            <div class="lbl">Salud</div>
+            <div class="stripes"><div class="g"></div><div class="v"></div><div class="b"></div></div>
+          </div>
+          <div class="chip card" id="chip3" style="top:596px">
+            <div class="lbl">Negocios y Derecho</div>
+            <div class="stripes"><div class="g"></div><div class="v"></div><div class="b"></div></div>
+          </div>
+        </div>
+        <div id="travelChip" class="reveal"></div>
+
+        <!-- ============ case name + workspace headers (revealed per-step, per-case) ============ -->
+        <div class="caseHead reveal" id="c0Head" style="left:454px">Agronomía</div>
+        <div class="caseHead reveal" id="c1Head" style="left:454px">Ingeniería</div>
+        <div class="caseHead reveal" id="c2Head" style="left:454px">Salud</div>
+        <div class="caseHead reveal" id="c3Head" style="left:454px">Negocios y Derecho</div>
+        <div class="slothdr reveal" id="hdrAntes">Antes</div>
+        <div class="slothdr reveal" id="hdrConIA">Con IA</div>
+        <div class="slothdr reveal" id="hdrCrit">Tu criterio</div>
+
+        <!-- ============ CASE 0 — Agronomía ============ -->
+        <div class="wrap" id="wrap0" data-layout-allow-overflow>
+          <div class="col-antes">
+            <div class="sheet card reveal" id="c0s0" style="left:8px;top:60px;background:#FDFEFF">
+              <div class="h">Clima</div><div class="row" style="width:60%"></div><div class="row" style="width:82%"></div><div class="row" style="width:44%"></div>
+            </div>
+            <div class="sheet card reveal" id="c0s1" style="left:38px;top:210px;background:#FBFCFE">
+              <div class="h">Rendimiento</div><div class="row" style="width:70%"></div><div class="row" style="width:50%"></div><div class="row" style="width:90%"></div>
+            </div>
+            <div class="sheet card reveal" id="c0s2" style="left:14px;top:360px;background:#FDFEFF">
+              <div class="h">Suelo</div><div class="row" style="width:85%"></div><div class="row" style="width:38%"></div><div class="row" style="width:64%"></div>
+            </div>
+            <div class="note reveal" id="c0note" style="position:absolute;left:10px;top:560px;width:370px;background:var(--gray-tint)">
+              Tres temporadas en planillas distintas
+              <small>una semana ordenándolas</small>
+            </div>
+          </div>
+          <div class="col-conia">
+            <div class="mtable card reveal" id="c0m" style="width:410px">
+              <div class="tags"><span>Clima</span><span>Rendimiento</span><span>Suelo</span></div>
+              <div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div>
+            </div>
+            <div class="card reveal" id="c0chart" style="width:410px;height:170px;margin-top:18px;padding:18px 20px;overflow:hidden">
+              <svg viewBox="0 0 370 130" style="width:100%;height:100%;display:block">
+                <path id="c0trend" d="M10,112 C80,96 140,58 200,44 C260,30 300,18 360,8" fill="none" stroke="var(--ai)" stroke-width="6" stroke-linecap="round" stroke-dasharray="420" stroke-dashoffset="420"/>
+              </svg>
+            </div>
+            <div class="cmt reveal" id="c0ai" style="margin-top:18px;width:410px">
+              <div class="who" style="color:var(--ai-dark)"><i style="background:var(--ai)"></i>IA</div>
+              <p><span id="c0aiTxt"></span><span class="caret" id="c0aiCaret"></span></p>
+            </div>
+          </div>
+          <div class="col-crit">
+            <div class="cmt crit reveal" id="c0crit" style="width:440px">
+              <div class="who" style="color:var(--blue-dark)"><i style="background:var(--blue)"></i>Jorge</div>
+              <p>¿Tiene sentido agronómico?</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ CASE 1 — Ingeniería ============ -->
+        <div class="wrap" id="wrap1" data-layout-allow-overflow>
+          <div class="col-antes">
+            <div class="card reveal" id="c1report" style="padding:22px 24px;width:410px">
+              <div style="font-size:32px;font-weight:800;margin-bottom:14px">Informe de producción</div>
+              <div style="height:2px;background:var(--line);margin-top:16px" id="c1l0"></div>
+              <div style="height:2px;background:var(--line);margin-top:22px" id="c1l1"></div>
+              <div style="height:2px;background:var(--line);margin-top:22px" id="c1l2"></div>
+              <div style="height:2px;background:var(--line);margin-top:22px" id="c1l3"></div>
+            </div>
+            <div class="week reveal" id="c1week" style="margin-top:26px">
+              <i>L</i><i>M</i><i>M</i><i>J</i><i>V</i><i>S</i><i>D</i>
+            </div>
+            <div class="note reveal" id="c1note" style="margin-top:26px;width:370px;background:var(--gray-tint)">
+              Informe de producción, a mano cada lunes
+            </div>
+          </div>
+          <div class="col-conia">
+            <div class="code card reveal" id="c1code" style="width:410px">
+              <div>si es_lunes():</div>
+              <div>&nbsp;&nbsp;generar_informe()</div>
+              <div>&nbsp;&nbsp;enviar_email()</div>
+            </div>
+            <div class="toggle reveal" id="c1toggle" style="margin-top:22px">
+              <div class="track" id="c1track"><div class="thumb" id="c1thumb"></div></div>
+              <span>Automático · cada lunes</span>
+            </div>
+            <div class="card reveal" id="c1fill" style="padding:20px 22px;width:410px;margin-top:22px">
+              <div style="font-size:32px;font-weight:800;margin-bottom:10px">Informe · lunes</div>
+              <div style="height:2px;background:var(--ai-tint);margin-top:14px" id="c1f0"></div>
+              <div style="height:2px;background:var(--ai-tint);margin-top:18px" id="c1f1"></div>
+              <div style="height:2px;background:var(--ai-tint);margin-top:18px" id="c1f2"></div>
+            </div>
+            <div class="cmt reveal" id="c1ai" style="margin-top:18px;width:410px">
+              <div class="who" style="color:var(--ai-dark)"><i style="background:var(--ai)"></i>IA</div>
+              <p><span id="c1aiTxt"></span><span class="caret" id="c1aiCaret"></span></p>
+            </div>
+          </div>
+          <div class="col-crit">
+            <div class="card reveal" id="c1ind" style="padding:20px 24px;width:440px">
+              <div class="ind"><div class="box" id="c1ck0"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5" fill="none" stroke="var(--blue)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="30" stroke-dashoffset="30"/></svg></div>Producción</div>
+              <div class="ind"><div class="box" id="c1ck1"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5" fill="none" stroke="var(--blue)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="30" stroke-dashoffset="30"/></svg></div>Detenciones</div>
+              <div class="ind"><div class="box" id="c1ck2"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5" fill="none" stroke="var(--blue)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="30" stroke-dashoffset="30"/></svg></div>Calidad</div>
+            </div>
+            <div class="cmt crit reveal" id="c1crit" style="margin-top:26px;width:440px">
+              <div class="who" style="color:var(--blue-dark)"><i style="background:var(--blue)"></i>Jorge</div>
+              <p>¿Qué indicadores importan?</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ CASE 2 — Salud ============ -->
+        <div class="wrap" id="wrap2" data-layout-allow-overflow>
+          <div class="col-antes" style="height:640px">
+            <div class="study card reveal" id="c2s0" style="left:6px;top:0px;background:#FDFEFF"><div class="h">Estudio A</div><div class="row"></div></div>
+            <div class="study card reveal" id="c2s1" style="left:20px;top:66px;background:#FCFDFF"><div class="h">Estudio B</div><div class="row"></div></div>
+            <div class="study card reveal" id="c2s2" style="left:34px;top:132px;background:#FBFCFE"><div class="h">Estudio C</div><div class="row"></div></div>
+            <div class="study card reveal" id="c2s3" style="left:48px;top:198px;background:#FAFBFE"><div class="h">Estudio D</div><div class="row"></div></div>
+            <div class="study card reveal" id="c2s4" style="left:62px;top:264px;background:#F9FAFD"><div class="h">Estudio E</div><div class="row"></div></div>
+            <div class="note reveal" id="c2note" style="position:absolute;left:20px;top:400px;width:370px;background:var(--gray-tint)">
+              Semanas buscando y resumiendo estudios
+            </div>
+          </div>
+          <div class="col-conia">
+            <div class="card reveal" id="c2sum" style="padding:24px 26px;width:410px">
+              <div style="font-size:32px;font-weight:800;margin-bottom:12px">Síntesis</div>
+              <div style="font-size:34px;line-height:1.35;color:var(--ink)">Los estudios coinciden en la misma conclusión clínica.</div>
+              <div class="cite"><span>[1]</span><span>[2]</span><span>[3]</span></div>
+            </div>
+            <div class="cmt reveal" id="c2ai" style="margin-top:18px;width:410px">
+              <div class="who" style="color:var(--ai-dark)"><i style="background:var(--ai)"></i>IA</div>
+              <p><span id="c2aiTxt"></span><span class="caret" id="c2aiCaret"></span></p>
+            </div>
+          </div>
+          <div class="col-crit">
+            <div class="card srcrow reveal" id="c2src0" style="width:440px"><span>Fuente 1</span><span class="tag" id="c2verif" style="background:var(--blue-tint);color:var(--blue-dark);opacity:0">Verificado</span></div>
+            <div class="card srcrow reveal" id="c2src1" style="width:440px"><span>Fuente 2</span></div>
+            <div class="cmt crit reveal" id="c2crit" style="margin-top:16px;width:440px">
+              <div class="who" style="color:var(--blue-dark)"><i style="background:var(--blue)"></i>Jorge</div>
+              <p>Lee las fuentes clave y verifica.</p>
+              <p class="small">En salud, un error no es una mala nota.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ CASE 3 — Negocios y Derecho ============ -->
+        <div class="wrap" id="wrap3" data-layout-allow-overflow>
+          <div class="col-antes">
+            <div class="note reveal" id="c3note" style="width:370px;background:var(--gray-tint);margin-bottom:16px">
+              Bases de licitación de 80 páginas, línea por línea
+            </div>
+            <div class="doc card reveal" id="c3doc" style="width:410px;height:560px;margin-top:10px">
+              <div class="h">Bases de licitación</div>
+              <div class="ln" style="width:88%"></div><div class="ln" style="width:70%"></div><div class="ln" style="width:94%"></div>
+              <div class="ln" style="width:60%"></div><div class="ln" style="width:82%"></div><div class="ln" style="width:76%"></div>
+              <div class="ln" style="width:92%"></div><div class="ln" style="width:55%"></div><div class="ln" style="width:84%"></div>
+              <div class="ln" style="width:68%"></div><div class="ln" style="width:90%"></div><div class="ln" style="width:50%"></div>
+            </div>
+          </div>
+          <div class="col-conia">
+            <div class="card reveal" id="c3req" style="padding:22px 24px;width:410px">
+              <div class="req" id="c3r0"><div class="box"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5" fill="none" stroke="var(--ai)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="30" stroke-dashoffset="30"/></svg></div>Boleta de garantía</div>
+              <div class="req" id="c3r1"><div class="box"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5" fill="none" stroke="var(--ai)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="30" stroke-dashoffset="30"/></svg></div>Certificado tributario</div>
+              <div class="req" id="c3r2"><div class="box"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5" fill="none" stroke="var(--ai)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="30" stroke-dashoffset="30"/></svg></div>Seguro de cumplimiento</div>
+              <div class="req missing" id="c3r3"><div class="box"></div>Antecedentes técnicos<span class="miss" id="c3miss">Falta</span></div>
+            </div>
+            <div class="cmt reveal" id="c3ai" style="margin-top:18px;width:410px">
+              <div class="who" style="color:var(--ai-dark)"><i style="background:var(--ai)"></i>IA</div>
+              <p><span id="c3aiTxt"></span><span class="caret" id="c3aiCaret"></span></p>
+            </div>
+          </div>
+          <div class="col-crit">
+            <div class="cmt crit reveal" id="c3crit" style="width:440px">
+              <div class="who" style="color:var(--blue-dark)"><i style="background:var(--blue)"></i>Jorge</div>
+              <p>¿Conviene postular?</p>
+            </div>
+            <div class="btnrow reveal" id="c3btns">
+              <div class="pillbtn">Sí</div><div class="pillbtn">No</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ closing (step 13) ============ -->
+        <div class="heading reveal" id="headAI" style="top:150px;color:var(--ink)"><span id="headAITxt1" style="color:var(--ai-dark)"></span><span id="headAITxt2"></span><span class="caret" id="headAICaret"></span></div>
+        <div class="heading reveal" id="headJ" style="top:900px;color:var(--blue-dark)"><span id="headJTxt"></span><span class="caret" id="headJCaret"></span></div>
+
+        <div class="mini out" id="out0" style="left:134px;top:250px;width:340px">Variables ↔ rendimiento</div>
+        <div class="mini out" id="out1" style="left:571px;top:250px;width:340px">Reporte automático cada lunes</div>
+        <div class="mini out" id="out2" style="left:1008px;top:250px;width:340px">Resumen con fuentes citadas</div>
+        <div class="mini out" id="out3" style="left:1445px;top:250px;width:340px">Requisitos cruzados</div>
+
+        <div class="mini crit" id="crit0" style="left:134px;top:760px;width:340px">¿Sentido agronómico?</div>
+        <div class="mini crit" id="crit1" style="left:571px;top:760px;width:340px">¿Qué indicadores?</div>
+        <div class="mini crit" id="crit2" style="left:1008px;top:760px;width:340px">Fuentes verificadas</div>
+        <div class="mini crit" id="crit3" style="left:1445px;top:760px;width:340px">¿Conviene postular?</div>
+
+        <!-- ============ cursors ============ -->
+        <div class="cur jorge" id="curJ" style="left:600px;top:105px">
+          <svg viewBox="0 0 24 24"><path d="M3 2l7 19 2.5-7.5L20 11z" fill="var(--blue)" stroke="#fff" stroke-width="1.5"/></svg><b>Jorge</b>
+        </div>
+        <div class="cur ia" id="curIA" style="left:1000px;top:105px">
+          <svg viewBox="0 0 24 24"><path d="M3 2l7 19 2.5-7.5L20 11z" fill="var(--ai)" stroke="#fff" stroke-width="1.5"/></svg><b>IA</b>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      /* Every frame is a pure function of timeline time: no Date.now(), no unseeded random, no CSS animation. */
+      const tl = gsap.timeline({ paused: true });
+      const $ = function(id){ return document.getElementById(id); };
+      const P = 4; /* idle loop period, seconds */
+
+      /* ---------- generic reveal helpers (whole-block, never letter-by-letter) ---------- */
+      function reveal(sel, at, dur, opts){
+        dur = dur || 0.5;
+        tl.fromTo(sel, Object.assign({ autoAlpha: 0, y: 16 }, opts && opts.from),
+          Object.assign({ autoAlpha: 1, y: 0, duration: dur, ease: 'power3.out' }, opts && opts.to), at);
+      }
+      function hideEl(sel, at, dur){ tl.to(sel, { autoAlpha: 0, duration: dur || 0.35, ease: 'power2.in' }, at); }
+      function fadeProp(sel, at, dur){ tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: dur || 0.4, ease: 'power2.out' }, at); }
+      function drawStroke(sel, at, dur){ tl.to(sel, { strokeDashoffset: 0, duration: dur || 0.7, ease: 'power2.out' }, at); }
+
+      /* typed text — used ONLY for AI comments and the step-13 closing headings.
+         immediateRender:false on every .set()/.fromTo() here: without it GSAP applies the
+         "from"/set value the instant the timeline is authored (page load), not at its timeline
+         position, leaving a stray caret visible from t=0 until the tween's own position is reached. */
+      function typeTextOnly(txtEl, text, at, dur){
+        const st = { i: 0 };
+        tl.set(txtEl, { textContent: '', immediateRender: false }, at);
+        tl.to(st, { i: text.length, duration: dur, ease: 'none', onUpdate: function(){
+          txtEl.textContent = text.slice(0, Math.round(st.i));
+        } }, at);
+      }
+      function typeText(txtEl, caretEl, text, at, dur){
+        typeTextOnly(txtEl, text, at, dur);
+        tl.set(caretEl, { opacity: 1, immediateRender: false }, at);
+      }
+      function blinkCaret(caretEl, at){
+        tl.fromTo(caretEl, { opacity: 1 }, { opacity: 0, duration: .5, repeat: 15, yoyo: true, ease: 'steps(1)', immediateRender: false }, at);
+      }
+
+      /* ---------- cursors ---------- */
+      function makeCursor(el, baseLeft, baseTop){ return { el: el, bx: baseLeft, by: baseTop }; }
+      const J = makeCursor($('curJ'), 600, 105);
+      const IA = makeCursor($('curIA'), 1000, 105);
+      function moveCursor(c, left, top, at, dur, ease){
+        tl.to(c.el, { x: left - c.bx, y: top - c.by, duration: dur, ease: ease || 'power2.inOut' }, at);
+      }
+      function idleCursor(c, left, top, ax, ay, at){
+        const bx = left - c.bx, by = top - c.by;
+        tl.to(c.el, { x: bx + ax, y: by + ay, duration: 2, repeat: 3, yoyo: true, ease: 'sine.inOut' }, at);
+      }
+      /* ---------- rail geometry (7% left margin; chips sized to their own content) ---------- */
+      const RAIL_X = 134, CHIP_W = 280, CHIP_H = 110, CHIP_TOP = [200, 332, 464, 596];
+      function chipCenter(i){ return { x: RAIL_X + CHIP_W / 2, y: CHIP_TOP[i] + CHIP_H / 2 }; }
+
+      /* ---------- workspace geometry ---------- */
+      const WRAP_LEFT = 454, WRAP_CENTER_Y = 605;
+      const ANTES_REST = { x: 659, y: 965 }, CONIA_REST = { x: 1100, y: 965 }, CRIT_REST = { x: 1560, y: 965 };
+
+      /* ---------- traveling chip: rail -> the case-name heading above the workspace ---------- */
+      const travelChip = $('travelChip');
+      function dragChipToCenter(idx, label, at, moveDur){
+        moveDur = moveDur || 0.7;
+        const dy0 = CHIP_TOP[idx] - CHIP_TOP[0];
+        tl.set(travelChip, { innerHTML: label, x: 0, y: dy0, autoAlpha: 0 }, at);
+        tl.to(travelChip, { autoAlpha: 1, duration: .18 }, at + .04);
+        tl.to(travelChip, { x: WRAP_LEFT - RAIL_X, y: 106 - CHIP_TOP[0], duration: moveDur, ease: 'power2.inOut' }, at + .22);
+        tl.to(travelChip, { autoAlpha: 0, duration: .18 }, at + .22 + moveDur);
+      }
+
+      /* ---------- collapse a finished case into its rail mini (FLIP-style: scale + translate + fade) ---------- */
+      function collapseCase(idx, at, dur){
+        dur = dur || 1.2;
+        const c = chipCenter(idx);
+        const dx = c.x - WRAP_LEFT, dy = c.y - WRAP_CENTER_Y;
+        tl.to('#wrap' + idx, { x: dx, y: dy, scale: .06, autoAlpha: 0, duration: dur, ease: 'power2.in' }, at);
+        tl.to('#chip' + idx + ' .stripes div', { opacity: 1, duration: dur * .5, stagger: .1 }, at + dur * .2);
+      }
+
+      /* =====================================================================
+         STEP 0 — title, rail, cursors enter          build 0-3, loop 3-11
+         (case name + slot headers stay hidden: they appear only once their own step starts)
+      ===================================================================== */
+      reveal('.bar', 0.1, .5, { from: { y: -14 } });
+      reveal(['#chip0', '#chip1', '#chip2', '#chip3'], 0.5, .4, { to: { stagger: .25 } });
+      tl.fromTo(J.el, { autoAlpha: 0, x: -40, y: -20 }, { autoAlpha: 1, x: 0, y: 0, duration: .6, ease: 'power3.out' }, .9);
+      tl.fromTo(IA.el, { autoAlpha: 0, x: 40, y: -20 }, { autoAlpha: 1, x: 0, y: 0, duration: .6, ease: 'power3.out' }, 1.1);
+      idleCursor(J, 600, 105, 10, 8, 3);
+      idleCursor(IA, 1000, 105, -9, 9, 3);
+
+      /* =====================================================================
+         CASE DATA + PER-CASE BUILDERS
+      ===================================================================== */
+      const CASES = [
+        { label: 'Agronomía', ai: 'Uní las planillas: estas variables se relacionan con el rendimiento.' },
+        { label: 'Ingeniería', ai: 'Te ayudo a programarlo, aunque no seas desarrollador.' },
+        { label: 'Salud', ai: 'Resumen y comparación, citando cada fuente.' },
+        { label: 'Negocios y Derecho', ai: 'Crucé las bases con tus requisitos: falta uno.' }
+      ];
+
+      function antesBuild(idx, t){
+        if (idx === 0){
+          reveal(['#c0s0', '#c0s1', '#c0s2'], t, .45, { to: { stagger: .22 } });
+          reveal('#c0note', t + .9, .45);
+        } else if (idx === 1){
+          reveal('#c1report', t, .45);
+          tl.fromTo(['#c1l0', '#c1l1', '#c1l2', '#c1l3'], { scaleX: 0 }, { scaleX: 1, duration: .3, transformOrigin: '0% 50%', stagger: .1 }, t + .2);
+          reveal('#c1week', t + .7, .4);
+          tl.to('#c1week i:first-child', { duration: .01 }, t + .9); /* keep Monday marked, deterministic no-op anchor */
+          reveal('#c1note', t + 1.1, .4);
+        } else if (idx === 2){
+          reveal(['#c2s0', '#c2s1', '#c2s2', '#c2s3', '#c2s4'], t, .4, { to: { stagger: .2 } });
+          reveal('#c2note', t + 1.2, .4);
+        } else if (idx === 3){
+          reveal('#c3note', t, .4);
+          reveal('#c3doc', t + .35, .5);
+          tl.fromTo('#c3doc .ln', { scaleX: 0 }, { scaleX: 1, duration: .25, transformOrigin: '0% 50%', stagger: .05 }, t + .7);
+        }
+      }
+
+      function coniaBuild(idx, t){
+        const c = CASES[idx];
+        if (idx === 0){
+          reveal('#c0m', t, .4);
+          tl.fromTo('#c0m .row', { scaleX: 0 }, { scaleX: 1, duration: .3, transformOrigin: '0% 50%', stagger: .12 }, t + .3);
+          reveal('#c0chart', t + .7, .3);
+          drawStroke('#c0trend', t + 1.0, .6);
+        } else if (idx === 1){
+          reveal('#c1code', t, .4);
+          tl.to('#c1code div', { opacity: 1, duration: .25, stagger: .18 }, t + .25);
+          reveal('#c1toggle', t + .5, .3);
+          tl.to('#c1thumb', { x: 48, duration: .3, ease: 'power2.inOut' }, t + .95);
+          tl.to('#c1track', { backgroundColor: '#8B5CF6', duration: .3 }, t + .95);
+          reveal('#c1fill', t + 1.15, .35);
+          tl.fromTo(['#c1f0', '#c1f1', '#c1f2'], { scaleX: 0 }, { scaleX: 1, duration: .25, transformOrigin: '0% 50%', stagger: .15 }, t + 1.4);
+        } else if (idx === 2){
+          reveal('#c2sum', t, .4);
+        } else if (idx === 3){
+          reveal('#c3req', t, .4);
+          drawStroke('#c3r0 svg path', t + .35, .3);
+          drawStroke('#c3r1 svg path', t + .55, .3);
+          drawStroke('#c3r2 svg path', t + .75, .3);
+          fadeProp('#c3miss', t + 1.0, .3);
+        }
+        reveal('#c' + idx + 'ai', t + 1.4, .3);
+        typeText($('c' + idx + 'aiTxt'), $('c' + idx + 'aiCaret'), c.ai, t + 1.7, 1.8);
+      }
+
+      function critBuild(idx, t){
+        if (idx === 0){
+          /* comment already pinned as whole-block */
+        } else if (idx === 1){
+          drawStroke('#c1ck0 svg path', t, .25);
+          drawStroke('#c1ck1 svg path', t + .22, .25);
+          drawStroke('#c1ck2 svg path', t + .44, .25);
+          reveal('#c1ind', t - .3, .35);
+        } else if (idx === 2){
+          reveal(['#c2src0', '#c2src1'], t - .3, .35, { to: { stagger: .15 } });
+          tl.fromTo('#c2src0', { scale: 1 }, { scale: 1.05, duration: .25, yoyo: true, repeat: 1, ease: 'power1.inOut' }, t);
+          fadeProp('#c2verif', t + .5, .3);
+        } else if (idx === 3){
+          reveal('#c3btns', t, .35);
+        }
+        reveal('#c' + idx + 'crit', t + .9, .4);
+      }
+
+      /* =====================================================================
+         BUILD ALL 14 STEPS (0..13) FROM THE SEGMENT CONTRACT
+      ===================================================================== */
+      function stepStart(k){ return k === 0 ? 0 : (k <= 12 ? 11 + 13 * (k - 1) : 167); }
+
+      for (let c = 0; c < 4; c++){
+        const kA = 1 + c * 3, kC = 2 + c * 3, kR = 3 + c * 3;
+
+        /* --- Antes step: case name + "Antes" header reset and reappear for THIS case --- */
+        (function(idx){
+          const S = stepStart(kA), loopStart = S + 5;
+          let t = S;
+          if (idx > 0){
+            hideEl(['#c' + (idx - 1) + 'Head', '#hdrAntes', '#hdrConIA', '#hdrCrit'], t, .25);
+            collapseCase(idx - 1, t, 1.2);
+            t += 1.2;
+          } else {
+            hideEl(['#hdrAntes', '#hdrConIA', '#hdrCrit'], t, .01);
+          }
+          const cc = chipCenter(idx);
+          moveCursor(J, cc.x - 40, cc.y, t, .5);
+          t += .5;
+          dragChipToCenter(idx, CASES[idx].label, t, .7);
+          const dragEnd = t + .22 + .7 + .18;
+          reveal('#c' + idx + 'Head', t + .9, .3);
+          reveal('#hdrAntes', t + 1.15, .3);
+          moveCursor(J, ANTES_REST.x, ANTES_REST.y, t + 1.2, .7);
+          t = dragEnd + .1;
+          antesBuild(idx, t);
+          idleCursor(J, ANTES_REST.x, ANTES_REST.y, 11, -8, loopStart);
+        })(c);
+
+        /* --- Con IA step: "Con IA" header appears, placed by the IA cursor --- */
+        (function(idx){
+          const S = stepStart(kC), loopStart = S + 5;
+          moveCursor(IA, WRAP_LEFT + 445 + 40, 260, S, .5);
+          reveal('#hdrConIA', S + .3, .3);
+          moveCursor(IA, CONIA_REST.x, CONIA_REST.y, S + .5, .6);
+          coniaBuild(idx, S + .7);
+          idleCursor(IA, CONIA_REST.x, CONIA_REST.y, -9, 10, loopStart);
+          blinkCaret($('c' + idx + 'aiCaret'), loopStart);
+        })(c);
+
+        /* --- Tu criterio step: "Tu criterio" header appears, placed by Jorge (blue) --- */
+        (function(idx){
+          const S = stepStart(kR), loopStart = S + 5;
+          moveCursor(J, WRAP_LEFT + 890 + 40, 260, S, .5);
+          reveal('#hdrCrit', S + .3, .3);
+          moveCursor(J, CRIT_REST.x, CRIT_REST.y, S + .5, .6);
+          critBuild(idx, S + .7);
+          idleCursor(J, CRIT_REST.x, CRIT_REST.y, 9, -9, loopStart);
+        })(c);
+      }
+
+      /* =====================================================================
+         STEP 13 — closing rearrange          build 167-174, loop 174-182
+      ===================================================================== */
+      (function(){
+        const S = 167, loopStart = 174;
+        hideEl(['#c3Head', '#hdrAntes', '#hdrConIA', '#hdrCrit'], S, .25);
+        collapseCase(3, S, 1.2);
+        hideEl('#rail', S + .3, .5);
+
+        for (let i = 0; i < 4; i++){
+          reveal('#out' + i, S + 1.6 + i * .15, .6, { from: { y: 26 } });
+          reveal('#crit' + i, S + 1.8 + i * .15, .6, { from: { y: 26 } });
+        }
+
+        moveCursor(IA, 350, 175, S + 3.3, .5);
+        reveal('#headAI', S + 3.5, .2);
+        typeTextOnly($('headAITxt1'), 'La IA', S + 3.7, .35);
+        typeText($('headAITxt2'), $('headAICaret'), ' hace el trabajo pesado.', S + 4.05, 1.45);
+
+        moveCursor(J, 1550, 930, S + 5.7, .4);
+        reveal('#headJ', S + 5.9, .2);
+        typeText($('headJTxt'), $('headJCaret'), 'Tú pones el criterio.', S + 6.1, 1.3);
+
+        idleCursor(IA, 350, 175, -10, 9, loopStart);
+        idleCursor(J, 1550, 930, 10, -8, loopStart);
+        blinkCaret($('headAICaret'), loopStart);
+        blinkCaret($('headJCaret'), loopStart);
+      })();
+
+      document.fonts.ready.then(function(){
+        window.__timelines = window.__timelines || {};
+        window.__timelines['j4'] = tl;
+        if (window.__hfForceTimelineRebind) window.__hfForceTimelineRebind();
+      });
+    </script>
+  </body>
+</html>
